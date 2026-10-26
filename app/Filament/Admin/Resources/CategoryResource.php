@@ -5,6 +5,7 @@ namespace App\Filament\Admin\Resources;
 use App\Filament\Admin\Resources\Categories\Pages\CreateCategory;
 use App\Filament\Admin\Resources\Categories\Pages\EditCategory;
 use App\Filament\Admin\Resources\Categories\Pages\ListCategories;
+use App\Filament\Admin\Support\Columns;
 use App\Filament\Admin\Support\Fields;
 use App\Models\Category;
 use Filament\Actions\BulkActionGroup;
@@ -17,7 +18,6 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -72,7 +72,7 @@ class CategoryResource extends Resource
         return $table->columns([
             ImageColumn::make('image_path')->disk('public')->label(__('admin.fields.image')),
             TextColumn::make('name')->label(__('admin.fields.name'))->searchable(),
-            IconColumn::make('is_active')->boolean()->label(__('admin.fields.active')),
+            Columns::active(),
             TextColumn::make('sort_order')->label(__('admin.fields.sort')),
         ])->recordActions([
             EditAction::make(),

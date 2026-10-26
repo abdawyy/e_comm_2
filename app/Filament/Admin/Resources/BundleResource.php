@@ -5,6 +5,7 @@ namespace App\Filament\Admin\Resources;
 use App\Filament\Admin\Resources\Bundles\Pages\CreateBundle;
 use App\Filament\Admin\Resources\Bundles\Pages\EditBundle;
 use App\Filament\Admin\Resources\Bundles\Pages\ListBundles;
+use App\Filament\Admin\Support\Columns;
 use App\Filament\Admin\Support\Fields;
 use App\Models\Bundle;
 use Filament\Actions\EditAction;
@@ -78,7 +79,7 @@ class BundleResource extends Resource
             TextColumn::make('name')->label(__('admin.fields.name')),
             TextColumn::make('price')->label(__('admin.fields.price')),
             IconColumn::make('is_subscribable')->boolean()->label(__('admin.fields.subscribable')),
-            IconColumn::make('is_active')->boolean()->label(__('admin.fields.active')),
+            Columns::active(),
         ])->recordActions([EditAction::make()]);
     }
 

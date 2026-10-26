@@ -5,6 +5,7 @@ namespace App\Filament\Admin\Resources;
 use App\Filament\Admin\Resources\Cities\Pages\CreateCity;
 use App\Filament\Admin\Resources\Cities\Pages\EditCity;
 use App\Filament\Admin\Resources\Cities\Pages\ListCities;
+use App\Filament\Admin\Support\Columns;
 use App\Filament\Admin\Support\Fields;
 use App\Models\City;
 use Filament\Actions\EditAction;
@@ -57,6 +58,7 @@ class CityResource extends Resource
         return $table->columns([
             TextColumn::make('name')->label(__('admin.fields.name')),
             TextColumn::make('shipping_fee')->label(__('admin.fields.shipping_fee')),
+            Columns::active(),
         ])->recordActions([EditAction::make()]);
     }
 

@@ -5,6 +5,7 @@ namespace App\Filament\Admin\Resources;
 use App\Filament\Admin\Resources\Coupons\Pages\CreateCoupon;
 use App\Filament\Admin\Resources\Coupons\Pages\EditCoupon;
 use App\Filament\Admin\Resources\Coupons\Pages\ListCoupons;
+use App\Filament\Admin\Support\Columns;
 use App\Models\Coupon;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\DateTimePicker;
@@ -64,6 +65,7 @@ class CouponResource extends Resource
             TextColumn::make('type')->label(__('admin.fields.type')),
             TextColumn::make('value')->label(__('admin.fields.value')),
             TextColumn::make('used_count')->label(__('admin.fields.used')),
+            Columns::active(),
         ])->recordActions([EditAction::make()]);
     }
 

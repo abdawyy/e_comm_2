@@ -5,6 +5,7 @@ namespace App\Filament\Admin\Resources;
 use App\Filament\Admin\Resources\HomeBanners\Pages\CreateHomeBanner;
 use App\Filament\Admin\Resources\HomeBanners\Pages\EditHomeBanner;
 use App\Filament\Admin\Resources\HomeBanners\Pages\ListHomeBanners;
+use App\Filament\Admin\Support\Columns;
 use App\Filament\Admin\Support\Fields;
 use App\Models\HomeBanner;
 use Filament\Actions\EditAction;
@@ -80,6 +81,7 @@ class HomeBannerResource extends Resource
         return $table->columns([
             TextColumn::make('title')->label(__('admin.fields.title')),
             TextColumn::make('sort_order')->label(__('admin.fields.sort')),
+            Columns::active(),
         ])->recordActions([EditAction::make()]);
     }
 

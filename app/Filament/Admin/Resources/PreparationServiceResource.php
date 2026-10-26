@@ -5,6 +5,7 @@ namespace App\Filament\Admin\Resources;
 use App\Filament\Admin\Resources\Services\Pages\CreatePreparationService;
 use App\Filament\Admin\Resources\Services\Pages\EditPreparationService;
 use App\Filament\Admin\Resources\Services\Pages\ListServices;
+use App\Filament\Admin\Support\Columns;
 use App\Filament\Admin\Support\Fields;
 use App\Models\PreparationService;
 use Filament\Actions\EditAction;
@@ -67,6 +68,7 @@ class PreparationServiceResource extends Resource
             TextColumn::make('name')->label(__('admin.fields.name')),
             TextColumn::make('surcharge_type')->label(__('admin.fields.type')),
             TextColumn::make('surcharge_value')->label(__('admin.fields.value')),
+            Columns::active(),
         ])->recordActions([EditAction::make()]);
     }
 

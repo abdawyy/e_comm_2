@@ -5,6 +5,7 @@ namespace App\Filament\Admin\Resources;
 use App\Filament\Admin\Resources\DesignAssets\Pages\CreateDesignAsset;
 use App\Filament\Admin\Resources\DesignAssets\Pages\EditDesignAsset;
 use App\Filament\Admin\Resources\DesignAssets\Pages\ListDesignAssets;
+use App\Filament\Admin\Support\Columns;
 use App\Filament\Admin\Support\Fields;
 use App\Models\DesignAsset;
 use Filament\Actions\EditAction;
@@ -80,6 +81,7 @@ class DesignAssetResource extends Resource
             TextColumn::make('key')->label(__('admin.fields.key'))->searchable(),
             ImageColumn::make('preview')->label(__('admin.fields.image'))->state(fn (DesignAsset $record) => $record->url()),
             TextColumn::make('alt')->label(__('admin.fields.alt')),
+            Columns::active(),
         ])->defaultGroup('key')->recordActions([
             EditAction::make(),
         ]);

@@ -27,7 +27,10 @@ class CheckoutCodTest extends TestCase
             'quantity' => '2',
         ])->assertOk();
 
-        $this->get('/checkout')->assertOk();
+        $this->get('/checkout')
+            ->assertOk()
+            ->assertSee('data-fee="'.$city->shipping_fee.'"', false)
+            ->assertSee('data-checkout-form', false);
 
         $this->post('/checkout', [
             'customer_name' => 'Nour Hassan',

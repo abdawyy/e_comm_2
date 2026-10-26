@@ -44,4 +44,24 @@ class CartTest extends TestCase
             'quantity' => '10',
         ])->assertStatus(422);
     }
+
+    #[Test]
+    public function the_cart_page_shows_each_product_image(): void
+    {
+        $product = Product::factory()->create([
+            'image_path' => 'products/cart-cover.svg',
+            'name' => ['en' => 'Cart coffee', 'ar' => 'قهوة السلة'],
+        ]);
+
+        $this->post('/cart/items', [
+            'product_id' => $product->id,
+            'quantity' => '1',
+            'unit' => 'piece',
+        ])->assertRedirect();
+
+        $this->get('/cart')
+            ->assertOk()
+            ->assertSee('products/cart-cover.svg', false)
+            ->assertSee('alt="Cart coffee"', false);
+    }
 }

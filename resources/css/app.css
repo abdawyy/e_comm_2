@@ -28,9 +28,15 @@ html.dark {
 }
 
 .store-shell {
+    display: flex;
+    flex-direction: column;
     background: var(--color-canvas);
     color: var(--color-brand);
     min-height: 100vh;
+}
+
+.store-shell > main {
+    flex: 1 0 auto;
 }
 
 html.dark .store-shell {
@@ -358,6 +364,33 @@ html.dark .store-input {
 .store-footer {
     background: var(--color-brand-dark);
     color: var(--color-surface);
+}
+
+.store-social {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+}
+
+.store-social a {
+    display: grid;
+    width: 2.4rem;
+    height: 2.4rem;
+    place-items: center;
+    border: 1px solid color-mix(in srgb, var(--color-surface) 45%, transparent);
+    border-radius: 999px;
+    color: var(--color-surface);
+}
+
+.store-social a:hover {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-brand);
+}
+
+.store-social svg {
+    width: 1.15rem;
+    height: 1.15rem;
 }
 
 .store-trust {

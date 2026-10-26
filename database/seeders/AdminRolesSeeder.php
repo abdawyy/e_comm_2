@@ -17,7 +17,7 @@ class AdminRolesSeeder extends Seeder
         $subjects = [
             'Category', 'Product', 'Bundle', 'Coupon', 'Order', 'City', 'PreparationService',
             'PackagingType', 'User', 'ContentString', 'SeoSetting', 'HomeBanner', 'SiteVisitor',
-            'DesignAsset', 'SiteTheme', 'PaymentTransaction',
+            'DesignAsset', 'SiteTheme', 'PaymentTransaction', 'SocialLink',
         ];
         $abilities = [
             'viewAny', 'view', 'create', 'update', 'delete', 'deleteAny', 'restore',
@@ -57,8 +57,8 @@ class AdminRolesSeeder extends Seeder
         $sync('super_admin', $all->pluck('name')->all());
         $sync('orders_manager', array_merge($pick(['Order'], $abilities), $pick(['User'], ['viewAny', 'view']), ['View:AdminGuide', 'View:SalesDashboard']));
         $sync('catalog_manager', array_merge($pick(['Product', 'Category', 'Bundle', 'PreparationService', 'PackagingType', 'City', 'Coupon'], $abilities), ['View:AdminGuide']));
-        $sync('content_manager', array_merge($pick(['HomeBanner', 'ContentString', 'SeoSetting'], $abilities), ['View:AdminGuide']));
-        $sync('design_manager', array_merge($pick(['DesignAsset', 'SiteTheme', 'HomeBanner'], $abilities), ['View:AdminGuide']));
+        $sync('content_manager', array_merge($pick(['HomeBanner', 'ContentString', 'SeoSetting', 'SocialLink'], $abilities), ['View:AdminGuide']));
+        $sync('design_manager', array_merge($pick(['DesignAsset', 'SiteTheme', 'HomeBanner', 'SocialLink'], $abilities), ['View:AdminGuide']));
         $sync('analytics_viewer', array_merge($pick(['SiteVisitor', 'User'], ['viewAny', 'view']), ['View:TrafficDashboard', 'View:AdminGuide', 'View:SalesDashboard']));
         $sync('finance_viewer', array_merge($pick(['Order', 'PaymentTransaction'], ['viewAny', 'view']), ['View:AdminGuide']));
 

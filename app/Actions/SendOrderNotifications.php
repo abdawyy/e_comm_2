@@ -7,6 +7,7 @@ use App\Mail\AdminOrderMail;
 use App\Mail\OrderConfirmationMail;
 use App\Models\Order;
 use App\Models\User;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 
@@ -32,11 +33,7 @@ class SendOrderNotifications
             Mail::to($order->customer_email)->send(new OrderConfirmationMail($order, $url));
         }
 
-        $admins = User::query()->where('is_admin', true)->pluck('email')->filter()->all();
-
-        if ($admins !== []) {
-            Mail::to($admins)->send(new AdminOrderMail($order));
-        }
+        $this->notifyAdmin($order);
 
         $this->sms->send(
             $order->customer_phone,
@@ -44,5 +41,28 @@ class SendOrderNotifications
         );
 
         $order->forceFill(['confirmation_sent_at' => now()])->save();
+    }
+
+    public function notifyAdmin(Order $order): void
+    {
+        $key = 'orders.admin_mail.'.$order->id;
+
+        if (Cache::has($key)) {
+            return;
+        }
+
+        $admins = User::query()->where('is_admin', true)->pluck('email')
+            ->push(config('store.admin_email'))
+            ->filter()
+            ->map(fn ($email) => strtolower(trim((string) $email)))
+            ->unique()
+            ->values();
+
+        if ($admins->isEmpty()) {
+            return;
+        }
+
+        Mail::to($admins->all())->send(new AdminOrderMail($order));
+        Cache::forever($key, true);
     }
 }

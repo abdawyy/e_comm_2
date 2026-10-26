@@ -5,9 +5,8 @@ namespace App\Listeners;
 use App\Actions\GenerateInvoiceAction;
 use App\Actions\SendOrderNotifications;
 use App\Events\OrderPaid;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
-class HandleOrderPaid implements ShouldQueue
+class HandleOrderPaid
 {
     public function __construct(
         private GenerateInvoiceAction $invoices,

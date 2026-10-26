@@ -27,7 +27,6 @@ class GenerateInvoiceAction
             'theme' => $theme,
             'logo' => $logo,
             'math' => $this->math,
-            'dir' => $locale === 'ar' ? 'rtl' : 'ltr',
         ])->render();
 
         app()->setLocale($previous);

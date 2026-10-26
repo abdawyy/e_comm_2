@@ -1,4 +1,4 @@
-<article class="store-card flex flex-col">
+<article class="store-card store-product flex flex-col">
     <a class="block" href="{{ route('products.show', $product) }}">
         @if($product->coverUrl())
             <img class="h-44 w-full object-cover" src="{{ $product->coverUrl() }}" alt="{{ $product->name }}">

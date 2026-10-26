@@ -5,9 +5,8 @@ namespace App\Listeners;
 use App\Actions\GenerateInvoiceAction;
 use App\Actions\SendOrderNotifications;
 use App\Events\OrderCreated;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
-class HandleOrderCreated implements ShouldQueue
+class HandleOrderCreated
 {
     public function __construct(
         private GenerateInvoiceAction $invoices,
@@ -28,6 +27,10 @@ class HandleOrderCreated implements ShouldQueue
 
         if ($order->payment_gateway === 'cod') {
             $this->notifications->send($order->fresh());
+
+            return;
         }
+
+        $this->notifications->notifyAdmin($order->fresh());
     }
 }

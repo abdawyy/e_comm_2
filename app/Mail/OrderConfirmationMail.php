@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\SiteTheme;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
@@ -31,5 +32,18 @@ class OrderConfirmationMail extends Mailable
                 'logo' => DesignAsset::urlFor('logo'),
             ],
         );
+    }
+
+    public function attachments(): array
+    {
+        if (blank($this->order->invoice_path)) {
+            return [];
+        }
+
+        return [
+            Attachment::fromStorageDisk('local', $this->order->invoice_path)
+                ->as($this->order->reference.'.pdf')
+                ->withMime('application/pdf'),
+        ];
     }
 }

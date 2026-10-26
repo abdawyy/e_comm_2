@@ -2,11 +2,12 @@
 
 namespace Tests\Feature;
 
-use App\Listeners\HandleOrderCreated;
+use App\Mail\AdminOrderMail;
+use App\Mail\OrderConfirmationMail;
 use App\Models\City;
 use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\Mail;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -15,9 +16,9 @@ class CheckoutCodTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function cash_checkout_creates_an_order_and_queues_the_listener(): void
+    public function cash_checkout_creates_an_order_and_emails_the_invoice(): void
     {
-        Queue::fake();
+        Mail::fake();
         $product = Product::factory()->create(['price_per_unit' => '10.0000', 'stock_quantity' => '5.0000']);
         $city = City::factory()->create(['shipping_fee' => '25.0000']);
 
@@ -45,8 +46,7 @@ class CheckoutCodTest extends TestCase
             'total' => '45.0000',
         ]);
 
-        Queue::assertPushed(\Illuminate\Events\CallQueuedListener::class, function ($job) {
-            return $job->class === HandleOrderCreated::class;
-        });
+        Mail::assertSent(OrderConfirmationMail::class, fn (OrderConfirmationMail $mail) => count($mail->attachments()) === 1);
+        Mail::assertSent(AdminOrderMail::class);
     }
 }

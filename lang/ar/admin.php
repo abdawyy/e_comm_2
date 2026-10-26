@@ -70,7 +70,7 @@ return [
     'actions' => ['save' => 'حفظ', 'export' => 'تصدير المنتجات', 'export_visitors' => 'تصدير الزوار', 'export_views' => 'تصدير المشاهدات', 'open' => 'فتح'],
     'status' => ['pending' => 'قيد الانتظار', 'confirmed' => 'مؤكد', 'processing' => 'قيد التجهيز', 'shipped' => 'تم الشحن', 'delivered' => 'تم التسليم', 'cancelled' => 'ملغى'],
     'payment' => ['unpaid' => 'غير مدفوع', 'pending' => 'معلّق', 'paid' => 'مدفوع', 'failed' => 'فشل', 'refunded' => 'مُسترد'],
-    'pages' => ['traffic' => 'العملاء والزيارات', 'customers' => 'تحليل العملاء', 'guide' => 'دليل الفريق', 'colors' => 'الألوان'],
+    'pages' => ['traffic' => 'العملاء والزيارات', 'customers' => 'تحليل العملاء', 'guide' => 'دليل الفريق', 'colors' => 'الألوان', 'signup_offer' => 'كوبون التسجيل'],
     'theme' => [
         'brand' => 'العلامة', 'palette' => 'اللوحة', 'primary' => 'الأساسي', 'primary_dark' => 'الأساسي الداكن', 'primary_light' => 'الأساسي الفاتح',
         'accent' => 'الإبراز', 'accent_light' => 'الإبراز الفاتح', 'canvas' => 'الخلفية', 'surface' => 'السطح', 'border' => 'الحدود',
@@ -124,5 +124,15 @@ return [
         'viewed' => 'الأكثر مشاهدة', 'purchased' => 'الأكثر شراءً', 'activity' => 'النشاط', 'views_short' => 'مشاهدات',
         'orders_short' => 'طلبات', 'first_seen' => 'أول ظهور', 'last_seen' => 'آخر ظهور', 'last_order' => 'آخر طلب',
         'last_location' => 'آخر موقع', 'last_visit' => 'آخر زيارة', 'orders' => 'الطلبات',
+    ],
+    'signup' => [
+        'timing' => 'متى يظهر',
+        'delay' => 'يظهر بعد',
+        'seconds' => 'ثوانٍ في الموقع',
+        'coupon' => 'الكوبون المرسل بالبريد',
+        'copy' => 'نص النافذة',
+        'heading' => 'العنوان',
+        'body' => 'الرسالة',
+        'saved' => 'تم حفظ عرض التسجيل',
     ],
 ];

@@ -8,4 +8,5 @@
     </ul>
     <p>{{ __('store.checkout.total') }} {{ app(\App\Services\DecimalMath::class)->format((string) $order->total) }}</p>
     <p class="text-sm">{{ $order->address }}</p>
+    <p><a href="{{ route('invoices.download', $order) }}">{{ __('store.orders.invoice') }}</a></p>
 </div>

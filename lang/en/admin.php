@@ -70,7 +70,7 @@ return [
     'actions' => ['save' => 'Save', 'export' => 'Export products', 'export_visitors' => 'Export visitors', 'export_views' => 'Export page views', 'open' => 'Open'],
     'status' => ['pending' => 'Pending', 'confirmed' => 'Confirmed', 'processing' => 'Processing', 'shipped' => 'Shipped', 'delivered' => 'Delivered', 'cancelled' => 'Cancelled'],
     'payment' => ['unpaid' => 'Unpaid', 'pending' => 'Pending', 'paid' => 'Paid', 'failed' => 'Failed', 'refunded' => 'Refunded'],
-    'pages' => ['traffic' => 'Customers & traffic', 'customers' => 'Customer analysis', 'guide' => 'Staff guide', 'colors' => 'Colors'],
+    'pages' => ['traffic' => 'Customers & traffic', 'customers' => 'Customer analysis', 'guide' => 'Staff guide', 'colors' => 'Colors', 'signup_offer' => 'Signup coupon'],
     'theme' => [
         'brand' => 'Brand', 'palette' => 'Palette', 'primary' => 'Primary', 'primary_dark' => 'Primary dark', 'primary_light' => 'Primary light',
         'accent' => 'Accent', 'accent_light' => 'Accent light', 'canvas' => 'Canvas', 'surface' => 'Surface', 'border' => 'Border',
@@ -124,5 +124,15 @@ return [
         'viewed' => 'Most viewed', 'purchased' => 'Most purchased', 'activity' => 'Activity', 'views_short' => 'views',
         'orders_short' => 'orders', 'first_seen' => 'First seen', 'last_seen' => 'Last seen', 'last_order' => 'Last order',
         'last_location' => 'Last location', 'last_visit' => 'Last visit', 'orders' => 'Orders',
+    ],
+    'signup' => [
+        'timing' => 'When it appears',
+        'delay' => 'Show after',
+        'seconds' => 'seconds on the site',
+        'coupon' => 'Coupon to email',
+        'copy' => 'Popup text',
+        'heading' => 'Heading',
+        'body' => 'Message',
+        'saved' => 'Signup offer saved',
     ],
 ];

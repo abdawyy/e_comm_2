@@ -134,6 +134,17 @@ class DatabaseSeeder extends Seeder
             'is_active' => true,
         ]);
 
+        $welcome = Coupon::query()->where('code', 'WELCOME10')->first();
+        \App\Models\SignupOffer::query()->updateOrCreate(['id' => 1], [
+            'is_active' => true,
+            'delay_seconds' => 15,
+            'coupon_id' => $welcome?->id,
+            'heading_en' => 'Sign up and save',
+            'heading_ar' => 'سجل واحصل على خصم',
+            'body_en' => 'Leave your email and we will send your discount coupon.',
+            'body_ar' => 'اترك بريدك وسنرسل كوبون الخصم إلى بريدك.',
+        ]);
+
         ContentString::query()->updateOrCreate(['key' => 'home.hero_title'], ['value' => ['en' => 'Groceries with a neighborhood feel', 'ar' => 'بقالة بطعم الحارة']]);
         ContentString::query()->updateOrCreate(['key' => 'home.hero_subtitle'], ['value' => ['en' => 'Olive oil, dates, coffee, and household staples.', 'ar' => 'زيت زيتون وبلح وقهوة ومستلزمات البيت.']]);
         SeoSetting::query()->updateOrCreate(['route_key' => 'home'], [

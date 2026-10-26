@@ -137,6 +137,7 @@ return [
         'total' => 'Total',
         'placed' => 'Placed',
         'invoice' => 'Invoice',
+        'empty' => 'You have no orders yet.',
         'cancel' => 'Cancel order',
         'cancelled' => 'Order cancelled',
         'cancel_review' => 'Paid card orders need a staff review. Nothing was refunded automatically.',
@@ -179,7 +180,8 @@ return [
     'mail' => [
         'confirmed_subject' => 'Order :reference confirmed',
         'confirmed_heading' => 'Order :reference',
-        'confirmed_body' => 'Thanks for your order. Your invoice is ready.',
+        'confirmed_body' => 'Thanks for your order. The invoice is attached in English and Arabic.',
+        'pdf_attached' => 'The PDF invoice is attached to this email in English and Arabic.',
         'admin_subject' => 'New order :reference',
         'admin_body' => 'Order :reference total :total',
         'status_subject' => 'Order :reference updated',
@@ -187,5 +189,16 @@ return [
     ],
     'sms' => [
         'order_confirmed' => 'Order :reference is confirmed.',
+    ],
+    'signup' => [
+        'email' => 'Email',
+        'submit' => 'Send my coupon',
+        'close' => 'Close',
+        'register' => 'Create an account',
+        'sent' => 'Check your email for the discount coupon.',
+        'unavailable' => 'That offer is not available right now.',
+        'mail_subject' => 'Your discount code :code',
+        'mail_heading' => 'Here is your coupon',
+        'mail_body' => 'Use this code at checkout.',
     ],
 ];

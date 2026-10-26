@@ -4,6 +4,10 @@
         <strong>{{ $theme->brand_name }}</strong>
     </div>
     <div style="padding: 16px;">
-        <p>{{ __('store.mail.admin_body', ['reference' => $order->reference, 'total' => $order->total]) }}</p>
+        <p><strong>New order {{ $order->reference }}</strong></p>
+        <p>طلب جديد {{ $order->reference }}</p>
+        <p>{{ $order->customer_name }} · {{ $order->customer_email }} · {{ $order->customer_phone }}</p>
+        <p>{{ $order->city_name }} — {{ $order->address }}</p>
+        <p>{{ $order->payment_gateway }} · {{ $order->payment_status }} · {{ $order->total }} {{ $order->currency }}</p>
     </div>
 </div>

@@ -137,6 +137,7 @@ return [
         'total' => 'الإجمالي',
         'placed' => 'التاريخ',
         'invoice' => 'الفاتورة',
+        'empty' => 'لا توجد طلبات بعد.',
         'cancel' => 'إلغاء الطلب',
         'cancelled' => 'تم إلغاء الطلب',
         'cancel_review' => 'طلبات البطاقة المدفوعة تحتاج مراجعة. لا يوجد استرداد تلقائي.',
@@ -179,7 +180,8 @@ return [
     'mail' => [
         'confirmed_subject' => 'تأكيد الطلب :reference',
         'confirmed_heading' => 'الطلب :reference',
-        'confirmed_body' => 'شكرًا لطلبك. الفاتورة جاهزة.',
+        'confirmed_body' => 'شكرًا لطلبك. الفاتورة مرفقة بالعربية والإنجليزية.',
+        'pdf_attached' => 'فاتورة PDF مرفقة بهذه الرسالة بالعربية والإنجليزية.',
         'admin_subject' => 'طلب جديد :reference',
         'admin_body' => 'الطلب :reference الإجمالي :total',
         'status_subject' => 'تحديث الطلب :reference',
@@ -187,5 +189,16 @@ return [
     ],
     'sms' => [
         'order_confirmed' => 'تم تأكيد الطلب :reference.',
+    ],
+    'signup' => [
+        'email' => 'البريد',
+        'submit' => 'أرسل الكوبون',
+        'close' => 'إغلاق',
+        'register' => 'إنشاء حساب',
+        'sent' => 'تفقد بريدك للحصول على كوبون الخصم.',
+        'unavailable' => 'هذا العرض غير متاح الآن.',
+        'mail_subject' => 'كود الخصم :code',
+        'mail_heading' => 'هذا كوبونك',
+        'mail_body' => 'استخدم هذا الكود عند الدفع.',
     ],
 ];

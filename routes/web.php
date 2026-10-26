@@ -9,11 +9,13 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\PaymobReturnController;
 use App\Http\Controllers\PaymobWebhookController;
+use App\Http\Controllers\SignupOfferController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\TrackOrderController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');
+Route::post('/signup-offer', [SignupOfferController::class, 'store'])->middleware('throttle:8,1')->name('signup-offer.store');
 Route::get('/locale/{locale}', LocaleController::class)->name('locale.switch');
 
 Route::get('/shop', [CatalogController::class, 'shop'])->name('shop');

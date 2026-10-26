@@ -22,6 +22,8 @@ return [
 
     'brand_name' => env('APP_NAME', 'Atlas Market'),
 
+    'admin_email' => env('STORE_ADMIN_EMAIL', 'admin@example.test'),
+
     'theme_defaults' => [
         'brand_name' => env('APP_NAME', 'Atlas Market'),
         'primary' => '#1A2B28',

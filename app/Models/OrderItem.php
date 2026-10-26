@@ -54,10 +54,10 @@ class OrderItem extends Model
         return $this->belongsTo(Bundle::class);
     }
 
-    public function localizedName(): string
+    public function localizedName(?string $locale = null): string
     {
         $names = $this->name ?? [];
-        $locale = app()->getLocale();
+        $locale = $locale ?: app()->getLocale();
 
         return (string) ($names[$locale] ?? $names['en'] ?? '');
     }

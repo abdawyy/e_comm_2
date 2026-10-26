@@ -5,6 +5,7 @@ namespace App\Filament\Account\Resources;
 use App\Filament\Account\Resources\Orders\Pages\ListOrders;
 use App\Filament\Account\Resources\Orders\Pages\ViewOrder;
 use App\Models\Order;
+use Filament\Actions\Action;
 use Filament\Actions\ViewAction;
 use Filament\Infolists\Components\ViewEntry;
 use Filament\Resources\Resource;
@@ -85,6 +86,10 @@ class OrderResource extends Resource
             TextColumn::make('created_at')->dateTime()->label(__('store.orders.placed')),
         ])->recordActions([
             ViewAction::make(),
+            Action::make('invoice')
+                ->label(__('store.orders.invoice'))
+                ->url(fn (Order $record) => route('invoices.download', $record))
+                ->openUrlInNewTab(),
         ]);
     }
 

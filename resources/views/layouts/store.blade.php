@@ -94,5 +94,6 @@
             <div class="store-toast rounded-xl px-4 py-3 shadow-lg" x-text="toast.message"></div>
         </template>
     </div>
+    @include('store.partials.signup-offer')
 </body>
 </html>

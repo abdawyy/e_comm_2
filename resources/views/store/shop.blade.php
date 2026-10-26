@@ -1,6 +1,6 @@
 @extends('layouts.store', ['title' => __('store.nav.shop'), 'seoKey' => 'shop'])
 @section('content')
-<div class="mx-auto grid max-w-6xl gap-6 px-4 py-8 md:grid-cols-[16rem_1fr]">
+<div class="store-section store-shop">
     <aside class="store-card h-fit p-4">
         <form method="get" action="{{ route('shop') }}" class="space-y-3">
             <input class="store-input" name="q" value="{{ request('q') }}" placeholder="{{ __('store.nav.search') }}">

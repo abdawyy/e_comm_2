@@ -1,4 +1,4 @@
-@extends('layouts.store', ['title' => $category->name, 'seoKey' => 'category'])
+@extends('layouts.store', ['title' => $category->name, 'description' => $category->description, 'ogImage' => $category->imageUrl(), 'seoKey' => 'category'])
 @section('content')
 <section class="mx-auto max-w-6xl px-4 py-8">
     <p class="store-kicker">{{ __('store.nav.shop') }}</p>

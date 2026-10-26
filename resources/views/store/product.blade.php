@@ -1,4 +1,4 @@
-@extends('layouts.store', ['title' => $product->name, 'seoKey' => 'product'])
+@extends('layouts.store', ['title' => $product->name, 'description' => $product->description, 'ogImage' => $product->coverUrl(), 'seoKey' => 'product'])
 @section('content')
 @php
     $math = app(\App\Services\DecimalMath::class);

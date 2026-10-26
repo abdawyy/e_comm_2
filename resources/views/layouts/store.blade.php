@@ -14,12 +14,32 @@
         } catch (\Throwable $exception) {
             $seo = null;
         }
+        $pageTitle = $title ?? null;
+        $documentTitle = filled($pageTitle)
+            ? $theme->brand_name.' — '.$pageTitle
+            : ($seo?->meta_title ?: $theme->brand_name.' — '.\App\Support\Cms::text('home.hero_title', __('store.nav.home')));
+        $metaDescription = filled($description ?? null)
+            ? $description
+            : ($seo?->meta_description ?: \App\Support\Cms::text('home.hero_subtitle', $theme->brand_name));
+        $shareImage = $ogImage ?? ($seo?->ogUrl() ?: \App\Models\DesignAsset::urlFor('og_default'));
     @endphp
-    <title>{{ $theme->brand_name }} — {{ $title ?? \App\Support\Cms::text('home.hero_title', __('store.nav.home')) }}</title>
-    <meta name="description" content="{{ $seo?->meta_description ?? \App\Support\Cms::text('home.hero_subtitle', $theme->brand_name) }}">
+    <title>{{ $documentTitle }}</title>
+    <meta name="description" content="{{ $metaDescription }}">
+    <link rel="canonical" href="{{ url()->current() }}">
     <meta name="theme-color" content="{{ $theme->css('theme_color') }}">
-    <meta property="og:title" content="{{ $theme->brand_name }}">
-    <meta property="og:image" content="{{ $seo?->ogUrl() ?: \App\Models\DesignAsset::urlFor('og_default') }}">
+    <meta property="og:title" content="{{ $documentTitle }}">
+    <meta property="og:description" content="{{ $metaDescription }}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:locale" content="{{ app()->getLocale() === 'ar' ? 'ar_EG' : 'en_EG' }}">
+    @if($shareImage)
+        <meta property="og:image" content="{{ $shareImage }}">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="{{ $documentTitle }}">
+        <meta name="twitter:description" content="{{ $metaDescription }}">
+        <meta name="twitter:image" content="{{ $shareImage }}">
+    @endif
+    @stack('head')
     @if($icon = \App\Models\DesignAsset::urlFor('favicon'))
         <link rel="icon" href="{{ $icon }}">
     @endif

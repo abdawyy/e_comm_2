@@ -15,13 +15,15 @@ return [
         'track' => 'Track order',
     ],
     'home' => [
-        'kicker' => 'Cairo pantry',
-        'title' => 'Groceries with a neighborhood feel',
-        'subtitle' => 'Olive oil, dates, coffee, and household staples, packed the way you like.',
-        'shop_cta' => 'Browse the shop',
+        'kicker' => 'Roasted in Cairo',
+        'title' => 'Coffee for the neighborhood',
+        'subtitle' => 'Sidamo, Yirgacheffe, espresso, and Turkish coffee, ground the way you brew.',
+        'story_title' => 'From the sack to your cup',
+        'story' => 'Whole beans by the pack or the kilo, a grind for your pot, and delivery across Cairo, Giza, and Alexandria.',
+        'shop_cta' => 'Shop coffee',
         'bundle_cta' => 'See bundles',
-        'categories' => 'Shop by aisle',
-        'featured' => 'Featured',
+        'categories' => 'The shelves',
+        'featured' => 'This week’s roasts',
     ],
     'shop' => [
         'all_categories' => 'All categories',
@@ -95,12 +97,12 @@ return [
         'payment' => 'Payment status: :status',
     ],
     'trust' => [
-        'shipping' => 'Delivery across Egyptian cities',
+        'shipping' => 'Coffee delivered across Cairo, Giza, and Alexandria',
         'payment' => 'Cash on delivery or Visa',
-        'support' => 'Arabic and English support',
+        'support' => 'Arabic and English, from the roast to your door',
     ],
     'footer' => [
-        'blurb' => 'A neighborhood market you can rebrand from the admin panel.',
+        'blurb' => 'Specialty coffee you can reorder from home.',
     ],
     'auth' => [
         'failed' => 'Those credentials do not match.',

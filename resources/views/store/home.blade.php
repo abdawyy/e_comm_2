@@ -22,6 +22,23 @@
     </div>
 </section>
 
+@push('head')
+<script type="application/ld+json">
+{!! json_encode([
+    '@'.'context' => 'https://schema.org',
+    '@type' => 'Store',
+    'name' => $theme->brand_name,
+    'description' => \App\Support\Cms::text('home.hero_subtitle', __('store.home.subtitle')),
+    'url' => url('/'),
+], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
+</script>
+@endpush
+
+<section class="store-section">
+    <h2 class="store-section-title">{{ \App\Support\Cms::text('home.story_title', __('store.home.story_title')) }}</h2>
+    <p class="store-lead">{{ \App\Support\Cms::text('home.story_body', __('store.home.story')) }}</p>
+</section>
+
 @if($banners->isNotEmpty())
 <section class="mx-auto max-w-6xl px-4 pb-8">
     <div class="grid gap-4 md:grid-cols-2">
@@ -30,7 +47,7 @@
                 @if($banner->badge)<span class="store-badge">{{ $banner->badge }}</span>@endif
                 <h2 class="mt-3 text-2xl font-bold">{{ $banner->title }}</h2>
                 <p class="mt-2">{{ $banner->subtitle }}</p>
-                @if($banner->imageUrl())<img class="mt-4 rounded-xl" src="{{ $banner->imageUrl() }}" alt="">@endif
+                @if($banner->imageUrl())<img class="mt-4 h-40 w-full rounded-xl object-cover" src="{{ $banner->imageUrl() }}" alt="{{ $banner->title }}">@endif
                 <div class="mt-4 flex flex-wrap gap-2">
                     @foreach($banner->localizedButtons() as $button)
                         <a class="store-btn-ghost" style="color: white; border-color: white" href="{{ $button['url'] }}">{{ $button['label'] }}</a>
@@ -47,7 +64,7 @@
     <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         @foreach($categories as $category)
             <a class="store-card p-4" href="{{ route('categories.show', $category) }}">
-                @if($category->imageUrl())<img class="mb-3 h-28 w-full rounded-lg object-cover" src="{{ $category->imageUrl() }}" alt="">@endif
+                @if($category->imageUrl())<img class="mb-3 h-28 w-full rounded-lg object-cover" src="{{ $category->imageUrl() }}" alt="{{ $category->name }}">@endif
                 <strong>{{ $category->name }}</strong>
             </a>
         @endforeach

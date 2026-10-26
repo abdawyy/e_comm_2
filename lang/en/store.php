@@ -102,7 +102,18 @@ return [
         'support' => 'Arabic and English, from the roast to your door',
     ],
     'footer' => [
-        'blurb' => 'Specialty coffee you can reorder from home.',
+        'blurb' => 'A neighborhood market you can rebrand from the admin panel.',
+        'social' => 'Social media',
+    ],
+    'social' => [
+        'facebook' => 'Facebook',
+        'instagram' => 'Instagram',
+        'tiktok' => 'TikTok',
+        'youtube' => 'YouTube',
+        'whatsapp' => 'WhatsApp',
+        'x' => 'X',
+        'snapchat' => 'Snapchat',
+        'linkedin' => 'LinkedIn',
     ],
     'auth' => [
         'failed' => 'Those credentials do not match.',

@@ -12,9 +12,14 @@
         <div class="mt-6 space-y-3">
             @foreach($quote->lines as $line)
                 <article class="store-card flex items-center justify-between gap-4 p-4">
-                    <div>
-                        <strong>{{ $line->name }}</strong>
-                        <p class="text-sm opacity-70">{{ $line->quantity }} {{ $line->unit }}</p>
+                    <div class="flex min-w-0 items-center gap-4">
+                        @if($line->imageUrl)
+                            <img class="h-20 w-20 shrink-0 rounded-xl object-cover" src="{{ $line->imageUrl }}" alt="{{ $line->name }}">
+                        @endif
+                        <div class="min-w-0">
+                            <strong>{{ $line->name }}</strong>
+                            <p class="text-sm opacity-70">{{ $line->quantity }} {{ $line->unit }}</p>
+                        </div>
                     </div>
                     <div class="text-end">
                         <p>{{ app(\App\Services\DecimalMath::class)->format($line->lineSubtotal) }}</p>

@@ -103,6 +103,7 @@
                 <strong>{{ $theme->brand_name }}</strong>
                 <p class="mt-1 text-sm opacity-80">{{ \App\Support\Cms::text('footer.blurb', __('store.footer.blurb')) }}</p>
             </div>
+            @include('store.partials.social')
             @if($mark = \App\Models\DesignAsset::urlFor('footer_mark'))
                 <img class="h-10" src="{{ $mark }}" alt="{{ \App\Models\DesignAsset::altFor('footer_mark') }}">
             @endif

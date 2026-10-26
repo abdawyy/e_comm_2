@@ -23,6 +23,7 @@ return [
         'gradient_end' => 'Gradient end', 'buttons' => 'Buttons', 'label' => 'Label', 'url' => 'URL', 'device' => 'Device', 'country' => 'Country',
         'region' => 'Region', 'city' => 'City', 'referrer' => 'Referrer', 'last_seen' => 'Last seen', 'amount_cents' => 'Amount (cents)',
         'is_admin' => 'Admin access', 'roles' => 'Roles', 'brand_name' => 'Brand name', 'line' => 'Per line', 'order' => 'Whole order', 'scope' => 'Scope',
+        'platform' => 'Network',
     ],
     'resources' => [
         'categories' => ['label' => 'Category', 'plural' => 'Categories'],
@@ -40,6 +41,7 @@ return [
         'visitors' => ['label' => 'Visitor', 'plural' => 'Visitors'],
         'design_assets' => ['label' => 'Image', 'plural' => 'Images', 'nav' => 'Images'],
         'payments' => ['label' => 'Payment', 'plural' => 'Payments'],
+        'social' => ['label' => 'Social link', 'plural' => 'Social links'],
     ],
     'help' => [
         'category_image' => 'Optional cover, 800×800, jpg/png/webp, max 4 MB.',
@@ -48,6 +50,7 @@ return [
         'design_sizes' => 'Logo: wide transparent PNG or SVG. Hero 1600×900. Favicon 64 or 128 PNG. OG 1200×630. Max 4 MB.',
         'banner' => 'Recommended 1600×700, jpg/png/webp, max 4 MB.',
         'og' => '1200×630 jpg/png/webp, max 4 MB.',
+        'social' => 'Full https link. Active rows with a link appear as icons in the store footer.',
     ],
     'forms' => [
         'details' => 'Details',

@@ -58,7 +58,7 @@ class PreparationServiceResource extends Resource
             ...Fields::translated('description', __('admin.fields.description'), false, true),
             Select::make('surcharge_type')->options(['fixed' => __('admin.fields.fixed'), 'percent' => __('admin.fields.percent')])->required()->label(__('admin.fields.type')),
             TextInput::make('surcharge_value')->required()->label(__('admin.fields.value'))->rule('regex:/^\d+(\.\d{1,4})?$/'),
-            Toggle::make('is_active')->default(true)->label(__('admin.fields.active')),
+            Toggle::make('is_active')->onColor('success')->offColor('gray')->default(true)->label(__('admin.fields.active')),
         ]);
     }
 

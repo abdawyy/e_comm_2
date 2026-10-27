@@ -57,7 +57,7 @@ class SocialLinkResource extends Resource
                 ->helperText(__('admin.help.social'))
                 ->placeholder('https://'),
             TextInput::make('sort_order')->numeric()->default(0)->label(__('admin.fields.sort')),
-            Toggle::make('is_active')->default(true)->label(__('admin.fields.active')),
+            Toggle::make('is_active')->onColor('success')->offColor('gray')->default(true)->label(__('admin.fields.active')),
         ]);
     }
 

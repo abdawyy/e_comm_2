@@ -58,7 +58,7 @@ class DesignAssetResource extends Resource
         return $schema->columns(1)->components([
             Section::make(__('admin.forms.media'))->description(__('admin.help.design_sizes'))->icon(Heroicon::OutlinedPhoto)->schema([
                 Select::make('key')->label(__('admin.fields.key'))->options(array_combine(DesignAsset::KEYS, DesignAsset::KEYS))->required()->unique(ignoreRecord: true)->native(false),
-                Toggle::make('is_active')->default(true)->label(__('admin.fields.active'))->inline(false),
+                Toggle::make('is_active')->onColor('success')->offColor('gray')->default(true)->label(__('admin.fields.active'))->inline(false),
                 FileUpload::make('image_path')
                     ->label(__('admin.fields.image'))
                     ->disk('public')

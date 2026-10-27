@@ -58,7 +58,7 @@ class BundleResource extends Resource
             Section::make(__('admin.forms.price'))->icon(Heroicon::OutlinedBanknotes)->schema([
                 TextInput::make('price')->required()->label(__('admin.fields.price'))->prefix(config('store.currency', 'EGP'))->rule('regex:/^\d+(\.\d{1,4})?$/'),
                 Toggle::make('is_subscribable')->label(__('admin.fields.subscribable'))->inline(false),
-                Toggle::make('is_active')->default(true)->label(__('admin.fields.active'))->inline(false),
+                Toggle::make('is_active')->onColor('success')->offColor('gray')->default(true)->label(__('admin.fields.active'))->inline(false),
             ])->columns(3),
             Section::make(__('admin.forms.media'))->icon(Heroicon::OutlinedPhoto)->schema([
                 FileUpload::make('image_path')->disk('public')->directory('bundles')->image()->imagePreviewHeight('180')->maxSize(4096)->label(__('admin.fields.image')),

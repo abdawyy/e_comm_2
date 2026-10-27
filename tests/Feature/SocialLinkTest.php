@@ -58,10 +58,11 @@ class SocialLinkTest extends TestCase
         $this->actingAs($designer);
 
         Livewire::test(ListSocialLinks::class)
-            ->assertSee('Active')
-            ->call('callTableColumnAction', 'is_active', (string) $link->getKey())
-            ->assertSee('Not active');
+            ->assertSeeHtml('fi-toggle-on')
+            ->call('updateTableColumnState', 'is_active', (string) $link->getKey(), false);
 
         $this->assertFalse((bool) $link->fresh()->is_active);
+
+        Livewire::test(ListSocialLinks::class)->assertSeeHtml('fi-toggle-off');
     }
 }

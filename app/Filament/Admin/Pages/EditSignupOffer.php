@@ -69,7 +69,7 @@ class EditSignupOffer extends Page
     {
         return $schema->components([
             Section::make(__('admin.signup.timing'))->schema([
-                Toggle::make('is_active')->label(__('admin.fields.active'))->inline(false),
+                Toggle::make('is_active')->onColor('success')->offColor('gray')->label(__('admin.fields.active'))->inline(false),
                 TextInput::make('delay_seconds')->label(__('admin.signup.delay'))->numeric()->required()->minValue(1)->maxValue(600)->suffix(__('admin.signup.seconds')),
                 Select::make('coupon_id')->label(__('admin.signup.coupon'))->options(fn () => Coupon::query()->orderBy('code')->pluck('code', 'id'))->searchable()->required()->native(false),
             ])->columns(2),

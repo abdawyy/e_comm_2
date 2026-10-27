@@ -54,7 +54,7 @@ class PackagingTypeResource extends Resource
             Select::make('surcharge_type')->options(['fixed' => __('admin.fields.fixed'), 'percent' => __('admin.fields.percent')])->required(),
             TextInput::make('surcharge_value')->required()->rule('regex:/^\d+(\.\d{1,4})?$/'),
             Select::make('scope')->options(['line' => __('admin.fields.line'), 'order' => __('admin.fields.order')])->default('line')->required()->label(__('admin.fields.scope')),
-            Toggle::make('is_active')->default(true),
+            Toggle::make('is_active')->onColor('success')->offColor('gray')->default(true),
         ]);
     }
 

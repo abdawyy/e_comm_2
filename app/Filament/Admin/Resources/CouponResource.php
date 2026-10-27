@@ -47,7 +47,7 @@ class CouponResource extends Resource
                 TextInput::make('code')->required()->unique(ignoreRecord: true)->label(__('admin.fields.code'))->extraInputAttributes(['style' => 'text-transform:uppercase']),
                 Select::make('type')->options(['percent' => __('admin.fields.percent'), 'fixed' => __('admin.fields.fixed')])->required()->native(false)->label(__('admin.fields.type')),
                 TextInput::make('value')->required()->label(__('admin.fields.value'))->rule('regex:/^\d+(\.\d{1,4})?$/'),
-                Toggle::make('is_active')->default(true)->label(__('admin.fields.active'))->inline(false),
+                Toggle::make('is_active')->onColor('success')->offColor('gray')->default(true)->label(__('admin.fields.active'))->inline(false),
             ])->columns(2),
             Section::make(__('admin.forms.limits'))->icon(Heroicon::OutlinedCalendar)->schema([
                 TextInput::make('usage_limit')->numeric()->label(__('admin.fields.usage_limit')),

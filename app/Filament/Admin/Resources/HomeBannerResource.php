@@ -71,7 +71,7 @@ class HomeBannerResource extends Resource
                 DateTimePicker::make('starts_at')->label(__('admin.fields.starts_at'))->native(false),
                 DateTimePicker::make('ends_at')->label(__('admin.fields.ends_at'))->native(false),
                 TextInput::make('sort_order')->numeric()->default(0)->label(__('admin.fields.sort')),
-                Toggle::make('is_active')->default(true)->label(__('admin.fields.active'))->inline(false),
+                Toggle::make('is_active')->onColor('success')->offColor('gray')->default(true)->label(__('admin.fields.active'))->inline(false),
             ])->columns(2),
         ]);
     }

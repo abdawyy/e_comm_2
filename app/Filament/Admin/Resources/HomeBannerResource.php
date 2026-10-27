@@ -5,6 +5,7 @@ namespace App\Filament\Admin\Resources;
 use App\Filament\Admin\Resources\HomeBanners\Pages\CreateHomeBanner;
 use App\Filament\Admin\Resources\HomeBanners\Pages\EditHomeBanner;
 use App\Filament\Admin\Resources\HomeBanners\Pages\ListHomeBanners;
+use App\Filament\Admin\Support\Columns;
 use App\Filament\Admin\Support\Fields;
 use App\Models\HomeBanner;
 use Filament\Actions\EditAction;
@@ -70,7 +71,7 @@ class HomeBannerResource extends Resource
                 DateTimePicker::make('starts_at')->label(__('admin.fields.starts_at'))->native(false),
                 DateTimePicker::make('ends_at')->label(__('admin.fields.ends_at'))->native(false),
                 TextInput::make('sort_order')->numeric()->default(0)->label(__('admin.fields.sort')),
-                Toggle::make('is_active')->default(true)->label(__('admin.fields.active'))->inline(false),
+                Toggle::make('is_active')->onColor('success')->offColor('gray')->default(true)->label(__('admin.fields.active'))->inline(false),
             ])->columns(2),
         ]);
     }
@@ -80,6 +81,7 @@ class HomeBannerResource extends Resource
         return $table->columns([
             TextColumn::make('title')->label(__('admin.fields.title')),
             TextColumn::make('sort_order')->label(__('admin.fields.sort')),
+            Columns::active(),
         ])->recordActions([EditAction::make()]);
     }
 

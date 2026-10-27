@@ -5,6 +5,7 @@ namespace App\Filament\Admin\Resources;
 use App\Filament\Admin\Resources\Bundles\Pages\CreateBundle;
 use App\Filament\Admin\Resources\Bundles\Pages\EditBundle;
 use App\Filament\Admin\Resources\Bundles\Pages\ListBundles;
+use App\Filament\Admin\Support\Columns;
 use App\Filament\Admin\Support\Fields;
 use App\Models\Bundle;
 use Filament\Actions\EditAction;
@@ -57,7 +58,7 @@ class BundleResource extends Resource
             Section::make(__('admin.forms.price'))->icon(Heroicon::OutlinedBanknotes)->schema([
                 TextInput::make('price')->required()->label(__('admin.fields.price'))->prefix(config('store.currency', 'EGP'))->rule('regex:/^\d+(\.\d{1,4})?$/'),
                 Toggle::make('is_subscribable')->label(__('admin.fields.subscribable'))->inline(false),
-                Toggle::make('is_active')->default(true)->label(__('admin.fields.active'))->inline(false),
+                Toggle::make('is_active')->onColor('success')->offColor('gray')->default(true)->label(__('admin.fields.active'))->inline(false),
             ])->columns(3),
             Section::make(__('admin.forms.media'))->icon(Heroicon::OutlinedPhoto)->schema([
                 FileUpload::make('image_path')->disk('public')->directory('bundles')->image()->imagePreviewHeight('180')->maxSize(4096)->label(__('admin.fields.image')),
@@ -78,7 +79,7 @@ class BundleResource extends Resource
             TextColumn::make('name')->label(__('admin.fields.name')),
             TextColumn::make('price')->label(__('admin.fields.price')),
             IconColumn::make('is_subscribable')->boolean()->label(__('admin.fields.subscribable')),
-            IconColumn::make('is_active')->boolean()->label(__('admin.fields.active')),
+            Columns::active(),
         ])->recordActions([EditAction::make()]);
     }
 

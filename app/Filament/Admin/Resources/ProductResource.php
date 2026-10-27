@@ -5,6 +5,7 @@ namespace App\Filament\Admin\Resources;
 use App\Filament\Admin\Resources\Products\Pages\CreateProduct;
 use App\Filament\Admin\Resources\Products\Pages\EditProduct;
 use App\Filament\Admin\Resources\Products\Pages\ListProducts;
+use App\Filament\Admin\Support\Columns;
 use App\Filament\Admin\Support\Fields;
 use App\Exports\ProductsExport;
 use App\Models\Product;
@@ -22,7 +23,6 @@ use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Maatwebsite\Excel\Facades\Excel;
@@ -78,7 +78,7 @@ class ProductResource extends Resource
                     ])->columns(2),
                     Section::make(__('admin.forms.publish'))->icon(Heroicon::OutlinedEye)->schema([
                         Toggle::make('is_featured')->label(__('admin.fields.featured'))->inline(false),
-                        Toggle::make('is_active')->label(__('admin.fields.active'))->default(true)->inline(false),
+                        Toggle::make('is_active')->onColor('success')->offColor('gray')->label(__('admin.fields.active'))->default(true)->inline(false),
                     ])->columns(2),
                 ]),
                 Tab::make(__('admin.forms.media'))->icon(Heroicon::OutlinedPhoto)->schema([
@@ -109,7 +109,7 @@ class ProductResource extends Resource
             TextColumn::make('price_per_unit')->label(__('admin.fields.price')),
             TextColumn::make('unit')->label(__('admin.fields.unit')),
             TextColumn::make('stock_quantity')->label(__('admin.fields.stock')),
-            IconColumn::make('is_active')->boolean()->label(__('admin.fields.active')),
+            Columns::active(),
         ])->headerActions([
             \Filament\Actions\Action::make('export')->label(__('admin.actions.export'))->action(fn () => Excel::download(new ProductsExport, 'products.xlsx')),
         ])->recordActions([

@@ -23,7 +23,7 @@ return [
         'gradient_end' => 'نهاية التدرج', 'buttons' => 'الأزرار', 'label' => 'التسمية', 'url' => 'الرابط', 'device' => 'الجهاز', 'country' => 'الدولة',
         'region' => 'المنطقة', 'referrer' => 'المصدر', 'last_seen' => 'آخر ظهور', 'amount_cents' => 'المبلغ بالقروش',
         'is_admin' => 'دخول الإدارة', 'roles' => 'الأدوار', 'brand_name' => 'اسم العلامة', 'line' => 'لكل سطر', 'order' => 'للطلب كاملًا', 'scope' => 'النطاق',
-        'platform' => 'الشبكة',
+        'platform' => 'الشبكة', 'inactive' => 'غير نشط',
     ],
     'resources' => [
         'categories' => ['label' => 'قسم', 'plural' => 'الأقسام'],

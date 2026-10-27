@@ -5,6 +5,7 @@ namespace App\Filament\Admin\Resources;
 use App\Filament\Admin\Resources\SocialLinks\Pages\CreateSocialLink;
 use App\Filament\Admin\Resources\SocialLinks\Pages\EditSocialLink;
 use App\Filament\Admin\Resources\SocialLinks\Pages\ListSocialLinks;
+use App\Filament\Admin\Support\Columns;
 use App\Models\SocialLink;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\Select;
@@ -13,7 +14,6 @@ use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -57,7 +57,7 @@ class SocialLinkResource extends Resource
                 ->helperText(__('admin.help.social'))
                 ->placeholder('https://'),
             TextInput::make('sort_order')->numeric()->default(0)->label(__('admin.fields.sort')),
-            Toggle::make('is_active')->default(true)->label(__('admin.fields.active')),
+            Toggle::make('is_active')->onColor('success')->offColor('gray')->default(true)->label(__('admin.fields.active')),
         ]);
     }
 
@@ -66,7 +66,7 @@ class SocialLinkResource extends Resource
         return $table->columns([
             TextColumn::make('platform')->label(__('admin.fields.platform'))->formatStateUsing(fn (?string $state): string => SocialLink::platforms()[$state] ?? (string) $state),
             TextColumn::make('url')->label(__('admin.fields.url'))->limit(40),
-            IconColumn::make('is_active')->boolean()->label(__('admin.fields.active')),
+            Columns::active(),
             TextColumn::make('sort_order')->label(__('admin.fields.sort')),
         ])->defaultSort('sort_order')->recordActions([
             EditAction::make(),

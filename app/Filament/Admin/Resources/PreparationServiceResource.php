@@ -5,6 +5,7 @@ namespace App\Filament\Admin\Resources;
 use App\Filament\Admin\Resources\Services\Pages\CreatePreparationService;
 use App\Filament\Admin\Resources\Services\Pages\EditPreparationService;
 use App\Filament\Admin\Resources\Services\Pages\ListServices;
+use App\Filament\Admin\Support\Columns;
 use App\Filament\Admin\Support\Fields;
 use App\Models\PreparationService;
 use Filament\Actions\EditAction;
@@ -57,7 +58,7 @@ class PreparationServiceResource extends Resource
             ...Fields::translated('description', __('admin.fields.description'), false, true),
             Select::make('surcharge_type')->options(['fixed' => __('admin.fields.fixed'), 'percent' => __('admin.fields.percent')])->required()->label(__('admin.fields.type')),
             TextInput::make('surcharge_value')->required()->label(__('admin.fields.value'))->rule('regex:/^\d+(\.\d{1,4})?$/'),
-            Toggle::make('is_active')->default(true)->label(__('admin.fields.active')),
+            Toggle::make('is_active')->onColor('success')->offColor('gray')->default(true)->label(__('admin.fields.active')),
         ]);
     }
 
@@ -67,6 +68,7 @@ class PreparationServiceResource extends Resource
             TextColumn::make('name')->label(__('admin.fields.name')),
             TextColumn::make('surcharge_type')->label(__('admin.fields.type')),
             TextColumn::make('surcharge_value')->label(__('admin.fields.value')),
+            Columns::active(),
         ])->recordActions([EditAction::make()]);
     }
 

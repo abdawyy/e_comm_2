@@ -5,6 +5,7 @@ namespace App\Filament\Admin\Resources;
 use App\Filament\Admin\Resources\DesignAssets\Pages\CreateDesignAsset;
 use App\Filament\Admin\Resources\DesignAssets\Pages\EditDesignAsset;
 use App\Filament\Admin\Resources\DesignAssets\Pages\ListDesignAssets;
+use App\Filament\Admin\Support\Columns;
 use App\Filament\Admin\Support\Fields;
 use App\Models\DesignAsset;
 use Filament\Actions\EditAction;
@@ -57,7 +58,7 @@ class DesignAssetResource extends Resource
         return $schema->columns(1)->components([
             Section::make(__('admin.forms.media'))->description(__('admin.help.design_sizes'))->icon(Heroicon::OutlinedPhoto)->schema([
                 Select::make('key')->label(__('admin.fields.key'))->options(array_combine(DesignAsset::KEYS, DesignAsset::KEYS))->required()->unique(ignoreRecord: true)->native(false),
-                Toggle::make('is_active')->default(true)->label(__('admin.fields.active'))->inline(false),
+                Toggle::make('is_active')->onColor('success')->offColor('gray')->default(true)->label(__('admin.fields.active'))->inline(false),
                 FileUpload::make('image_path')
                     ->label(__('admin.fields.image'))
                     ->disk('public')
@@ -80,6 +81,7 @@ class DesignAssetResource extends Resource
             TextColumn::make('key')->label(__('admin.fields.key'))->searchable(),
             ImageColumn::make('preview')->label(__('admin.fields.image'))->state(fn (DesignAsset $record) => $record->url()),
             TextColumn::make('alt')->label(__('admin.fields.alt')),
+            Columns::active(),
         ])->defaultGroup('key')->recordActions([
             EditAction::make(),
         ]);

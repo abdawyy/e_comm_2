@@ -23,7 +23,7 @@ return [
         'gradient_end' => 'Gradient end', 'buttons' => 'Buttons', 'label' => 'Label', 'url' => 'URL', 'device' => 'Device', 'country' => 'Country',
         'region' => 'Region', 'city' => 'City', 'referrer' => 'Referrer', 'last_seen' => 'Last seen', 'amount_cents' => 'Amount (cents)',
         'is_admin' => 'Admin access', 'roles' => 'Roles', 'brand_name' => 'Brand name', 'line' => 'Per line', 'order' => 'Whole order', 'scope' => 'Scope',
-        'platform' => 'Network',
+        'platform' => 'Network', 'inactive' => 'Not active',
     ],
     'resources' => [
         'categories' => ['label' => 'Category', 'plural' => 'Categories'],

@@ -15,6 +15,7 @@ use App\Support\SessionCart;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Throwable;
 
 class CheckoutController extends Controller
 {
@@ -32,6 +33,7 @@ class CheckoutController extends Controller
             return redirect()->route('cart.show')->with('error', __('store.cart.empty'));
         }
 
+        session()->forget('checkout.inflight');
         session(['checkout.nonce' => session('checkout.nonce', bin2hex(random_bytes(16)))]);
 
         return view('store.checkout', [
@@ -45,15 +47,25 @@ class CheckoutController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        if ($this->cart->quote()->lines === []) {
+            $reference = (string) session('checkout.reference');
+
+            return $reference !== ''
+                ? redirect()->route('checkout.thanks', ['reference' => $reference])
+                : redirect()->route('cart.show')->with('error', __('store.cart.empty'));
+        }
+
         $nonce = (string) $request->input('nonce');
         $sessionNonce = (string) session('checkout.nonce');
 
-        if ($nonce === '' || $sessionNonce === '' || ! hash_equals($sessionNonce, $nonce)) {
-            return back()->withInput()->with('error', __('store.checkout.duplicate'));
+        if (session('checkout.inflight')) {
+            return redirect()->route('checkout.create')->with('error', __('store.checkout.duplicate'));
         }
 
-        if (session('checkout.inflight')) {
-            return back()->withInput()->with('error', __('store.checkout.duplicate'));
+        if ($sessionNonce !== '' && ($nonce === '' || ! hash_equals($sessionNonce, $nonce))) {
+            $this->releaseCheckout();
+
+            return redirect()->route('checkout.create')->withInput()->with('error', __('store.checkout.expired'));
         }
 
         $enabled = array_map(fn ($gateway) => $gateway->id(), $this->gateways->enabled());
@@ -69,7 +81,7 @@ class CheckoutController extends Controller
             'notes' => ['nullable', 'string', 'max:500'],
         ]);
 
-        session(['checkout.inflight' => true, 'checkout.nonce' => null]);
+        session(['checkout.inflight' => true]);
 
         try {
             $quote = $this->cart->quote((int) $data['city_id'], $data['order_packaging_id'] ?? null);
@@ -90,14 +102,19 @@ class CheckoutController extends Controller
                 locale: app()->getLocale(),
             ));
         } catch (CartException $exception) {
-            session()->forget('checkout.inflight');
-            session(['checkout.nonce' => bin2hex(random_bytes(16))]);
+            $this->releaseCheckout();
 
-            return back()->withInput()->with('error', __($exception->errorKey));
+            return redirect()->route('checkout.create')->withInput()->with('error', __($exception->errorKey));
+        } catch (Throwable $exception) {
+            $this->releaseCheckout();
+            report($exception);
+
+            return redirect()->route('checkout.create')->withInput()->with('error', __('store.checkout.failed'));
         }
 
         $this->cart->clear();
         session()->forget('checkout.inflight');
+        session()->forget('checkout.nonce');
         session(['checkout.reference' => $order->reference]);
         event(new OrderCreated($order));
 
@@ -113,6 +130,12 @@ class CheckoutController extends Controller
         }
 
         return redirect()->route('checkout.thanks', ['reference' => $order->reference]);
+    }
+
+    private function releaseCheckout(): void
+    {
+        session()->forget('checkout.inflight');
+        session(['checkout.nonce' => bin2hex(random_bytes(16))]);
     }
 
     public function thanks(Request $request): View

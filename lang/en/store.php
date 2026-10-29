@@ -80,6 +80,8 @@ return [
         'shipping' => 'Delivery',
         'total' => 'Total',
         'duplicate' => 'This checkout was already submitted.',
+        'expired' => 'That checkout page expired. Please place the order again.',
+        'failed' => 'The order could not be saved. Please try again.',
         'city_invalid' => 'Choose a delivery city.',
         'packaging' => 'That packaging option is not available.',
         'gateway' => 'Choose a valid payment method.',

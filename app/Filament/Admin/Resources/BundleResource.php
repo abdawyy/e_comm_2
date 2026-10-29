@@ -19,6 +19,7 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -60,9 +61,32 @@ class BundleResource extends Resource
                 Toggle::make('is_subscribable')->label(__('admin.fields.subscribable'))->inline(false),
                 Toggle::make('is_active')->onColor('success')->offColor('gray')->default(true)->label(__('admin.fields.active'))->inline(false),
             ])->columns(3),
-            Section::make(__('admin.forms.media'))->icon(Heroicon::OutlinedPhoto)->schema([
-                FileUpload::make('image_path')->disk('public')->directory('bundles')->image()->imagePreviewHeight('180')->maxSize(4096)->label(__('admin.fields.image')),
-                TextInput::make('image_url')->label(__('admin.fields.image_url'))->url(),
+            Section::make(__('admin.forms.media'))->description(__('admin.help.bundle_image'))->icon(Heroicon::OutlinedPhoto)->schema([
+                FileUpload::make('image_path')
+                    ->label(__('admin.fields.cover'))
+                    ->disk('public')
+                    ->directory('bundles')
+                    ->visibility('public')
+                    ->image()
+                    ->imagePreviewHeight('220')
+                    ->maxSize(4096)
+                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/svg+xml'])
+                    ->helperText(__('admin.help.bundle_image'))
+                    ->columnSpanFull(),
+                TextInput::make('image_url')->label(__('admin.fields.image_url'))->url()->helperText(__('admin.help.image_url'))->columnSpanFull(),
+                Repeater::make('images')->relationship()->schema([
+                    FileUpload::make('image_path')
+                        ->label(__('admin.fields.image'))
+                        ->disk('public')
+                        ->directory('bundles/gallery')
+                        ->visibility('public')
+                        ->image()
+                        ->imagePreviewHeight('120')
+                        ->maxSize(4096)
+                        ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/svg+xml'])
+                        ->required(),
+                    TextInput::make('sort_order')->numeric()->default(0)->label(__('admin.fields.sort')),
+                ])->orderColumn('sort_order')->label(__('admin.fields.gallery'))->addActionLabel(__('admin.fields.image'))->grid(2)->columnSpanFull(),
             ])->columns(2),
             Section::make(__('admin.forms.contents'))->icon(Heroicon::OutlinedRectangleStack)->schema([
                 Repeater::make('items')->relationship()->schema([
@@ -76,6 +100,7 @@ class BundleResource extends Resource
     public static function table(Table $table): Table
     {
         return $table->columns([
+            ImageColumn::make('image_path')->disk('public')->label(__('admin.fields.image')),
             TextColumn::make('name')->label(__('admin.fields.name')),
             TextColumn::make('price')->label(__('admin.fields.price')),
             IconColumn::make('is_subscribable')->boolean()->label(__('admin.fields.subscribable')),

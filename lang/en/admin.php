@@ -46,6 +46,7 @@ return [
     'help' => [
         'category_image' => 'Optional cover, 800×800, jpg/png/webp, max 4 MB.',
         'product_image' => 'Cover image. An uploaded file wins over the external URL. Gallery images are ordered.',
+        'bundle_image' => 'Upload a cover for the bundle card and cart. Add more pictures in the gallery.',
         'image_url' => 'Used only when no file is uploaded.',
         'design_sizes' => 'Logo: wide transparent PNG or SVG. Hero 1600×900. Favicon 64 or 128 PNG. OG 1200×630. Max 4 MB.',
         'banner' => 'Recommended 1600×700, jpg/png/webp, max 4 MB.',

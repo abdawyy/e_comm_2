@@ -90,7 +90,7 @@ class CatalogController extends Controller
     public function bundle(Bundle $bundle): View
     {
         abort_unless($bundle->is_active, 404);
-        $bundle->load('items.product');
+        $bundle->load(['items.product', 'images']);
 
         return view('store.bundle', [
             'bundle' => $bundle,

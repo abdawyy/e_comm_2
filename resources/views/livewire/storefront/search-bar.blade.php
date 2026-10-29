@@ -6,6 +6,7 @@
             @foreach($results as $product)
                 <a class="block rounded-lg px-3 py-2 hover:bg-[var(--color-canvas)]" href="{{ route('products.show', $product) }}">{{ $product->name }}</a>
             @endforeach
+            <a class="block rounded-lg px-3 py-2 font-semibold" href="{{ route('shop', ['q' => $q]) }}">{{ __('store.nav.shop') }}</a>
         </div>
     @endif
 </div>

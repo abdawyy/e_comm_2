@@ -68,7 +68,18 @@ class OrderResource extends Resource
                 TextEntry::make('customer_phone')->label(__('admin.fields.phone')),
                 TextEntry::make('city_name')->label(__('admin.fields.city')),
                 TextEntry::make('address')->label(__('admin.fields.address')),
+                TextEntry::make('coupon_code')->label(__('admin.fields.code')),
+                TextEntry::make('subtotal')->label(__('store.checkout.subtotal'))->formatStateUsing(fn ($state) => app(DecimalMath::class)->format((string) $state)),
+                TextEntry::make('discount')->label(__('store.checkout.discount'))->formatStateUsing(fn ($state) => app(DecimalMath::class)->format((string) $state)),
+                TextEntry::make('shipping_fee')->label(__('store.checkout.shipping'))->formatStateUsing(fn ($state) => app(DecimalMath::class)->format((string) $state)),
+                TextEntry::make('order_packaging_fee')->label(__('store.checkout.order_packaging'))->formatStateUsing(fn ($state) => app(DecimalMath::class)->format((string) $state)),
                 TextEntry::make('total')->label(__('admin.fields.total'))->formatStateUsing(fn ($state) => app(DecimalMath::class)->format((string) $state)),
+                TextEntry::make('lines')->label(__('admin.fields.items'))->columnSpanFull()->state(function (Order $record): string {
+                    $record->loadMissing('items');
+
+                    return $record->items->map(fn ($item) => $item->localizedName().' × '.$item->quantity)->implode(', ');
+                }),
+                TextEntry::make('invoice_link')->label(__('store.orders.invoice'))->state(__('store.orders.invoice'))->url(fn (Order $record): string => route('invoices.download', $record))->openUrlInNewTab(),
                 TextEntry::make('masked_pan')->label(__('admin.fields.masked_pan')),
             ])->columns(2),
         ]);

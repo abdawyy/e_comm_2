@@ -4,10 +4,9 @@ namespace App\Listeners;
 
 use App\Events\OrderStatusChanged;
 use App\Mail\OrderStatusChangedMail;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Mail;
 
-class HandleOrderStatusChanged implements ShouldQueue
+class HandleOrderStatusChanged
 {
     public function handle(OrderStatusChanged $event): void
     {

@@ -59,7 +59,7 @@
     @include('store.partials.navbar')
 
     @if(session('status'))
-        <div class="store-toast mx-auto mt-4 max-w-6xl rounded-xl px-4 py-3" x-data x-init="push(@js(session('status')))"></div>
+        <div class="hidden" x-init="window.dispatchEvent(new CustomEvent('toast', { detail: { message: @js(session('status')) } }))"></div>
     @endif
     @if(session('error'))
         <div class="mx-auto mt-4 max-w-6xl rounded-xl px-4 py-3 text-white" style="background: var(--color-danger)">{{ session('error') }}</div>

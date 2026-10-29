@@ -4,8 +4,8 @@
     <h1 class="text-3xl font-bold">{{ __('store.track.title') }}</h1>
     <p class="mt-2 opacity-80">{{ __('store.track.intro') }}</p>
     <form class="store-card mt-6 grid gap-3 p-5 md:grid-cols-[1fr_1fr_auto]" method="get" action="{{ route('orders.track') }}">
-        <input class="store-input" name="reference" value="{{ request('reference') }}" placeholder="{{ __('store.track.reference') }}" required>
-        <input class="store-input" name="phone" value="{{ request('phone') }}" placeholder="{{ __('store.checkout.phone') }}">
+        <label class="block"><span class="mb-1 block text-sm">{{ __('store.track.reference') }}</span><input class="store-input" name="reference" value="{{ request('reference') }}" required></label>
+        <label class="block"><span class="mb-1 block text-sm">{{ __('store.checkout.phone') }}</span><input class="store-input" name="phone" value="{{ request('phone') }}"></label>
         <button class="store-btn-primary" type="submit">{{ __('store.track.lookup') }}</button>
     </form>
     @if($miss)
@@ -15,7 +15,7 @@
         <article class="store-card mt-6 p-5">
             <p class="store-kicker">{{ $order->reference }}</p>
             <h2 class="mt-2 text-2xl font-bold">{{ __('store.track.status', ['status' => __('store.track.steps.'.$order->status)]) }}</h2>
-            <p class="mt-1">{{ __('store.thanks.payment', ['status' => $order->payment_status]) }}</p>
+            <p class="mt-1">{{ __('store.thanks.payment', ['status' => __('store.payment_states.'.$order->payment_status)]) }}</p>
             @include('store.partials.order-timeline', ['order' => $order])
             <ul class="space-y-2 text-sm">
                 @foreach($order->items as $item)

@@ -43,7 +43,6 @@ class ViewOrder extends ViewRecord
 
                     $record->status = 'cancelled';
                     $record->save();
-                    app(\App\Actions\RestoreStock::class)->execute($record);
                     Notification::make()->title(__('store.orders.cancelled'))->success()->send();
                 }),
         ];

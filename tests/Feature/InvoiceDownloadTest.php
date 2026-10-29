@@ -24,6 +24,7 @@ class InvoiceDownloadTest extends TestCase
         ]);
 
         $this->actingAs($other)->get(route('invoices.download', $order))->assertForbidden();
+        $this->get(route('invoices.download', ['order' => $order, 'phone' => '01099999999']))->assertForbidden();
         $this->actingAs($owner)->get(route('invoices.download', $order))->assertOk();
     }
 }

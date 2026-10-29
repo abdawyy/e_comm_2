@@ -64,4 +64,25 @@ class CartTest extends TestCase
             ->assertSee('products/cart-cover.svg', false)
             ->assertSee('alt="Cart coffee"', false);
     }
+
+    #[Test]
+    public function the_cart_page_can_remove_a_line_and_apply_a_coupon(): void
+    {
+        $product = Product::factory()->create(['price_per_unit' => '10.0000', 'unit' => 'piece']);
+        Coupon::factory()->create(['code' => 'WELCOME10', 'type' => 'percent', 'value' => '10.0000']);
+
+        $this->post('/cart/items', [
+            'product_id' => $product->id,
+            'quantity' => '2',
+            'unit' => 'piece',
+        ])->assertRedirect(route('cart.show'));
+
+        $key = app(\App\Support\SessionCart::class)->quote()->lines[0]->key;
+
+        $this->patch('/cart/items/'.$key, ['quantity' => '1'])->assertRedirect(route('cart.show'));
+        $this->post('/cart/coupon', ['code' => 'WELCOME10'])->assertRedirect(route('cart.show'));
+        $this->get('/cart')->assertSee('WELCOME10');
+        $this->delete('/cart/items/'.$key)->assertRedirect(route('cart.show'));
+        $this->get('/cart')->assertSee(__('store.cart.empty'));
+    }
 }

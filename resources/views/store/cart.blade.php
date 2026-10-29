@@ -18,7 +18,14 @@
                         @endif
                         <div class="min-w-0">
                             <strong>{{ $line->name }}</strong>
-                            <p class="text-sm opacity-70">{{ $line->quantity }} {{ $line->unit }}</p>
+                            <form class="mt-2 flex items-center gap-2" method="post" action="{{ route('cart.items.update', $line->key) }}">
+                                @csrf
+                                @method('PATCH')
+                                <label class="text-sm" for="qty-{{ $line->key }}">{{ __('store.product.quantity') }}</label>
+                                <input id="qty-{{ $line->key }}" class="store-input w-24" name="quantity" value="{{ $line->quantity }}" inputmode="decimal">
+                                <span class="text-sm opacity-70">{{ $line->unit }}</span>
+                                <button class="store-btn-ghost" type="submit">{{ __('store.cart.update') }}</button>
+                            </form>
                         </div>
                     </div>
                     <div class="text-end">
@@ -28,14 +35,25 @@
                 </article>
             @endforeach
         </div>
-        <form class="mt-4 flex gap-2" method="post" action="{{ route('cart.coupon') }}">
+        <form class="mt-4 flex flex-wrap items-end gap-2" method="post" action="{{ route('cart.coupon') }}">
             @csrf
-            <input class="store-input" name="code" placeholder="{{ __('store.cart.coupon_placeholder') }}">
+            <label class="block flex-1">
+                <span class="mb-1 block text-sm">{{ __('store.cart.coupon_placeholder') }}</span>
+                <input class="store-input" name="code" value="{{ $quote->couponCode }}" placeholder="{{ __('store.cart.coupon_placeholder') }}">
+            </label>
             <button class="store-btn-ghost" type="submit">{{ __('store.cart.apply') }}</button>
         </form>
+        @if($quote->couponCode)
+            <form class="mt-2" method="post" action="{{ route('cart.coupon.destroy') }}">
+                @csrf
+                @method('DELETE')
+                <button class="text-sm" type="submit">{{ __('store.cart.coupon_remove', ['code' => $quote->couponCode]) }}</button>
+            </form>
+        @endif
         <dl class="mt-6 space-y-1">
             <div class="flex justify-between"><dt>{{ __('store.checkout.subtotal') }}</dt><dd>{{ app(\App\Services\DecimalMath::class)->format($quote->subtotal) }}</dd></div>
             <div class="flex justify-between"><dt>{{ __('store.checkout.discount') }}</dt><dd>{{ app(\App\Services\DecimalMath::class)->format($quote->discount) }}</dd></div>
+            <div class="flex justify-between"><dt>{{ __('store.checkout.shipping') }}</dt><dd>{{ __('store.cart.shipping_later') }}</dd></div>
             <div class="flex justify-between font-bold"><dt>{{ __('store.checkout.total') }}</dt><dd>{{ app(\App\Services\DecimalMath::class)->format($quote->total) }}</dd></div>
         </dl>
         <a class="store-btn-primary mt-6" href="{{ route('checkout.create') }}">{{ __('store.cart.checkout') }}</a>

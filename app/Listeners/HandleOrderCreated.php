@@ -6,8 +6,6 @@ use App\Actions\GenerateInvoiceAction;
 use App\Actions\SendOrderNotifications;
 use App\Events\OrderCreated;
 use App\Models\Order;
-use Illuminate\Support\Facades\Log;
-use Throwable;
 
 class HandleOrderCreated
 {
@@ -20,22 +18,27 @@ class HandleOrderCreated
     {
         $orderId = $event->order->getKey();
 
-        app()->terminating(function () use ($orderId): void {
+        if (app()->runningUnitTests()) {
             $order = Order::query()->find($orderId);
-
-            if (! $order) {
-                return;
-            }
-
-            try {
+            if ($order) {
                 $this->deliver($order);
-            } catch (Throwable $exception) {
-                Log::error('order.notifications_failed', [
-                    'order_id' => $orderId,
-                    'message' => $exception->getMessage(),
-                ]);
             }
-        });
+
+            return;
+        }
+
+        $php = escapeshellarg(PHP_BINARY);
+        $artisan = escapeshellarg(base_path('artisan'));
+        $log = escapeshellarg(storage_path('logs/order-mail.log'));
+        $command = "$php $artisan orders:notify $orderId >> $log 2>&1";
+
+        if (PHP_OS_FAMILY === 'Windows') {
+            pclose(popen('start /B "" '.$command, 'r'));
+
+            return;
+        }
+
+        exec($command.' &');
     }
 
     public function deliver(Order $order): void

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Resources;
 
+use App\Filament\Admin\Resources\Orders\Pages\CreateOrder;
 use App\Filament\Admin\Resources\Orders\Pages\EditOrder;
 use App\Filament\Admin\Resources\Orders\Pages\ListOrders;
 use App\Filament\Admin\Resources\Orders\Pages\ViewOrder;
@@ -79,6 +80,8 @@ class OrderResource extends Resource
 
                     return $record->items->map(fn ($item) => $item->localizedName().' × '.$item->quantity)->implode(', ');
                 }),
+                TextEntry::make('mail_status')->label(__('admin.mail.status'))->badge(),
+                TextEntry::make('mail_error')->label(__('admin.mail.error'))->visible(fn (Order $record) => filled($record->mail_error)),
                 TextEntry::make('invoice_link')->label(__('store.orders.invoice'))->state(__('store.orders.invoice'))->url(fn (Order $record): string => route('invoices.download', $record))->openUrlInNewTab(),
                 TextEntry::make('masked_pan')->label(__('admin.fields.masked_pan')),
             ])->columns(2),
@@ -92,6 +95,11 @@ class OrderResource extends Resource
             TextColumn::make('customer_name')->searchable()->label(__('admin.fields.customer')),
             TextColumn::make('status')->badge()->label(__('admin.fields.status')),
             TextColumn::make('payment_status')->badge()->label(__('admin.fields.payment_status')),
+            TextColumn::make('mail_status')->badge()->label(__('admin.mail.status'))->color(fn (?string $state): string => match ($state) {
+                'sent' => 'success',
+                'failed' => 'danger',
+                default => 'warning',
+            }),
             TextColumn::make('total')->label(__('admin.fields.total')),
             TextColumn::make('created_at')->dateTime()->label(__('admin.fields.created')),
         ])->recordActions([
@@ -104,6 +112,7 @@ class OrderResource extends Resource
     {
         return [
             'index' => ListOrders::route('/'),
+            'create' => CreateOrder::route('/create'),
             'view' => ViewOrder::route('/{record}'),
             'edit' => EditOrder::route('/{record}/edit'),
         ];

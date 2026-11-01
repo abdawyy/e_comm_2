@@ -36,6 +36,7 @@ class CreateOrderAction
                 $payload->couponCode,
                 $city->id,
                 $payload->orderPackagingId,
+                $payload->includeInternal,
             );
 
             if ($quote->lines === []) {
@@ -106,6 +107,7 @@ class CreateOrderAction
                 'total' => $quote->total,
                 'amount_cents' => $this->math->toCents($quote->total),
                 'notes' => $payload->notes,
+                'mail_status' => 'pending',
             ])->save();
 
             foreach ($quote->lines as $line) {
@@ -168,7 +170,7 @@ class CreateOrderAction
         foreach ($needed as $productId => $quantity) {
             $product = $products->get($productId);
 
-            if (! $product || ! $product->is_active) {
+            if (! $product || (! $product->is_active && ! $product->is_internal)) {
                 throw new CartException('store.cart.unavailable');
             }
 

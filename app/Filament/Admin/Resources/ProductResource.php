@@ -79,6 +79,7 @@ class ProductResource extends Resource
                     Section::make(__('admin.forms.publish'))->icon(Heroicon::OutlinedEye)->schema([
                         Toggle::make('is_featured')->label(__('admin.fields.featured'))->inline(false),
                         Toggle::make('is_active')->onColor('success')->offColor('gray')->label(__('admin.fields.active'))->default(true)->inline(false),
+                        Toggle::make('is_internal')->label(__('admin.fields.internal'))->helperText(__('admin.help.internal'))->default(false)->inline(false),
                     ])->columns(2),
                 ]),
                 Tab::make(__('admin.forms.media'))->icon(Heroicon::OutlinedPhoto)->schema([

@@ -25,6 +25,10 @@ class NotifyOrder extends Command
         try {
             $handler->deliver($order);
         } catch (Throwable $exception) {
+            $order->forceFill([
+                'mail_status' => 'failed',
+                'mail_error' => $exception->getMessage(),
+            ])->save();
             Log::error('order.notifications_failed', [
                 'order_id' => $order->id,
                 'message' => $exception->getMessage(),

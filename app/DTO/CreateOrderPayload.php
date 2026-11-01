@@ -21,5 +21,6 @@ class CreateOrderPayload
         public ?string $notes = null,
         public string $locale = 'en',
         public bool $subscriptionRenewal = false,
+        public bool $includeInternal = false,
     ) {}
 }

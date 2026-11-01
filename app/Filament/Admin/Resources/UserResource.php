@@ -49,11 +49,11 @@ class UserResource extends Resource
     {
         return $schema->columns(1)->components([
             Section::make(__('admin.forms.account'))->icon(Heroicon::OutlinedUser)->schema([
-                TextInput::make('name')->label(__('admin.fields.name'))->required(),
-                TextInput::make('email')->email()->required()->unique(ignoreRecord: true),
-                TextInput::make('phone')->label(__('admin.fields.phone'))->tel(),
+                TextInput::make('name')->label(__('admin.fields.name')),
+                TextInput::make('phone')->label(__('admin.fields.phone'))->tel()->required(),
+                TextInput::make('email')->email()->label(__('admin.fields.email'))->unique(ignoreRecord: true)->nullable()->dehydrateStateUsing(fn ($state) => filled($state) ? $state : null),
                 TextInput::make('address')->label(__('admin.fields.address'))->columnSpanFull(),
-                TextInput::make('password')->password()->revealable()->dehydrated(fn ($state) => filled($state))->required(fn (string $operation) => $operation === 'create')->columnSpanFull(),
+                TextInput::make('password')->password()->revealable()->label(__('admin.fields.password'))->dehydrated(fn ($state) => filled($state))->helperText(__('admin.help.customer_password'))->columnSpanFull(),
             ])->columns(2),
             Section::make(__('admin.forms.access'))->icon(Heroicon::OutlinedShieldCheck)->schema([
                 Toggle::make('is_admin')->label(__('admin.fields.is_admin'))->inline(false)->visible(fn () => auth()->user()?->hasRole('super_admin')),
@@ -89,7 +89,8 @@ class UserResource extends Resource
     {
         return $table->columns([
             TextColumn::make('name')->searchable()->label(__('admin.fields.name')),
-            TextColumn::make('email')->searchable(),
+            TextColumn::make('phone')->searchable()->label(__('admin.fields.phone')),
+            TextColumn::make('email')->searchable()->label(__('admin.fields.email')),
             IconColumn::make('is_admin')->boolean()->label(__('admin.fields.is_admin')),
             TextColumn::make('total_spent')->label(__('admin.insights.spent'))->getStateUsing(fn (User $record) => app(DecimalMath::class)->format(app(CustomerInsights::class)->for($record)['total_spent'])),
             TextColumn::make('last_order')->label(__('admin.insights.last_order'))->getStateUsing(fn (User $record) => optional(app(CustomerInsights::class)->for($record)['last_order'])->toDateTimeString()),

@@ -90,7 +90,7 @@ class BundleResource extends Resource
             ])->columns(2),
             Section::make(__('admin.forms.contents'))->icon(Heroicon::OutlinedRectangleStack)->schema([
                 Repeater::make('items')->relationship()->schema([
-                    Select::make('product_id')->relationship('product', 'name')->required()->searchable()->preload()->native(false)->label(__('admin.resources.products.label')),
+                    Select::make('product_id')->relationship('product', 'name', modifyQueryUsing: fn ($query) => $query->forAdmin())->required()->searchable()->preload()->native(false)->label(__('admin.resources.products.label')),
                     TextInput::make('quantity')->required()->default('1')->label(__('admin.fields.quantity')),
                 ])->grid(2)->columnSpanFull()->label(__('admin.fields.items')),
             ]),

@@ -19,12 +19,16 @@ class PricingService
     /**
      * @param  array<int, array<string, mixed>>  $lines
      */
-    public function quote(array $lines, ?string $couponCode = null, ?int $cityId = null, ?int $orderPackagingId = null): CartQuote
+    public function quote(array $lines, ?string $couponCode = null, ?int $cityId = null, ?int $orderPackagingId = null, bool $includeInternal = false): CartQuote
     {
         $resolved = [];
         $removed = [];
 
         foreach ($lines as $line) {
+            if ($includeInternal) {
+                $line['include_internal'] = true;
+            }
+
             $priced = $this->resolveLine($line);
 
             if ($priced === null) {
@@ -83,7 +87,13 @@ class PricingService
     {
         $product = Product::query()->with(['services', 'packagingTypes', 'images'])->find($line['product_id'] ?? null);
 
-        if (! $product || ! $product->is_active) {
+        if (! $product) {
+            return null;
+        }
+
+        $allowed = $product->is_active || (! empty($line['include_internal']) && $product->is_internal);
+
+        if (! $allowed) {
             return null;
         }
 
@@ -183,7 +193,7 @@ class PricingService
         foreach ($bundle->items as $item) {
             $product = $item->product;
 
-            if (! $product || ! $product->is_active) {
+            if (! $product || (! $product->is_active && ! $product->is_internal)) {
                 return null;
             }
 

@@ -16,29 +16,15 @@ class HandleOrderCreated
 
     public function handle(OrderCreated $event): void
     {
-        $orderId = $event->order->getKey();
-
-        if (app()->runningUnitTests()) {
-            $order = Order::query()->find($orderId);
-            if ($order) {
-                $this->deliver($order);
-            }
-
+        if (! app()->runningUnitTests()) {
             return;
         }
 
-        $php = escapeshellarg(PHP_BINARY);
-        $artisan = escapeshellarg(base_path('artisan'));
-        $log = escapeshellarg(storage_path('logs/order-mail.log'));
-        $command = "$php $artisan orders:notify $orderId >> $log 2>&1";
+        $order = Order::query()->find($event->order->getKey());
 
-        if (PHP_OS_FAMILY === 'Windows') {
-            pclose(popen('start /B "" '.$command, 'r'));
-
-            return;
+        if ($order) {
+            $this->deliver($order);
         }
-
-        exec($command.' &');
     }
 
     public function deliver(Order $order): void
@@ -55,5 +41,9 @@ class HandleOrderCreated
         }
 
         $this->notifications->notifyAdmin($order->fresh() ?? $order);
+        $order->forceFill([
+            'mail_status' => filled($order->customer_email) ? 'sent' : 'failed',
+            'mail_error' => filled($order->customer_email) ? null : 'Customer has no email',
+        ])->save();
     }
 }

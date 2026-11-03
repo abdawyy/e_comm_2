@@ -7,17 +7,19 @@
         @csrf
         <input type="hidden" name="nonce" value="{{ $nonce }}">
         <h1 class="text-2xl font-bold">{{ __('store.checkout.title') }}</h1>
-        <input class="store-input" name="customer_name" value="{{ old('customer_name', auth()->user()->name ?? '') }}" placeholder="{{ __('store.checkout.name') }}" required>
-        <input class="store-input" name="customer_email" value="{{ old('customer_email', auth()->user()->email ?? '') }}" placeholder="{{ __('store.checkout.email') }}">
-        <input class="store-input" name="customer_phone" value="{{ old('customer_phone', auth()->user()->phone ?? '') }}" placeholder="{{ __('store.checkout.phone') }}" required>
+        <label class="block"><span class="mb-1 block text-sm">{{ __('store.checkout.name') }}</span><input class="store-input" name="customer_name" value="{{ old('customer_name', auth()->user()->name ?? '') }}" required></label>
+        <label class="block"><span class="mb-1 block text-sm">{{ __('store.checkout.email') }}</span><input class="store-input" name="customer_email" value="{{ old('customer_email', auth()->user()->email ?? '') }}"></label>
+        <label class="block"><span class="mb-1 block text-sm">{{ __('store.checkout.phone') }}</span><input class="store-input" name="customer_phone" value="{{ old('customer_phone', auth()->user()->phone ?? '') }}" required></label>
+        <label class="block"><span class="mb-1 block text-sm">{{ __('store.checkout.city') }}</span>
         <select class="store-input" name="city_id" required>
             <option value="" data-fee="0.0000">{{ __('store.checkout.city') }}</option>
             @foreach($cities as $city)
                 <option value="{{ $city->id }}" data-fee="{{ $math->normalize((string) $city->shipping_fee) }}" @selected(old('city_id') == $city->id)>{{ $city->name }} — {{ $math->format((string) $city->shipping_fee) }}</option>
             @endforeach
         </select>
+        </label>
         <p class="text-sm opacity-80">{{ __('store.checkout.shipping') }}: <strong data-shipping>{{ $math->format('0') }}</strong></p>
-        <textarea class="store-input" name="address" required placeholder="{{ __('store.checkout.address') }}">{{ old('address', auth()->user()->address ?? '') }}</textarea>
+        <label class="block"><span class="mb-1 block text-sm">{{ __('store.checkout.address') }}</span><textarea class="store-input" name="address" required>{{ old('address', auth()->user()->address ?? '') }}</textarea></label>
         @if($orderPackaging->isNotEmpty())
             <select class="store-input" name="order_packaging_id">
                 <option value="" data-fee="0.0000">{{ __('store.checkout.order_packaging') }}</option>
@@ -52,6 +54,7 @@
         <p class="flex justify-between text-sm"><span>{{ __('store.checkout.subtotal') }}</span><span>{{ $math->format($quote->subtotal) }}</span></p>
         <p class="flex justify-between text-sm"><span>{{ __('store.checkout.discount') }}</span><span>{{ $math->format($quote->discount) }}</span></p>
         <p class="flex justify-between text-sm"><span>{{ __('store.checkout.shipping') }}</span><span data-shipping>{{ $math->format('0') }}</span></p>
+        <p class="flex justify-between text-sm"><span>{{ __('store.checkout.order_packaging') }}</span><span data-packaging>{{ $math->format('0') }}</span></p>
         <p class="flex justify-between font-bold"><span>{{ __('store.checkout.total') }}</span><span data-total>{{ $math->format($goods) }}</span></p>
     </aside>
 </section>
@@ -87,6 +90,8 @@
             const packaging = feeOf(form.querySelector('[name="order_packaging_id"]'));
             const total = toMinor(summary.dataset.goods) + shipping + packaging;
             document.querySelectorAll('[data-shipping]').forEach((node) => { node.textContent = format(shipping); });
+            const packagingNode = summary.querySelector('[data-packaging]');
+            if (packagingNode) packagingNode.textContent = format(packaging);
             const totalNode = summary.querySelector('[data-total]');
             if (totalNode) totalNode.textContent = format(total);
         };

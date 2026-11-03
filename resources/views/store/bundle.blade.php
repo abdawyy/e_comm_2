@@ -2,7 +2,27 @@
 @section('content')
 <section class="mx-auto grid max-w-6xl gap-8 px-4 py-8 md:grid-cols-2">
     <div>
-        @if($bundle->coverUrl())<img class="store-card mb-4 h-72 w-full object-cover" src="{{ $bundle->coverUrl() }}" alt="{{ $bundle->name }}">@endif
+        @php
+            $shots = collect();
+            if ($cover = $bundle->coverUrl()) {
+                $shots->push($cover);
+            }
+            foreach ($bundle->images as $image) {
+                if ($image->url() && ! $shots->contains($image->url())) {
+                    $shots->push($image->url());
+                }
+            }
+        @endphp
+        @if($shots->isNotEmpty())
+            <img class="store-card mb-4 h-72 w-full object-cover" src="{{ $shots->first() }}" alt="{{ $bundle->name }}">
+            @if($shots->count() > 1)
+                <div class="mb-4 flex flex-wrap gap-2">
+                    @foreach($shots->skip(1) as $shot)
+                        <img class="h-20 w-20 rounded-lg object-cover" src="{{ $shot }}" alt="{{ $bundle->name }}">
+                    @endforeach
+                </div>
+            @endif
+        @endif
         <h1 class="text-3xl font-bold">{{ $bundle->name }}</h1>
         <p class="mt-3 opacity-80">{{ $bundle->description }}</p>
         <ul class="mt-4 space-y-1 text-sm">

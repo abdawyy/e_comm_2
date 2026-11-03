@@ -16,6 +16,8 @@
         <input type="hidden" name="product_id" value="{{ $product->id }}">
         <input type="hidden" name="quantity" value="1">
         <input type="hidden" name="unit" value="{{ $product->unit }}">
-        <button class="store-btn-primary w-full" type="submit">{{ __('store.product.add') }}</button>
+        <button class="store-btn-primary w-full" type="submit" @disabled($product->track_stock && (float) $product->stock_quantity <= 0)>
+            {{ $product->track_stock && (float) $product->stock_quantity <= 0 ? __('store.product.out_of_stock') : __('store.product.add') }}
+        </button>
     </form>
 </article>

@@ -23,7 +23,7 @@ return [
         'gradient_end' => 'Gradient end', 'buttons' => 'Buttons', 'label' => 'Label', 'url' => 'URL', 'device' => 'Device', 'country' => 'Country',
         'region' => 'Region', 'city' => 'City', 'referrer' => 'Referrer', 'last_seen' => 'Last seen', 'amount_cents' => 'Amount (cents)',
         'is_admin' => 'Admin access', 'roles' => 'Roles', 'brand_name' => 'Brand name', 'line' => 'Per line', 'order' => 'Whole order', 'scope' => 'Scope',
-        'platform' => 'Network', 'inactive' => 'Not active',
+        'platform' => 'Network', 'inactive' => 'Not active', 'internal' => 'Internal', 'email' => 'Email', 'password' => 'Password',
     ],
     'resources' => [
         'categories' => ['label' => 'Category', 'plural' => 'Categories'],
@@ -46,6 +46,9 @@ return [
     'help' => [
         'category_image' => 'Optional cover, 800×800, jpg/png/webp, max 4 MB.',
         'product_image' => 'Cover image. An uploaded file wins over the external URL. Gallery images are ordered.',
+        'bundle_image' => 'Upload a cover for the bundle card and cart. Add more pictures in the gallery.',
+        'internal' => 'Hidden from the shop. Staff can still add it to bundles and manual orders.',
+        'customer_password' => 'Optional. Leave blank and the customer cannot sign in until you set one.',
         'image_url' => 'Used only when no file is uploaded.',
         'design_sizes' => 'Logo: wide transparent PNG or SVG. Hero 1600×900. Favicon 64 or 128 PNG. OG 1200×630. Max 4 MB.',
         'banner' => 'Recommended 1600×700, jpg/png/webp, max 4 MB.',
@@ -137,5 +140,17 @@ return [
         'heading' => 'Heading',
         'body' => 'Message',
         'saved' => 'Signup offer saved',
+    ],
+    'mail' => [
+        'status' => 'Email',
+        'error' => 'Email error',
+        'send_customer' => 'Send PDF to customer',
+        'send_admin' => 'Send PDF to us',
+        'sent' => 'Invoice email sent',
+        'failed' => 'Invoice email was not sent',
+        'no_address' => 'There is no email address to send to',
+    ],
+    'orders' => [
+        'customer' => 'Customer and delivery',
     ],
 ];

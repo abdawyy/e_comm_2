@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Actions\GenerateInvoiceAction;
 use App\Models\Order;
-use App\Support\Phone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -41,11 +40,6 @@ class InvoiceController extends Controller
             return true;
         }
 
-        $phone = Phone::normalize((string) $request->input('phone'));
-        $email = strtolower(trim((string) $request->input('email')));
-        $orderEmail = strtolower((string) $order->customer_email);
-
-        return Phone::same($phone, (string) $order->customer_phone)
-            || Phone::same($email, $orderEmail);
+        return false;
     }
 }

@@ -23,6 +23,16 @@ class SendOrderNotifications
             return;
         }
 
+        if (blank($order->customer_email)) {
+            $this->notifyAdmin($order);
+            $order->forceFill([
+                'mail_status' => 'failed',
+                'mail_error' => 'Customer has no email',
+            ])->save();
+
+            return;
+        }
+
         $url = URL::temporarySignedRoute(
             'invoices.download',
             now()->addDays((int) config('store.invoice_ttl_days', 14)),
@@ -40,7 +50,34 @@ class SendOrderNotifications
             __('store.sms.order_confirmed', ['reference' => $order->reference], $order->locale),
         );
 
-        $order->forceFill(['confirmation_sent_at' => now()])->save();
+        $order->forceFill([
+            'confirmation_sent_at' => now(),
+            'mail_status' => 'sent',
+            'mail_error' => null,
+        ])->save();
+    }
+
+    public function sendInvoiceTo(Order $order, string $email): void
+    {
+        $order->refresh();
+
+        if (! $order->invoice_path) {
+            app(GenerateInvoiceAction::class)->execute($order);
+            $order->refresh();
+        }
+
+        $url = URL::temporarySignedRoute(
+            'invoices.download',
+            now()->addDays((int) config('store.invoice_ttl_days', 14)),
+            ['order' => $order->id],
+        );
+
+        Mail::to($email)->send(new OrderConfirmationMail($order, $url));
+        $order->forceFill([
+            'confirmation_sent_at' => $order->confirmation_sent_at ?? now(),
+            'mail_status' => 'sent',
+            'mail_error' => null,
+        ])->save();
     }
 
     public function notifyAdmin(Order $order): void

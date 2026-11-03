@@ -6,7 +6,6 @@ document.addEventListener('alpine:init', () => {
         dark: document.documentElement.classList.contains('dark'),
         drawer: false,
         toasts: [],
-        offerOpen: false,
         init() {
             window.addEventListener('toast', (event) => {
                 const detail = event.detail;
@@ -21,41 +20,6 @@ document.addEventListener('alpine:init', () => {
                     }
                 }, 40);
             });
-            this.scheduleOffer();
-        },
-        scheduleOffer() {
-            const node = document.querySelector('[data-signup-offer]');
-            if (! node || localStorage.getItem('signup-offer-done')) {
-                return;
-            }
-            const delay = Math.max(1, Number(node.dataset.delay || 15)) * 1000;
-            const started = Number(sessionStorage.getItem('visit-started') || Date.now());
-            sessionStorage.setItem('visit-started', String(started));
-            const wait = Math.max(0, delay - (Date.now() - started));
-            setTimeout(() => {
-                if (! localStorage.getItem('signup-offer-done')) {
-                    this.offerOpen = true;
-                }
-            }, wait);
-        },
-        dismissOffer() {
-            this.offerOpen = false;
-            localStorage.setItem('signup-offer-done', '1');
-        },
-        async submitOffer(form) {
-            const response = await fetch(form.action, {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                },
-                body: new FormData(form),
-            });
-            const data = await response.json();
-            this.push(data.message || 'OK');
-            if (response.ok) {
-                this.dismissOffer();
-            }
         },
         toggleDark() {
             this.dark = !this.dark;

@@ -3,7 +3,7 @@
 <section class="mx-auto max-w-6xl px-4 py-8">
     <h1 class="text-3xl font-bold">{{ __('store.nav.bundles') }}</h1>
     <div class="mt-6 grid gap-4 md:grid-cols-3">
-        @foreach($bundles as $bundle)
+        @forelse($bundles as $bundle)
             <article class="store-card flex flex-col p-4">
                 <a class="block" href="{{ route('bundles.show', $bundle) }}">
                     @if($bundle->coverUrl())<img class="mb-3 h-40 w-full rounded-lg object-cover" src="{{ $bundle->coverUrl() }}" alt="{{ $bundle->name }}">@endif
@@ -17,7 +17,9 @@
                     <button class="store-btn-primary w-full" type="submit">{{ __('store.product.add') }}</button>
                 </form>
             </article>
-        @endforeach
+        @empty
+            <div class="store-card col-span-full p-8 text-center"><p>{{ __('store.shop.empty') }}</p></div>
+        @endforelse
     </div>
 </section>
 @endsection

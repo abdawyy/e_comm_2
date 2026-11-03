@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\DTO\CartQuote;
 use App\Exceptions\CartException;
-use App\Models\Coupon;
 use App\Support\SessionCart;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -45,61 +45,71 @@ class CartController extends Controller
         try {
             $quote = $this->cart->add($data);
         } catch (CartException $exception) {
-            return response()->json(['message' => __($exception->errorKey)], 422);
+            return $this->fail($request, $exception);
         }
 
-        return $request->expectsJson()
-            ? response()->json([
-                'ok' => true,
-                'message' => __('store.cart.added'),
-                'count' => $quote->count(),
-                'lines' => count($quote->lines),
-                'quote' => $quote->toArray(),
-            ])
-            : redirect()->route('cart.show')->with('status', __('store.cart.added'));
+        return $this->respond($request, $quote, __('store.cart.added'));
     }
 
-    public function update(Request $request, string $key): JsonResponse
+    public function update(Request $request, string $key): JsonResponse|RedirectResponse
     {
         $data = $request->validate(['quantity' => ['required']]);
 
         try {
             $quote = $this->cart->update($key, $data['quantity']);
         } catch (CartException $exception) {
-            return response()->json(['message' => __($exception->errorKey)], 422);
+            return $this->fail($request, $exception);
         }
 
-        return response()->json(['ok' => true, 'count' => $quote->count(), 'quote' => $quote->toArray()]);
+        return $this->respond($request, $quote, __('store.cart.updated'));
     }
 
-    public function destroy(string $key): JsonResponse
+    public function destroy(Request $request, string $key): JsonResponse|RedirectResponse
     {
         $quote = $this->cart->remove($key);
 
-        return response()->json(['ok' => true, 'count' => $quote->count(), 'quote' => $quote->toArray()]);
+        return $this->respond($request, $quote, __('store.cart.removed'));
     }
 
-    public function coupon(Request $request): JsonResponse
+    public function coupon(Request $request): JsonResponse|RedirectResponse
     {
         $data = $request->validate(['code' => ['required', 'string', 'max:64']]);
 
         try {
             $quote = $this->cart->applyCoupon($data['code']);
         } catch (CartException $exception) {
-            return response()->json(['message' => __($exception->errorKey)], 422);
+            return $this->fail($request, $exception);
         }
 
-        return response()->json([
-            'ok' => true,
-            'message' => __('store.cart.coupon_applied'),
-            'quote' => $quote->toArray(),
-        ]);
+        return $this->respond($request, $quote, __('store.cart.coupon_applied'));
     }
 
-    public function forgetCoupon(): JsonResponse
+    public function forgetCoupon(Request $request): JsonResponse|RedirectResponse
     {
         $this->cart->clearCoupon();
 
-        return response()->json(['ok' => true, 'quote' => $this->cart->quote()->toArray()]);
+        return $this->respond($request, $this->cart->quote(), __('store.cart.coupon_removed'));
+    }
+
+    private function respond(Request $request, CartQuote $quote, string $message): JsonResponse|RedirectResponse
+    {
+        return $request->expectsJson()
+            ? response()->json([
+                'ok' => true,
+                'message' => $message,
+                'count' => $quote->count(),
+                'lines' => count($quote->lines),
+                'quote' => $quote->toArray(),
+            ])
+            : redirect()->route('cart.show')->with('status', $message);
+    }
+
+    private function fail(Request $request, CartException $exception): JsonResponse|RedirectResponse
+    {
+        $message = __($exception->errorKey);
+
+        return $request->expectsJson()
+            ? response()->json(['message' => $message], 422)
+            : back()->with('error', $message);
     }
 }

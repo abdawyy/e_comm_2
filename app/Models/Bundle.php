@@ -52,8 +52,21 @@ class Bundle extends Model
         return $this->hasMany(BundleItem::class);
     }
 
+    public function images(): HasMany
+    {
+        return $this->hasMany(BundleImage::class)->orderBy('sort_order');
+    }
+
     public function coverUrl(): ?string
     {
-        return $this->publicUrl($this->image_path, $this->image_url);
+        $cover = $this->publicUrl($this->image_path, $this->image_url);
+
+        if ($cover) {
+            return $cover;
+        }
+
+        $image = $this->relationLoaded('images') ? $this->images->first() : $this->images()->first();
+
+        return $image?->url();
     }
 }

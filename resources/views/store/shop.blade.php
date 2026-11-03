@@ -13,7 +13,7 @@
             <select class="store-input" name="unit">
                 <option value="">{{ __('store.shop.any_unit') }}</option>
                 @foreach(['kg', 'piece', 'pack', 'hour'] as $unit)
-                    <option value="{{ $unit }}" @selected(request('unit') === $unit)>{{ $unit }}</option>
+                    <option value="{{ $unit }}" @selected(request('unit') === $unit)>{{ __('store.units.'.$unit) }}</option>
                 @endforeach
             </select>
             <label class="flex items-center gap-2 text-sm"><input type="checkbox" name="stock" value="1" @checked(request()->boolean('stock'))> {{ __('store.shop.in_stock') }}</label>

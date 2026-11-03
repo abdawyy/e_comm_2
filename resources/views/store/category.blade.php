@@ -8,7 +8,7 @@
         @forelse($products as $product)
             @include('store.partials.product-card', ['product' => $product])
         @empty
-            <p>{{ __('store.shop.empty') }}</p>
+            <div class="store-card col-span-full p-8 text-center"><p>{{ __('store.shop.empty') }}</p></div>
         @endforelse
     </div>
     <div class="mt-6">{{ $products->links() }}</div>

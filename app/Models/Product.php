@@ -6,6 +6,7 @@ use App\Models\Concerns\HasLocalizedSlug;
 use App\Models\Concerns\HasPublicImage;
 use App\Services\DecimalMath;
 use Database\Factories\ProductFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -36,6 +37,7 @@ class Product extends Model
         'image_url',
         'is_featured',
         'is_active',
+        'is_internal',
     ];
 
     protected function casts(): array
@@ -47,6 +49,7 @@ class Product extends Model
             'track_stock' => 'boolean',
             'is_featured' => 'boolean',
             'is_active' => 'boolean',
+            'is_internal' => 'boolean',
         ];
     }
 
@@ -60,6 +63,13 @@ class Product extends Model
 
         static::deleting(function (Product $product): void {
             static::deletePublicFile($product->image_path);
+        });
+    }
+
+    public function scopeForAdmin(Builder $query): Builder
+    {
+        return $query->where(function (Builder $inner): void {
+            $inner->where('is_active', true)->orWhere('is_internal', true);
         });
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Actions\RestoreStock;
 use App\Events\OrderStatusChanged;
 use Database\Factories\OrderFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -48,6 +49,10 @@ class Order extends Model
     {
         static::updated(function (Order $order): void {
             if ($order->wasChanged('status')) {
+                if ($order->status === 'cancelled' && $order->getOriginal('status') !== 'cancelled') {
+                    app(RestoreStock::class)->execute($order);
+                }
+
                 event(new OrderStatusChanged(
                     $order,
                     (string) $order->getOriginal('status'),

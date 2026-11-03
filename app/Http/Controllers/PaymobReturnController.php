@@ -21,6 +21,12 @@ class PaymobReturnController extends Controller
     public function status(Request $request): \Illuminate\Http\JsonResponse
     {
         $reference = (string) $request->query('reference');
+        $sessionReference = (string) session('checkout.reference');
+
+        if ($reference === '' || ! hash_equals($sessionReference, $reference)) {
+            abort(404);
+        }
+
         $order = Order::query()->where('reference', $reference)->first();
 
         return response()->json([

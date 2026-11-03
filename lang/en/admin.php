@@ -88,6 +88,8 @@ return [
     'stats' => [
         'revenue' => 'Revenue', 'orders' => 'Orders', 'average' => 'Average order', 'pending' => 'Pending orders',
         'no_baseline' => 'No prior window', 'revenue_chart' => 'Revenue and orders', 'by_status' => 'Orders by status',
+        'by_payment' => 'Orders by payment', 'top_products' => 'Top products', 'by_city' => 'Orders by city', 'product_views' => 'Product views',
+        'empty' => 'Nothing in this period',
     ],
     'periods' => ['today' => 'Today', '7' => '7 days', '30' => '30 days', '90' => '90 days', '365' => '365 days', 'custom' => 'Custom'],
     'traffic' => [

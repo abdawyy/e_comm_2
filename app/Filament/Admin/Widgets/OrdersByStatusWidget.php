@@ -23,10 +23,31 @@ class OrdersByStatusWidget extends ChartWidget
     {
         $statuses = app(SalesReport::class)->summary()['statuses'];
 
+        if ($statuses === []) {
+            return [
+                'labels' => [__('admin.stats.empty')],
+                'datasets' => [[
+                    'data' => [0],
+                    'backgroundColor' => ['#d6d3d1'],
+                ]],
+            ];
+        }
+
+        $labels = [];
+        $colors = [];
+
+        foreach (array_keys($statuses) as $status) {
+            $key = 'admin.status.'.$status;
+            $label = __($key);
+            $labels[] = $label === $key ? (string) $status : $label;
+            $colors[] = ChartPalette::STATUS[$status] ?? '#8C6A3D';
+        }
+
         return [
-            'labels' => array_keys($statuses),
+            'labels' => $labels,
             'datasets' => [[
                 'data' => array_values($statuses),
+                'backgroundColor' => $colors,
             ]],
         ];
     }

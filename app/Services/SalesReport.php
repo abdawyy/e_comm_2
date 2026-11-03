@@ -56,6 +56,7 @@ class SalesReport
             'pending_change' => $this->change((string) $pending, (string) $previousPending),
             'series' => $this->series($revenueOrders),
             'statuses' => $current->groupBy('status')->map->count()->all(),
+            'payments' => $current->groupBy(fn (Order $order) => $order->payment_gateway ?: 'unknown')->map->count()->all(),
             'cities' => $this->cities($revenueOrders),
             'products' => $this->topProducts($revenueOrders->pluck('id')->all()),
             'views' => $this->topViews($start, $end),
@@ -71,7 +72,7 @@ class SalesReport
     {
         return Order::query()
             ->whereBetween('created_at', [$start, $end])
-            ->get(['id', 'total', 'status', 'city_name', 'created_at', 'reference', 'customer_name', 'payment_status']);
+            ->get(['id', 'total', 'status', 'city_name', 'created_at', 'reference', 'customer_name', 'payment_status', 'payment_gateway']);
     }
 
     /**

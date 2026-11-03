@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 800 800">
+  <rect width="800" height="800" fill="#F5EFE6"/>
+  <path d="M250 170h300l40 70v390c0 28-22 50-50 50H260c-28 0-50-22-50-50V240z" fill="#8B5E3C"/>
+  <path d="M250 170h300l40 70H210z" fill="#F5EFE6"/>
+  <rect x="300" y="300" width="200" height="150" rx="16" fill="#F5EFE6"/>
+  <circle cx="360" cy="360" r="16" fill="#8B5E3C"/>
+  <circle cx="400" cy="348" r="16" fill="#8B5E3C"/>
+  <circle cx="440" cy="364" r="16" fill="#8B5E3C"/>
+  <circle cx="380" cy="390" r="16" fill="#8B5E3C"/>
+  <circle cx="424" cy="398" r="14" fill="#8B5E3C"/>
+  <text x="400" y="500" text-anchor="middle" fill="#F5EFE6" font-size="28" font-family="Georgia, serif">Decaf blend</text>
+  <text x="400" y="548" text-anchor="middle" fill="#F5EFE6" font-size="26" font-family="sans-serif">خلطة منزوعة الكافيين</text>
+</svg>

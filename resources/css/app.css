@@ -833,6 +833,31 @@ html.dark .store-logo-dark { display: inline; }
     }
 }
 
+html.dark .store-shell :is(h1, h2, h3, h4, p, li, label, dt, dd, strong, span),
+html.dark .store-shell a:not(.store-btn-primary):not(.store-btn-accent):not(.store-btn-ghost) {
+    color: var(--dm-ink);
+}
+
+html.dark .store-btn-primary,
+html.dark .store-btn-primary:hover,
+html.dark .store-hero-visual,
+html.dark .store-hero-visual :is(p, strong, span),
+html.dark .store-footer,
+html.dark .store-footer :is(p, strong, span) {
+    color: #f5efe6;
+}
+
+html.dark .store-btn-accent,
+html.dark .store-btn-accent:hover {
+    color: var(--color-brand-dark);
+}
+
+html.dark .store-btn-ghost,
+html.dark .store-btn-ghost:hover {
+    color: var(--dm-ink);
+    border-color: var(--color-border);
+}
+
 html.dark .store-header {
     background: color-mix(in srgb, var(--color-canvas) 78%, transparent);
     box-shadow: 0 12px 32px rgb(0 0 0 / 38%);
@@ -908,7 +933,7 @@ html.dark .product-option:has(input:checked) {
 
 html.dark .store-btn-primary:hover {
     background: var(--color-brand-light);
-    color: var(--color-surface);
+    color: #f5efe6;
 }
 
 html.dark .store-trust {
@@ -918,5 +943,16 @@ html.dark .store-trust {
 html.dark .store-footer {
     background: #070b09;
     border-top: 1px solid var(--color-border);
+}
+
+html.dark .store-kicker,
+html.dark .product-option-price,
+html.dark .store-shell .store-kicker {
+    color: var(--dm-brand);
+}
+
+html.dark .store-nav-link.is-active {
+    color: #052e16;
+    background: var(--dm-brand);
 }
 

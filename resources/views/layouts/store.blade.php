@@ -55,7 +55,8 @@
     @endif
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="store-shell" x-data="storefront">
+@php($wallpaper = \App\Models\DesignAsset::urlFor('wallpaper'))
+<body @class(['store-shell', 'has-wallpaper' => filled($wallpaper)]) @if($wallpaper) style="--store-wallpaper: url('{{ str_replace(["'", '\\'], '', $wallpaper) }}')" @endif x-data="storefront">
     @include('store.partials.navbar')
 
     @if(session('status'))

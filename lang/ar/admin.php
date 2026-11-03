@@ -76,7 +76,7 @@ return [
     'actions' => ['save' => 'حفظ', 'export' => 'تصدير المنتجات', 'export_visitors' => 'تصدير الزوار', 'export_views' => 'تصدير المشاهدات', 'open' => 'فتح'],
     'status' => ['pending' => 'قيد الانتظار', 'confirmed' => 'مؤكد', 'processing' => 'قيد التجهيز', 'shipped' => 'تم الشحن', 'delivered' => 'تم التسليم', 'cancelled' => 'ملغى'],
     'payment' => ['unpaid' => 'غير مدفوع', 'pending' => 'معلّق', 'paid' => 'مدفوع', 'failed' => 'فشل', 'refunded' => 'مُسترد'],
-    'pages' => ['traffic' => 'العملاء والزيارات', 'customers' => 'تحليل العملاء', 'guide' => 'دليل الفريق', 'colors' => 'الألوان', 'signup_offer' => 'كوبون التسجيل'],
+    'pages' => ['traffic' => 'العملاء والزيارات', 'customers' => 'تحليل العملاء', 'sales' => 'المبيعات', 'guide' => 'دليل الفريق', 'colors' => 'الألوان', 'signup_offer' => 'كوبون التسجيل'],
     'theme' => [
         'brand' => 'العلامة', 'palette' => 'اللوحة', 'primary' => 'الأساسي', 'primary_dark' => 'الأساسي الداكن', 'primary_light' => 'الأساسي الفاتح',
         'accent' => 'الإبراز', 'accent_light' => 'الإبراز الفاتح', 'canvas' => 'الخلفية', 'surface' => 'السطح', 'border' => 'الحدود',
@@ -90,6 +90,11 @@ return [
         'no_baseline' => 'لا توجد فترة سابقة', 'revenue_chart' => 'الإيراد والطلبات', 'by_status' => 'الطلبات حسب الحالة',
         'by_payment' => 'الطلبات حسب الدفع', 'top_products' => 'أكثر المنتجات', 'by_city' => 'الطلبات حسب المدينة', 'product_views' => 'مشاهدات المنتجات',
         'empty' => 'لا شيء في هذه الفترة',
+    ],
+    'sales' => [
+        'note' => 'الإيراد لا يشمل الطلبات الملغاة. أكواد الخصم هي الكوبونات المستخدمة في هذه الطلبات.',
+        'coupons' => 'أكواد الخصم',
+        'no_coupons' => 'لم يُستخدم كود خصم في هذه الفترة.',
     ],
     'periods' => ['today' => 'اليوم', '7' => '7 أيام', '30' => '30 يومًا', '90' => '90 يومًا', '365' => '365 يومًا', 'custom' => 'مخصص'],
     'traffic' => [
@@ -132,6 +137,7 @@ return [
         'viewed' => 'الأكثر مشاهدة', 'purchased' => 'الأكثر شراءً', 'activity' => 'النشاط', 'views_short' => 'مشاهدات',
         'orders_short' => 'طلبات', 'first_seen' => 'أول ظهور', 'last_seen' => 'آخر ظهور', 'last_order' => 'آخر طلب',
         'last_location' => 'آخر موقع', 'last_visit' => 'آخر زيارة', 'orders' => 'الطلبات',
+        'visits' => 'الزيارات', 'purchases' => 'المشتريات', 'coupon' => 'كود الخصم', 'coupons' => 'أكواد الخصم', 'bought_at' => 'وقت الشراء',
     ],
     'signup' => [
         'timing' => 'متى يظهر',

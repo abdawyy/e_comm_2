@@ -2,60 +2,65 @@
 @section('content')
 @php($math = app(\App\Services\DecimalMath::class))
 @php($goods = $math->maxZero($math->sub($quote->subtotal, $quote->discount)))
-<section class="mx-auto grid max-w-6xl gap-8 px-4 py-8 md:grid-cols-[1.2fr_.8fr]">
-    <form class="store-card space-y-4 p-6" method="post" action="{{ route('checkout.store') }}" data-checkout-form>
+<section class="checkout-layout">
+    <form class="store-card checkout-form" method="post" action="{{ route('checkout.store') }}" data-checkout-form>
         @csrf
         <input type="hidden" name="nonce" value="{{ $nonce }}">
-        <h1 class="text-2xl font-bold">{{ __('store.checkout.title') }}</h1>
-        <label class="block"><span class="mb-1 block text-sm">{{ __('store.checkout.name') }}</span><input class="store-input" name="customer_name" value="{{ old('customer_name', auth()->user()->name ?? '') }}" required></label>
-        <label class="block"><span class="mb-1 block text-sm">{{ __('store.checkout.email') }}</span><input class="store-input" name="customer_email" value="{{ old('customer_email', auth()->user()->email ?? '') }}"></label>
-        <label class="block"><span class="mb-1 block text-sm">{{ __('store.checkout.phone') }}</span><input class="store-input" name="customer_phone" value="{{ old('customer_phone', auth()->user()->phone ?? '') }}" required></label>
-        <label class="block"><span class="mb-1 block text-sm">{{ __('store.checkout.city') }}</span>
-        <select class="store-input" name="city_id" required>
-            <option value="" data-fee="0.0000">{{ __('store.checkout.city') }}</option>
-            @foreach($cities as $city)
-                <option value="{{ $city->id }}" data-fee="{{ $math->normalize((string) $city->shipping_fee) }}" @selected(old('city_id') == $city->id)>{{ $city->name }} — {{ $math->format((string) $city->shipping_fee) }}</option>
-            @endforeach
-        </select>
-        </label>
-        <p class="text-sm opacity-80">{{ __('store.checkout.shipping') }}: <strong data-shipping>{{ $math->format('0') }}</strong></p>
-        <label class="block"><span class="mb-1 block text-sm">{{ __('store.checkout.address') }}</span><textarea class="store-input" name="address" required>{{ old('address', auth()->user()->address ?? '') }}</textarea></label>
-        @if($orderPackaging->isNotEmpty())
-            <select class="store-input" name="order_packaging_id">
-                <option value="" data-fee="0.0000">{{ __('store.checkout.order_packaging') }}</option>
-                @foreach($orderPackaging as $packaging)
-                    <option value="{{ $packaging->id }}" data-fee="{{ $math->surcharge($quote->subtotal, $packaging->surcharge_type, (string) $packaging->surcharge_value) }}">{{ $packaging->name }}</option>
+        <h1>{{ __('store.checkout.title') }}</h1>
+        <label class="block"><span>{{ __('store.checkout.name') }}</span><input class="store-input" name="customer_name" value="{{ old('customer_name', auth()->user()->name ?? '') }}" required></label>
+        <label class="block"><span>{{ __('store.checkout.email') }}</span><input class="store-input" type="email" name="customer_email" value="{{ old('customer_email', auth()->user()->email ?? '') }}"></label>
+        <label class="block"><span>{{ __('store.checkout.phone') }}</span><input class="store-input" name="customer_phone" inputmode="tel" value="{{ old('customer_phone', auth()->user()->phone ?? '') }}" required></label>
+        <label class="block"><span>{{ __('store.checkout.city') }}</span>
+            <select class="store-input" name="city_id" required>
+                <option value="" data-fee="0.0000">{{ __('store.checkout.city') }}</option>
+                @foreach($cities as $city)
+                    <option value="{{ $city->id }}" data-fee="{{ $math->normalize((string) $city->shipping_fee) }}" @selected(old('city_id') == $city->id)>{{ $city->name }} — {{ $math->format((string) $city->shipping_fee) }}</option>
                 @endforeach
             </select>
+        </label>
+        <p class="checkout-note">{{ __('store.checkout.shipping') }}: <strong data-shipping>{{ $math->format('0') }}</strong></p>
+        <label class="block"><span>{{ __('store.checkout.address') }}</span><textarea class="store-input" name="address" rows="3" required>{{ old('address', auth()->user()->address ?? '') }}</textarea></label>
+        @if($orderPackaging->isNotEmpty())
+            <label class="block"><span>{{ __('store.checkout.order_packaging') }}</span>
+                <select class="store-input" name="order_packaging_id">
+                    <option value="" data-fee="0.0000">{{ __('store.checkout.order_packaging') }}</option>
+                    @foreach($orderPackaging as $packaging)
+                        <option value="{{ $packaging->id }}" data-fee="{{ $math->surcharge($quote->subtotal, $packaging->surcharge_type, (string) $packaging->surcharge_value) }}">{{ $packaging->name }}</option>
+                    @endforeach
+                </select>
+            </label>
         @endif
-        <fieldset class="space-y-2">
-            <legend class="font-semibold">{{ __('store.checkout.payment') }}</legend>
+        <fieldset>
+            <legend>{{ __('store.checkout.payment') }}</legend>
             @foreach($gateways as $gateway)
-                <label class="flex items-center gap-2">
+                <label class="checkout-pay">
                     <input type="radio" name="payment_gateway" value="{{ $gateway->id() }}" @checked($loop->first) required>
-                    {{ $gateway->label() }}
+                    <span>{{ $gateway->label() }}</span>
                 </label>
             @endforeach
         </fieldset>
-        <button class="store-btn-primary" type="submit">{{ __('store.checkout.place') }}</button>
+        <button class="store-btn-primary checkout-submit" type="submit">{{ __('store.checkout.place') }}</button>
     </form>
-    <aside class="store-card h-fit space-y-3 p-6" data-summary data-goods="{{ $goods }}" data-currency="{{ config('store.currency', 'EGP') }}">
+    <aside class="store-card checkout-summary" data-summary data-goods="{{ $goods }}" data-currency="{{ config('store.currency', 'EGP') }}">
+        <h2>{{ __('store.checkout.total') }}</h2>
         @foreach($quote->lines as $line)
-            <p class="flex items-center justify-between gap-3 text-sm">
-                <span class="flex min-w-0 items-center gap-3">
-                    @if($line->imageUrl)
-                        <img class="h-14 w-14 shrink-0 rounded-lg object-cover" src="{{ $line->imageUrl }}" alt="{{ $line->name }}">
-                    @endif
-                    <span class="min-w-0">{{ $line->name }}</span>
-                </span>
-                <span>{{ $math->format($line->lineSubtotal) }}</span>
-            </p>
+            <div class="checkout-line">
+                @if($line->imageUrl)
+                    <img src="{{ $line->imageUrl }}" alt="{{ $line->name }}">
+                @else
+                    <span class="checkout-thumb" aria-hidden="true"></span>
+                @endif
+                <p>{{ $line->name }}</p>
+                <strong>{{ $math->format($line->lineSubtotal) }}</strong>
+            </div>
         @endforeach
-        <p class="flex justify-between text-sm"><span>{{ __('store.checkout.subtotal') }}</span><span>{{ $math->format($quote->subtotal) }}</span></p>
-        <p class="flex justify-between text-sm"><span>{{ __('store.checkout.discount') }}</span><span>{{ $math->format($quote->discount) }}</span></p>
-        <p class="flex justify-between text-sm"><span>{{ __('store.checkout.shipping') }}</span><span data-shipping>{{ $math->format('0') }}</span></p>
-        <p class="flex justify-between text-sm"><span>{{ __('store.checkout.order_packaging') }}</span><span data-packaging>{{ $math->format('0') }}</span></p>
-        <p class="flex justify-between font-bold"><span>{{ __('store.checkout.total') }}</span><span data-total>{{ $math->format($goods) }}</span></p>
+        <dl>
+            <div><dt>{{ __('store.checkout.subtotal') }}</dt><dd>{{ $math->format($quote->subtotal) }}</dd></div>
+            <div><dt>{{ __('store.checkout.discount') }}</dt><dd>{{ $math->format($quote->discount) }}</dd></div>
+            <div><dt>{{ __('store.checkout.shipping') }}</dt><dd data-shipping>{{ $math->format('0') }}</dd></div>
+            <div><dt>{{ __('store.checkout.order_packaging') }}</dt><dd data-packaging>{{ $math->format('0') }}</dd></div>
+            <div class="is-total"><dt>{{ __('store.checkout.total') }}</dt><dd data-total>{{ $math->format($goods) }}</dd></div>
+        </dl>
     </aside>
 </section>
 <script>

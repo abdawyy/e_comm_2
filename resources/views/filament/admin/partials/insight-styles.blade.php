@@ -106,6 +106,10 @@
     .insight-person dt { font-size: 0.72rem; font-weight: 700; opacity: 0.55; }
     .insight-person dd { margin: 0.15rem 0 0; font-size: 0.88rem; }
     .insight-table-wrap { margin-top: 0.8rem; overflow-x: auto; }
+    .sales-row { display: grid; grid-template-columns: 6.5rem minmax(0, 1fr) auto auto; gap: 0.55rem; align-items: center; margin-top: 0.45rem; }
+    .sales-meter { height: 0.55rem; border-radius: 999px; background: rgb(0 0 0 / 8%); overflow: hidden; }
+    .sales-meter span { display: block; height: 100%; background: #1A2B28; }
+    .dark .sales-meter { background: rgb(255 255 255 / 10%); }
     .insight table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
     .insight th, .insight td { padding: 0.55rem 0.4rem; text-align: start; border-bottom: 1px solid rgb(226 232 240); }
     .dark .insight th, .dark .insight td { border-bottom-color: rgb(255 255 255 / 8%); }

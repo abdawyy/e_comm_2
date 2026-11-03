@@ -76,7 +76,7 @@ return [
     'actions' => ['save' => 'Save', 'export' => 'Export products', 'export_visitors' => 'Export visitors', 'export_views' => 'Export page views', 'open' => 'Open'],
     'status' => ['pending' => 'Pending', 'confirmed' => 'Confirmed', 'processing' => 'Processing', 'shipped' => 'Shipped', 'delivered' => 'Delivered', 'cancelled' => 'Cancelled'],
     'payment' => ['unpaid' => 'Unpaid', 'pending' => 'Pending', 'paid' => 'Paid', 'failed' => 'Failed', 'refunded' => 'Refunded'],
-    'pages' => ['traffic' => 'Customers & traffic', 'customers' => 'Customer analysis', 'guide' => 'Staff guide', 'colors' => 'Colors', 'signup_offer' => 'Signup coupon'],
+    'pages' => ['traffic' => 'Customers & traffic', 'customers' => 'Customer analysis', 'sales' => 'Sales', 'guide' => 'Staff guide', 'colors' => 'Colors', 'signup_offer' => 'Signup coupon'],
     'theme' => [
         'brand' => 'Brand', 'palette' => 'Palette', 'primary' => 'Primary', 'primary_dark' => 'Primary dark', 'primary_light' => 'Primary light',
         'accent' => 'Accent', 'accent_light' => 'Accent light', 'canvas' => 'Canvas', 'surface' => 'Surface', 'border' => 'Border',
@@ -90,6 +90,11 @@ return [
         'no_baseline' => 'No prior window', 'revenue_chart' => 'Revenue and orders', 'by_status' => 'Orders by status',
         'by_payment' => 'Orders by payment', 'top_products' => 'Top products', 'by_city' => 'Orders by city', 'product_views' => 'Product views',
         'empty' => 'Nothing in this period',
+    ],
+    'sales' => [
+        'note' => 'Revenue excludes cancelled orders. Promo codes are the coupons used on those orders.',
+        'coupons' => 'Promo codes',
+        'no_coupons' => 'No promo code was used in this period.',
     ],
     'periods' => ['today' => 'Today', '7' => '7 days', '30' => '30 days', '90' => '90 days', '365' => '365 days', 'custom' => 'Custom'],
     'traffic' => [
@@ -132,6 +137,7 @@ return [
         'viewed' => 'Most viewed', 'purchased' => 'Most purchased', 'activity' => 'Activity', 'views_short' => 'views',
         'orders_short' => 'orders', 'first_seen' => 'First seen', 'last_seen' => 'Last seen', 'last_order' => 'Last order',
         'last_location' => 'Last location', 'last_visit' => 'Last visit', 'orders' => 'Orders',
+        'visits' => 'Visits', 'purchases' => 'Purchases', 'coupon' => 'Promo code', 'coupons' => 'Promo codes', 'bought_at' => 'Bought',
     ],
     'signup' => [
         'timing' => 'When it appears',

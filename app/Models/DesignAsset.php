@@ -26,6 +26,7 @@ class DesignAsset extends Model
         'empty_shop',
         'auth_side',
         'footer_mark',
+        'wallpaper',
     ];
 
     public array $translatable = ['alt'];

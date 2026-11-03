@@ -26,18 +26,30 @@
                 <dl>
                     <div><dt>{{ __('admin.insights.locations') }}</dt><dd>{{ $customer['locations'] !== [] ? implode(', ', $customer['locations']) : '—' }}</dd></div>
                     <div><dt>{{ __('admin.insights.devices') }}</dt><dd>{{ collect($customer['devices'])->map(fn ($count, $device) => $device.': '.$count)->implode(', ') ?: '—' }}</dd></div>
-                    <div><dt>{{ __('admin.insights.browse_hour') }}</dt><dd>{{ $customer['browse_hour'] ?? '—' }}</dd></div>
-                    <div><dt>{{ __('admin.insights.purchase_hour') }}</dt><dd>{{ $customer['purchase_hour'] ?? '—' }}</dd></div>
+                    <div><dt>{{ __('admin.insights.browse_hour') }}</dt><dd>{{ $customer['browse_hour'] === null ? '—' : sprintf('%02d:00', $customer['browse_hour']) }}</dd></div>
+                    <div><dt>{{ __('admin.insights.purchase_hour') }}</dt><dd>{{ $customer['purchase_hour'] === null ? '—' : sprintf('%02d:00', $customer['purchase_hour']) }}</dd></div>
+                    <div><dt>{{ __('admin.insights.last_visit') }}</dt><dd>{{ $customer['last_visit'] ? $customer['last_visit']->timezone(config('store.analytics_timezone', 'Africa/Cairo'))->format('Y-m-d H:i') : '—' }}</dd></div>
+                    <div><dt>{{ __('admin.insights.coupons') }}</dt><dd>{{ $customer['coupons'] !== [] ? implode(', ', $customer['coupons']) : '—' }}</dd></div>
                     <div><dt>{{ __('admin.insights.viewed') }}</dt><dd>{{ collect($customer['viewed'])->pluck('name')->implode(', ') ?: '—' }}</dd></div>
                     <div><dt>{{ __('admin.insights.purchased') }}</dt><dd>{{ collect($customer['purchased'])->pluck('name')->implode(', ') ?: '—' }}</dd></div>
                 </dl>
+                @if($customer['visits'] !== [])
+                    <p class="insight-subtitle">{{ __('admin.insights.visits') }}</p>
+                    <ul>
+                        @foreach($customer['visits'] as $visit)
+                            <li>{{ $visit['at'] }} — {{ $visit['path'] }}</li>
+                        @endforeach
+                    </ul>
+                @endif
                 <div class="insight-table-wrap">
                     <table>
                         <thead>
                             <tr>
                                 <th>{{ __('admin.fields.reference') }}</th>
+                                <th>{{ __('admin.insights.bought_at') }}</th>
                                 <th>{{ __('admin.fields.status') }}</th>
                                 <th>{{ __('admin.fields.total') }}</th>
+                                <th>{{ __('admin.insights.coupon') }}</th>
                                 <th>{{ __('admin.customers.place') }}</th>
                                 <th>{{ __('admin.fields.address') }}</th>
                             </tr>
@@ -46,13 +58,15 @@
                             @forelse($customer['orders'] as $order)
                                 <tr>
                                     <td><a href="{{ \App\Filament\Admin\Resources\OrderResource::getUrl('view', ['record' => $order['id']]) }}">{{ $order['reference'] }}</a></td>
+                                    <td>{{ $order['bought_at'] ?: '—' }}</td>
                                     <td>{{ __('admin.status.'.$order['status']) }}</td>
                                     <td>{{ $order['total'] }}</td>
+                                    <td>{{ $order['coupon'] ?: '—' }}</td>
                                     <td>{{ $order['place'] ?: '—' }}</td>
                                     <td>{{ $order['address'] ?: '—' }}</td>
                                 </tr>
                             @empty
-                                <tr><td colspan="5">{{ __('admin.customers.no_orders') }}</td></tr>
+                                <tr><td colspan="7">{{ __('admin.customers.no_orders') }}</td></tr>
                             @endforelse
                         </tbody>
                     </table>
@@ -79,8 +93,10 @@
                                 @foreach($guest['orders'] as $order)
                                     <tr>
                                         <td><a href="{{ \App\Filament\Admin\Resources\OrderResource::getUrl('view', ['record' => $order['id']]) }}">{{ $order['reference'] }}</a></td>
+                                        <td>{{ $order['bought_at'] ?: '—' }}</td>
                                         <td>{{ __('admin.status.'.$order['status']) }}</td>
                                         <td>{{ $order['total'] }}</td>
+                                        <td>{{ $order['coupon'] ?: '—' }}</td>
                                         <td>{{ $order['place'] ?: $order['address'] }}</td>
                                     </tr>
                                 @endforeach

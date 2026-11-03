@@ -94,6 +94,11 @@ class CustomerDirectory
             'viewed' => $insights['most_viewed'],
             'purchased' => $insights['most_purchased'],
             'last_visit' => $insights['last_visit'],
+            'visits' => collect($insights['visits'])->map(fn (array $visit) => [
+                'path' => $visit['path'],
+                'at' => $this->when($visit['at']),
+            ])->all(),
+            'coupons' => $insights['coupons'],
             'orders' => $user->orders->map(fn (Order $order) => $this->orderRow($order))->all(),
         ];
     }
@@ -113,8 +118,21 @@ class CustomerDirectory
             'city' => $order->city_name,
             'address' => $order->address,
             'place' => $place,
+            'coupon' => (string) ($order->coupon_code ?: ''),
+            'bought_at' => $this->when($order->created_at),
             'created_at' => $order->created_at,
         ];
+    }
+
+    private function when(mixed $moment): string
+    {
+        if (! $moment) {
+            return '';
+        }
+
+        return \Illuminate\Support\Carbon::parse($moment)
+            ->timezone((string) config('store.analytics_timezone', 'Africa/Cairo'))
+            ->format('Y-m-d H:i');
     }
 
     /**

@@ -991,3 +991,183 @@ html.dark .store-search-icon {
     color: #f4fbf6;
 }
 
+.checkout-layout,
+.cart-page {
+    width: min(72rem, calc(100% - 1.5rem));
+    margin-inline: auto;
+    padding-block: 1.25rem 2rem;
+}
+
+.checkout-layout {
+    display: grid;
+    gap: 1rem;
+}
+
+.checkout-form,
+.checkout-summary {
+    min-width: 0;
+    padding: 1rem;
+}
+
+.checkout-form {
+    display: grid;
+    gap: 0.85rem;
+}
+
+.checkout-form h1,
+.checkout-summary h2 {
+    font-size: 1.45rem;
+    font-weight: 750;
+}
+
+.checkout-form label span,
+.checkout-note {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-size: 0.85rem;
+    font-weight: 650;
+}
+
+.checkout-form .store-input,
+.checkout-form select,
+.checkout-form textarea {
+    width: 100%;
+    max-width: 100%;
+}
+
+.checkout-pay {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin-top: 0.45rem;
+}
+
+.checkout-submit {
+    width: 100%;
+}
+
+.checkout-line {
+    display: grid;
+    grid-template-columns: 3.25rem minmax(0, 1fr);
+    gap: 0.2rem 0.7rem;
+    align-items: center;
+    padding-block: 0.55rem;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.checkout-line img,
+.checkout-thumb {
+    width: 3.25rem;
+    height: 3.25rem;
+    grid-row: span 2;
+    border-radius: 0.7rem;
+    object-fit: cover;
+    background: color-mix(in srgb, var(--color-brand) 12%, var(--color-surface));
+}
+
+.checkout-line p {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.checkout-summary dl {
+    display: grid;
+    gap: 0.4rem;
+    margin-top: 0.8rem;
+}
+
+.checkout-summary dl div,
+.cart-totals div {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.checkout-summary .is-total {
+    margin-top: 0.35rem;
+    font-weight: 750;
+}
+
+.cart-line {
+    display: grid;
+    gap: 0.75rem;
+    padding: 0.9rem;
+}
+
+.cart-line-main {
+    display: flex;
+    gap: 0.75rem;
+    min-width: 0;
+}
+
+.cart-line-main img {
+    width: 4.5rem;
+    height: 4.5rem;
+    flex: none;
+    border-radius: 0.8rem;
+    object-fit: cover;
+}
+
+.cart-line-main div {
+    min-width: 0;
+}
+
+.cart-line-main strong {
+    display: block;
+    overflow-wrap: anywhere;
+}
+
+.cart-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.45rem;
+}
+
+.cart-actions .store-input {
+    width: 5.5rem;
+}
+
+.cart-remove {
+    font-size: 0.85rem;
+}
+
+@media (min-width: 720px) {
+    .checkout-line {
+        grid-template-columns: 3.25rem minmax(0, 1fr) auto;
+    }
+
+    .checkout-line img,
+    .checkout-thumb {
+        grid-row: auto;
+    }
+}
+
+@media (min-width: 900px) {
+    .checkout-layout {
+        grid-template-columns: minmax(0, 1.15fr) minmax(16rem, 0.85fr);
+        align-items: start;
+    }
+
+    .checkout-form,
+    .checkout-summary {
+        padding: 1.25rem;
+    }
+}
+
+.store-shell.has-wallpaper {
+    background-color: var(--color-canvas);
+    background-image:
+        linear-gradient(color-mix(in srgb, var(--color-canvas) 78%, transparent), color-mix(in srgb, var(--color-canvas) 86%, transparent)),
+        var(--store-wallpaper);
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+html.dark .store-shell.has-wallpaper {
+    background-image:
+        linear-gradient(color-mix(in srgb, var(--color-canvas) 84%, transparent), color-mix(in srgb, var(--color-canvas) 90%, transparent)),
+        var(--store-wallpaper);
+}
+

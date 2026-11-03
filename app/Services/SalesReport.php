@@ -57,6 +57,7 @@ class SalesReport
             'series' => $this->series($revenueOrders),
             'statuses' => $current->groupBy('status')->map->count()->all(),
             'payments' => $current->groupBy(fn (Order $order) => $order->payment_gateway ?: 'unknown')->map->count()->all(),
+            'coupons' => $this->coupons($revenueOrders),
             'cities' => $this->cities($revenueOrders),
             'products' => $this->topProducts($revenueOrders->pluck('id')->all()),
             'views' => $this->topViews($start, $end),
@@ -72,7 +73,7 @@ class SalesReport
     {
         return Order::query()
             ->whereBetween('created_at', [$start, $end])
-            ->get(['id', 'total', 'status', 'city_name', 'created_at', 'reference', 'customer_name', 'payment_status', 'payment_gateway']);
+            ->get(['id', 'total', 'status', 'city_name', 'created_at', 'reference', 'customer_name', 'payment_status', 'payment_gateway', 'coupon_code']);
     }
 
     /**
@@ -119,6 +120,31 @@ class SalesReport
         ksort($buckets);
 
         return array_values($buckets);
+    }
+
+    /**
+     * @param  Collection<int, Order>  $orders
+     * @return array<int, array{code: string, orders: int, revenue: string}>
+     */
+    private function coupons(Collection $orders): array
+    {
+        $rows = [];
+
+        foreach ($orders as $order) {
+            $code = trim((string) $order->coupon_code);
+
+            if ($code === '') {
+                continue;
+            }
+
+            $rows[$code]['code'] = $code;
+            $rows[$code]['orders'] = ($rows[$code]['orders'] ?? 0) + 1;
+            $rows[$code]['revenue'] = $this->math->add($rows[$code]['revenue'] ?? '0', (string) $order->total);
+        }
+
+        uasort($rows, fn ($left, $right) => $right['orders'] <=> $left['orders']);
+
+        return array_values($rows);
     }
 
     /**

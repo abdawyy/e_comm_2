@@ -93,6 +93,11 @@ class CustomerInsights
             'last_order' => $orders->sortByDesc('created_at')->first()?->created_at,
             'cancelled_count' => $orders->where('status', 'cancelled')->count(),
             'activity' => $this->activity($pageViews, $orders, $tz),
+            'visits' => $pageViews->sortByDesc('viewed_at')->take(8)->map(fn (SitePageView $view) => [
+                'path' => $view->path,
+                'at' => $view->viewed_at,
+            ])->values()->all(),
+            'coupons' => $orders->pluck('coupon_code')->filter()->unique()->values()->all(),
         ];
     }
 

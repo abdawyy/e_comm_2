@@ -95,6 +95,7 @@ class CustomerInsightsTest extends TestCase
             'city_name' => 'Giza',
             'status' => 'confirmed',
             'total' => '90.0000',
+            'coupon_code' => 'WELCOME10',
         ]);
         SiteVisitor::query()->create([
             'session_id' => 'sess-sheraton',
@@ -110,6 +111,7 @@ class CustomerInsightsTest extends TestCase
             ->assertOk()
             ->assertSee('Nour Adel')
             ->assertSee('ZX-ZAYED')
+            ->assertSee('WELCOME10')
             ->assertSee('Sheikh Zayed')
             ->assertSee('Sheraton');
     }

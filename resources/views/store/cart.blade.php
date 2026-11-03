@@ -11,27 +11,25 @@
     @else
         <div class="mt-6 space-y-3">
             @foreach($quote->lines as $line)
-                <article class="store-card flex items-center justify-between gap-4 p-4">
-                    <div class="flex min-w-0 items-center gap-4">
+                <article class="store-card cart-line">
+                    <div class="cart-line-main">
                         @if($line->imageUrl)
-                            <img class="h-20 w-20 shrink-0 rounded-xl object-cover" src="{{ $line->imageUrl }}" alt="{{ $line->name }}">
+                            <img src="{{ $line->imageUrl }}" alt="{{ $line->name }}">
                         @endif
-                        <div class="min-w-0">
+                        <div>
                             <strong>{{ $line->name }}</strong>
-                            <form class="mt-2 flex items-center gap-2" method="post" action="{{ route('cart.items.update', $line->key) }}">
-                                @csrf
-                                @method('PATCH')
-                                <label class="text-sm" for="qty-{{ $line->key }}">{{ __('store.product.quantity') }}</label>
-                                <input id="qty-{{ $line->key }}" class="store-input w-24" name="quantity" value="{{ $line->quantity }}" inputmode="decimal">
-                                <span class="text-sm opacity-70">{{ $line->unit }}</span>
-                                <button class="store-btn-ghost" type="submit">{{ __('store.cart.update') }}</button>
-                            </form>
+                            <p>{{ app(\App\Services\DecimalMath::class)->format($line->lineSubtotal) }}</p>
                         </div>
                     </div>
-                    <div class="text-end">
-                        <p>{{ app(\App\Services\DecimalMath::class)->format($line->lineSubtotal) }}</p>
-                        <form method="post" action="{{ route('cart.items.destroy', $line->key) }}">@csrf @method('DELETE')<button class="text-sm" type="submit">{{ __('store.cart.remove') }}</button></form>
-                    </div>
+                    <form class="cart-actions" method="post" action="{{ route('cart.items.update', $line->key) }}">
+                        @csrf
+                        @method('PATCH')
+                        <label for="qty-{{ $line->key }}">{{ __('store.product.quantity') }}</label>
+                        <input id="qty-{{ $line->key }}" class="store-input" name="quantity" value="{{ $line->quantity }}" inputmode="decimal">
+                        <span>{{ $line->unit }}</span>
+                        <button class="store-btn-ghost" type="submit">{{ __('store.cart.update') }}</button>
+                    </form>
+                    <form method="post" action="{{ route('cart.items.destroy', $line->key) }}">@csrf @method('DELETE')<button class="cart-remove" type="submit">{{ __('store.cart.remove') }}</button></form>
                 </article>
             @endforeach
         </div>

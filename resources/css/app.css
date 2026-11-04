@@ -59,17 +59,20 @@ html.dark .store-shell {
 .store-nav {
     display: flex;
     align-items: center;
-    gap: 0.65rem;
+    gap: 0.4rem;
     max-width: 76rem;
     margin-inline: auto;
-    padding: 0.7rem 1rem;
+    min-width: 0;
+    padding: 0.55rem 0.7rem;
 }
 
 .store-brand {
     display: flex;
     align-items: center;
-    gap: 0.55rem;
+    gap: 0.45rem;
     min-width: 0;
+    flex: 1 1 auto;
+    overflow: hidden;
     font-weight: 700;
 }
 
@@ -82,7 +85,8 @@ html.dark .store-shell {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    flex: none;
+    min-width: 0;
+    flex: 1 1 auto;
 }
 
 .store-menu-btn {
@@ -111,7 +115,8 @@ html.dark .store-shell {
 .store-nav-tools {
     display: flex;
     align-items: center;
-    gap: 0.4rem;
+    gap: 0.28rem;
+    flex: none;
     margin-inline-start: auto;
 }
 
@@ -195,10 +200,9 @@ html.dark .store-shell {
     pointer-events: none;
 }
 
-.store-search-input {
-    border-radius: 999px;
-    padding-block: 0.62rem;
-    padding-inline-start: 2.4rem;
+.store-search {
+    position: relative;
+    min-width: 0;
 }
 
 .store-drawer-backdrop {
@@ -345,6 +349,11 @@ html.dark .store-shell {
 
 html.dark .store-input {
     background: color-mix(in srgb, var(--color-surface) 80%, black);
+}
+
+.store-search .store-search-input {
+    border-radius: 999px;
+    padding-inline-start: 2.6rem;
 }
 
 .store-nav-link {
@@ -1095,17 +1104,18 @@ html.dark .store-search-icon {
 }
 
 .cart-line-main {
-    display: flex;
-    gap: 0.75rem;
+    display: grid;
+    justify-items: center;
+    gap: 0.65rem;
     min-width: 0;
 }
 
 .cart-line-main img {
-    width: 4.5rem;
-    height: 4.5rem;
-    flex: none;
-    border-radius: 0.8rem;
-    object-fit: cover;
+    width: min(100%, 16rem);
+    max-height: 14rem;
+    border-radius: 0.9rem;
+    object-fit: contain;
+    background: #f5efe6;
 }
 
 .cart-line-main div {
@@ -1118,14 +1128,129 @@ html.dark .store-search-icon {
 }
 
 .cart-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.45rem;
+    align-items: center;
+}
+
+.cart-actions label {
+    grid-column: 1 / -1;
+}
+
+.cart-actions .store-input {
+    width: 100%;
+    min-width: 0;
+}
+
+.cart-actions .store-btn-ghost,
+.cart-coupon .store-btn-ghost,
+.cart-checkout {
+    width: 100%;
+}
+
+.cart-actions .store-btn-ghost {
+    grid-column: 1 / -1;
+}
+
+.cart-coupon {
+    display: grid;
+    gap: 0.55rem;
+    margin-top: 1rem;
+}
+
+.cart-coupon span {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-size: 0.85rem;
+}
+
+.cart-checkout {
+    margin-top: 1rem;
+}
+
+.empty-art,
+.auth-art {
+    display: block;
+    width: min(100%, 18rem);
+    max-height: 11rem;
+    margin-inline: auto;
+    object-fit: cover;
+    border-radius: 1rem;
+}
+
+.auth-layout {
+    width: min(68rem, calc(100% - 1.5rem));
+    margin: 1.25rem auto 2rem;
+    display: grid;
+    gap: 1rem;
+}
+
+.auth-form {
+    display: grid;
+    gap: 0.75rem;
+    min-width: 0;
+    padding: 1rem;
+}
+
+.auth-form h1 {
+    font-size: 1.6rem;
+    font-weight: 750;
+}
+
+.auth-remember {
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
     gap: 0.45rem;
 }
 
-.cart-actions .store-input {
-    width: 5.5rem;
+.auth-form .store-btn-primary,
+.auth-form .store-btn-ghost,
+.auth-form .store-btn-accent {
+    width: 100%;
+}
+
+.store-toasts {
+    position: fixed;
+    top: 4.75rem;
+    inset-inline: 0.75rem;
+    z-index: 60;
+    display: grid;
+    justify-items: center;
+    gap: 0.5rem;
+    pointer-events: none;
+}
+
+.store-toast {
+    pointer-events: auto;
+    max-width: min(24rem, 100%);
+}
+
+@media (max-width: 520px) {
+    .store-icon-btn,
+    .store-lang {
+        width: 2.15rem;
+        height: 2.15rem;
+        min-width: 2.15rem;
+    }
+
+    .store-brand img {
+        height: 1.85rem;
+    }
+}
+
+@media (min-width: 800px) {
+    .auth-layout {
+        grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+        align-items: start;
+    }
+
+    .auth-art {
+        grid-row: span 3;
+        width: 100%;
+        max-height: 28rem;
+        height: 100%;
+    }
 }
 
 .cart-remove {

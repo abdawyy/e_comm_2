@@ -1,1 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360"><rect width="640" height="360" rx="28" fill="#14532d"/><text x="40" y="190" fill="white" font-size="42" font-family="sans-serif">Atlas auth_side</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">
+  <rect width="640" height="360" rx="28" fill="#1A2B28"/>
+  <rect x="228" y="78" width="184" height="150" rx="16" fill="#F5EFE6"/>
+  <rect x="268" y="48" width="104" height="42" rx="8" fill="#C9A55C"/>
+  <rect x="286" y="108" width="68" height="68" rx="10" fill="#1A2B28"/>
+  <circle cx="320" cy="142" r="6" fill="#F5EFE6"/>
+  <circle cx="304" cy="134" r="5" fill="#F5EFE6"/>
+  <circle cx="336" cy="134" r="5" fill="#F5EFE6"/>
+  <circle cx="312" cy="154" r="5" fill="#F5EFE6"/>
+  <circle cx="328" cy="154" r="5" fill="#F5EFE6"/>
+  <path d="M250 250h140c18 0 28 16 22 32H228c-6-16 4-32 22-32z" fill="#C9A55C"/>
+</svg>

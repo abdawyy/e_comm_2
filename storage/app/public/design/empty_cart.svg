@@ -1,1 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360"><rect width="640" height="360" rx="28" fill="#f97316"/><text x="40" y="190" fill="white" font-size="42" font-family="sans-serif">Atlas empty_cart</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">
+  <rect width="640" height="360" rx="28" fill="#F5EFE6"/>
+  <rect x="210" y="118" width="220" height="150" rx="18" fill="#1A2B28"/>
+  <rect x="248" y="86" width="144" height="48" rx="10" fill="#C9A55C"/>
+  <rect x="286" y="150" width="68" height="68" rx="10" fill="#F5EFE6"/>
+  <circle cx="320" cy="184" r="6" fill="#1A2B28"/>
+  <circle cx="304" cy="176" r="5" fill="#1A2B28"/>
+  <circle cx="336" cy="176" r="5" fill="#1A2B28"/>
+  <circle cx="312" cy="196" r="5" fill="#1A2B28"/>
+  <circle cx="328" cy="196" r="5" fill="#1A2B28"/>
+</svg>

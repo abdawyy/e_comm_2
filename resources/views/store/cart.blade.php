@@ -4,7 +4,7 @@
     <h1 class="text-3xl font-bold">{{ __('store.nav.cart') }}</h1>
     @if($quote->lines === [])
         <div class="store-card mt-6 p-8 text-center">
-            @if($empty = \App\Models\DesignAsset::urlFor('empty_cart'))<img class="mx-auto mb-4 h-40" src="{{ $empty }}" alt="{{ \App\Models\DesignAsset::altFor('empty_cart') }}">@endif
+            @if($empty = \App\Models\DesignAsset::urlFor('empty_cart'))<img class="empty-art" src="{{ $empty }}" alt="{{ \App\Models\DesignAsset::altFor('empty_cart') }}">@endif
             <p>{{ __('store.cart.empty') }}</p>
             <a class="store-btn-primary mt-4" href="{{ route('shop') }}">{{ __('store.home.shop_cta') }}</a>
         </div>
@@ -25,7 +25,7 @@
                         @csrf
                         @method('PATCH')
                         <label for="qty-{{ $line->key }}">{{ __('store.product.quantity') }}</label>
-                        <input id="qty-{{ $line->key }}" class="store-input" name="quantity" value="{{ $line->quantity }}" inputmode="decimal">
+                        <input id="qty-{{ $line->key }}" class="store-input" name="quantity" value="{{ rtrim(rtrim((string) $line->quantity, '0'), '.') }}" inputmode="decimal">
                         <span>{{ $line->unit }}</span>
                         <button class="store-btn-ghost" type="submit">{{ __('store.cart.update') }}</button>
                     </form>
@@ -33,10 +33,10 @@
                 </article>
             @endforeach
         </div>
-        <form class="mt-4 flex flex-wrap items-end gap-2" method="post" action="{{ route('cart.coupon') }}">
+        <form class="cart-coupon" method="post" action="{{ route('cart.coupon') }}">
             @csrf
-            <label class="block flex-1">
-                <span class="mb-1 block text-sm">{{ __('store.cart.coupon_placeholder') }}</span>
+            <label>
+                <span>{{ __('store.cart.coupon_placeholder') }}</span>
                 <input class="store-input" name="code" value="{{ $quote->couponCode }}" placeholder="{{ __('store.cart.coupon_placeholder') }}">
             </label>
             <button class="store-btn-ghost" type="submit">{{ __('store.cart.apply') }}</button>
@@ -54,7 +54,7 @@
             <div class="flex justify-between"><dt>{{ __('store.checkout.shipping') }}</dt><dd>{{ __('store.cart.shipping_later') }}</dd></div>
             <div class="flex justify-between font-bold"><dt>{{ __('store.checkout.total') }}</dt><dd>{{ app(\App\Services\DecimalMath::class)->format($quote->total) }}</dd></div>
         </dl>
-        <a class="store-btn-primary mt-6" href="{{ route('checkout.create') }}">{{ __('store.cart.checkout') }}</a>
+        <a class="store-btn-primary cart-checkout" href="{{ route('checkout.create') }}">{{ __('store.cart.checkout') }}</a>
     @endif
 </section>
 @endsection

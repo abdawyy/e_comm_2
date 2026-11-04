@@ -91,7 +91,7 @@
         </div>
     </footer>
 
-    <div class="fixed bottom-4 end-4 z-50 space-y-2">
+    <div class="store-toasts">
         <template x-for="toast in toasts" :key="toast.id">
             <div class="store-toast rounded-xl px-4 py-3 shadow-lg" x-text="toast.message"></div>
         </template>

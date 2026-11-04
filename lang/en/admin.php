@@ -101,7 +101,7 @@ return [
         'revenue' => 'Revenue', 'orders' => 'Orders', 'average' => 'Average order', 'pending' => 'Pending orders',
         'no_baseline' => 'No prior window', 'revenue_chart' => 'Revenue and orders', 'by_status' => 'Orders by status',
         'by_payment' => 'Orders by payment', 'top_products' => 'Top products', 'by_city' => 'Orders by city', 'product_views' => 'Product views',
-        'empty' => 'Nothing in this period',
+        'empty' => 'Nothing in this period', 'latest_orders' => 'Latest orders',
     ],
     'sales' => [
         'note' => 'Revenue excludes cancelled orders. Promo codes are the coupons used on those orders.',

@@ -151,6 +151,9 @@ return [
         'last_location' => 'Last location', 'last_visit' => 'Last visit', 'orders' => 'Orders',
         'visits' => 'Visits', 'purchases' => 'Purchases', 'coupon' => 'Promo code', 'coupons' => 'Promo codes', 'bought_at' => 'Bought',
     ],
+    'guide' => [
+        'download' => 'Download PDF',
+    ],
     'signup' => [
         'timing' => 'When it appears',
         'delay' => 'Show after',

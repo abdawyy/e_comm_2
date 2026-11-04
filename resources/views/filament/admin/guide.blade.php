@@ -1,5 +1,5 @@
 <div class="prose max-w-none dark:prose-invert">
-    <p><a href="{{ request()->fullUrlWithQuery(['locale' => 'en']) }}">English</a> · <a href="{{ request()->fullUrlWithQuery(['locale' => 'ar']) }}">العربية</a></p>
+    <p><a href="{{ request()->fullUrlWithQuery(['locale' => 'en']) }}">English</a> · <a href="{{ request()->fullUrlWithQuery(['locale' => 'ar']) }}">العربية</a> · <a href="{{ route('admin.guide.pdf') }}">{{ __('admin.guide.download') }}</a></p>
     @if(app()->getLocale() === 'ar')
         <h2>دليل فريق العمل</h2>
         <p>يمكن تغيير اسم المتجر والشعار والصور والألوان من قسم التصميم دون إعادة نشر الكود. العملة الافتراضية جنيه مصري، واللغتان العربية والإنجليزية.</p>

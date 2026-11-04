@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminGuideController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CatalogController;
@@ -59,5 +60,6 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
+Route::get('/staff-guide.pdf', AdminGuideController::class)->middleware('auth')->name('admin.guide.pdf');
 Route::post('/bundles/{bundle}/subscribe', [SubscriptionController::class, 'store'])->middleware('auth')->name('bundles.subscribe');
 Route::redirect('/account', '/my')->name('account.home');

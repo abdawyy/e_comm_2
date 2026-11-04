@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Pages;
 
+use Filament\Actions\Action;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\View;
 use Filament\Schemas\Schema;
@@ -28,6 +29,16 @@ class AdminGuide extends Page
     public static function canAccess(): bool
     {
         return (bool) auth()->user()?->can('View:AdminGuide');
+    }
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            Action::make('download')
+                ->label(__('admin.guide.download'))
+                ->url(route('admin.guide.pdf'))
+                ->openUrlInNewTab(),
+        ];
     }
 
     public function content(Schema $schema): Schema

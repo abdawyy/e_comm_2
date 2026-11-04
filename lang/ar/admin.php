@@ -151,6 +151,9 @@ return [
         'last_location' => 'آخر موقع', 'last_visit' => 'آخر زيارة', 'orders' => 'الطلبات',
         'visits' => 'الزيارات', 'purchases' => 'المشتريات', 'coupon' => 'كود الخصم', 'coupons' => 'أكواد الخصم', 'bought_at' => 'وقت الشراء',
     ],
+    'guide' => [
+        'download' => 'تنزيل PDF',
+    ],
     'signup' => [
         'timing' => 'متى يظهر',
         'delay' => 'يظهر بعد',

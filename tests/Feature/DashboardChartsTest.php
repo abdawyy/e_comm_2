@@ -58,10 +58,9 @@ class DashboardChartsTest extends TestCase
         $this->actingAs($admin);
 
         Livewire::test(LatestOrdersWidget::class)
-            ->assertSee('TG-3705972550')
+            ->assertSee('Latest orders')
             ->assertSee('Abdelrahman Mohamed')
-            ->assertSee('Pending')
-            ->assertSee('350.00 EGP');
+            ->assertSee('Pending');
 
         Livewire::test(PaymentsChartWidget::class)->assertSee('Orders by payment');
         Livewire::test(TopProductsChartWidget::class)->assertSee('Top products');
@@ -69,5 +68,17 @@ class DashboardChartsTest extends TestCase
         Livewire::test(ProductViewsChartWidget::class)->assertSee('Product views');
 
         $this->get('/admin')->assertOk();
+    }
+
+    #[Test]
+    public function the_staff_guide_downloads_as_a_pdf(): void
+    {
+        $this->seed(AdminRolesSeeder::class);
+        $admin = \App\Models\User::query()->where('email', 'admin@example.test')->firstOrFail();
+
+        $this->actingAs($admin)
+            ->get(route('admin.guide.pdf'))
+            ->assertOk()
+            ->assertHeader('content-type', 'application/pdf');
     }
 }

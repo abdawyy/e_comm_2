@@ -3,37 +3,19 @@
 <head>
     <meta charset="utf-8">
     <style>
-        body { font-family: dejavusans, sans-serif; color: #1A2B28; }
-        h1 { font-size: 22px; }
-        li { margin-bottom: 8px; }
+        body { font-family: dejavusans, sans-serif; color: #1A2B28; font-size: 12px; }
+        h1 { font-size: 22px; margin: 0 0 4px; }
+        .kicker { color: #8C6A3D; font-size: 11px; letter-spacing: 1px; }
+        .rule { height: 4px; background: #C9A55C; margin: 8px 0 16px; }
+        h2 { font-size: 15px; color: #1A2B28; border-bottom: 1px solid #C9A55C; padding-bottom: 3px; margin: 16px 0 6px; }
+        p, li { line-height: 1.45; }
+        ul { margin-top: 4px; }
     </style>
 </head>
 <body @if($locale === 'ar') dir="rtl" @endif>
+    <div class="kicker">ATLAS MARKET</div>
     <h1>{{ $locale === 'ar' ? 'دليل فريق العمل' : 'Staff guide' }}</h1>
-    @if($locale === 'ar')
-        <p>يمكن تغيير اسم المتجر والشعار والصور والألوان من قسم التصميم دون إعادة نشر الكود. العملة الافتراضية جنيه مصري، واللغتان العربية والإنجليزية.</p>
-        <ul>
-            <li><strong>super_admin</strong>: كل الصلاحيات. وحده يمنح دور المشرف الأعلى أو يعدّل الأدوار.</li>
-            <li><strong>orders_manager</strong>: إدارة الطلبات، عرض العملاء، ولوحة المبيعات.</li>
-            <li><strong>catalog_manager</strong>: المنتجات والأقسام والحزم والخدمات والتغليف والمدن والكوبونات.</li>
-            <li><strong>content_manager</strong>: البانرات ونصوص الموقع وإعدادات الظهور في محركات البحث.</li>
-            <li><strong>design_manager</strong>: الصور وألوان الهوية والبانرات، دون تعديل الكتالوج.</li>
-            <li><strong>analytics_viewer</strong>: لوحات المبيعات والزيارات ودليل الإدارة. بلا إنشاء أو تعديل أو حذف.</li>
-            <li><strong>finance_viewer</strong>: عرض الطلبات ومحاولات الدفع فقط، بلا تعديل الحالة أو الكتالوج.</li>
-        </ul>
-        <p>الدفع عند الاستلام يبقى غير مدفوع حتى يحصّله الفريق. بطاقة فيزا عبر Paymob لا تُعلَّم مدفوعة إلا بعد تحقق توقيع الويب هوك على الخادم.</p>
-    @else
-        <p>Change the brand name, logo, images, and colors under Design. The store updates on the next page load. Default currency is EGP. English and Arabic are both supported.</p>
-        <ul>
-            <li><strong>super_admin</strong>: every permission. Only this role may assign super admin or edit roles.</li>
-            <li><strong>orders_manager</strong>: full orders, view customers, and the sales dashboard.</li>
-            <li><strong>catalog_manager</strong>: products, categories, bundles, services, packaging, cities, and coupons.</li>
-            <li><strong>content_manager</strong>: banners, CMS strings, and SEO.</li>
-            <li><strong>design_manager</strong>: images, colors, and banners, without catalog access.</li>
-            <li><strong>analytics_viewer</strong>: sales and traffic dashboards, visitors, and this guide. No create, update, or delete.</li>
-            <li><strong>finance_viewer</strong>: view orders and payment attempts only. No status edits and no catalog access.</li>
-        </ul>
-        <p>Cash on delivery stays unpaid until staff collect it. Visa orders become paid only after the server verifies the Paymob webhook signature. The browser return page never marks an order paid.</p>
-    @endif
+    <div class="rule"></div>
+    @include('filament.admin.partials.guide-body', ['locale' => $locale])
 </body>
 </html>

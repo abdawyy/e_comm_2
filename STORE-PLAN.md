@@ -1,71 +1,82 @@
-# Atlas Market plan
+# Atlas Market
 
-The store can already browse, add a product, check out with cash, and run the admin catalog. The gaps are in the cart, the order desk, and what happens after the site is on a real server.
+Bilingual coffee store (English and Arabic, RTL), prices in EGP, Egypt delivery cities, cash on delivery and Paymob Visa. Staff work in `/admin`. Customers work in `/my`.
 
-## Flows
+Money is stored with BCMath at 4 decimal places and shown as 2 decimals plus EGP. A Visa order is marked paid only after the Paymob webhook signature is checked. The store never keeps a card number. Theme colors come from the database as CSS variables.
 
-The path that works is home or shop, product page, add to cart, checkout, cash on delivery, then the thanks page and the customer panel at `/my`.
+## Shop
 
-These steps are incomplete:
+| Path | What it does |
+| --- | --- |
+| `/` | Home: hero, banners, categories, featured products, SEO from the database |
+| `/shop` | Catalog, search, category and unit filters, stock state |
+| `/categories/{category}` | Category page, empty state when nothing is listed |
+| `/products/{product}` | Product, unit, services, packaging, gallery |
+| `/bundles` and `/bundles/{bundle}` | Bundles, cover and gallery, subscription note |
+| `/cart` | Lines with product photos, quantity, remove, coupon, totals |
+| `/checkout` | Name, email, phone, city, address, packaging, payment. Shipping updates when the city changes |
+| `/checkout/thanks` | Confirmation. Card return does not mark the order paid |
+| `/track` | Order tracking by reference |
+| `/login`, `/register`, forgot and reset password, phone OTP | Customer auth |
+| `/my` | Customer panel: orders, invoice, profile |
+| `/staff-guide.pdf` | Staff guide PDF. Requires a logged-in user who can view the guide |
+| `/invoices/{order}` | Invoice PDF for a signed link, the owner, or an admin who can view the order |
 
-1. **Cart.** Remove and Apply coupon post a normal form, but the server always answers with JSON. The customer sees a raw response instead of an updated cart. Quantity cannot be changed in the cart even though `PATCH /cart/items/{key}` exists.
-2. **Totals.** The cart total has no delivery fee. The fee appears only after a city is chosen at checkout. A packaging fee is added into the total with no line of its own.
-3. **After payment.** Card payment is coded, but Visa stays off until Paymob keys and a public webhook are set. The thanks and track pages print raw statuses such as `pending`.
-4. **Account.** Store login goes to a Filament panel at `/my`. Guests who open `/my` get Filament’s login, not the store login.
-5. **Admin orders.** Staff can change a status, but the order screen does not show lines, the coupon, packaging, the invoice, or a cancel that puts stock back. Cancelling from the customer side does restore stock.
+Footer social icons are edited in admin. Only `http` and `https` links are shown. The footer stays at the bottom of short pages. Dark mode uses light text on the dark surfaces. A design asset with the key wallpaper is the site background.
 
-## UI and UX
+Cart quantity is shown without trailing zeros (`1`, not `1.0000`). Coupon apply, quantity update, and remove return to the cart page. Delivery on the cart is added after a city is chosen. Packaging is its own line.
 
-Home, shop, and the product page are the finished screens. Category, cart, checkout, track order, forgot-password, and bundles are plainer.
+Checkout saves the order before any email. If the mailbox fails, the order still exists and `mail_status` shows the failure. Staff can generate the PDF again and send it to the customer or to the team. `php artisan orders:notify {order}` sends from the command line.
 
-- Checkout, cart coupon, and track order use placeholders instead of labels.
-- Out-of-stock products can still be added from a card. The product page blocks that.
-- Category and bundles have no real empty state.
-- Shop unit filters stay in English when the site is Arabic.
-- Search stops at six results and does not offer “see all in the shop.”
-- The signup popup and an unused Alpine timer both exist, so the offer can behave differently than expected.
+## Admin
 
-## Bugs
+Login at `/admin`. Roles: `super_admin`, `orders_manager`, `catalog_manager`, `content_manager`, `design_manager`, `analytics_viewer`, `finance_viewer`. A staff user needs both a role and admin access.
 
-- Cart remove and coupon always return JSON (`CartController`).
-- A success flash is started on a nested Alpine component that does not have the toast function, so the message may never appear.
-- Invoice download tries to match an email with the phone checker, so that path does not work. A guest who knows the order id and phone can still download the invoice.
-- Status-change emails are queued. With `QUEUE_CONNECTION=database` and no worker, they sit in the jobs table.
-- Mail is set to `log`, so invoices and admin notices stay in the log file.
-- If the server `.env` omits `DB_CONNECTION`, Laravel falls back to SQLite. On eg-ss.com the SQLite file is owned by `root`, while the site runs as the `lsphp` user, so the database is read-only.
-- Paymob treats a missing API key as “Visa off,” even though that key is not used in the payment request.
-- New admin users can get a role and still be locked out, because `is_admin` is only set on edit.
+| Area | Path | What it does |
+| --- | --- | --- |
+| Dashboard | `/admin` | Period cards, revenue chart, status, payment, top products, cities, product views. Latest orders is a bar chart of totals |
+| Sales | `/admin/sales` | Revenue, products, cities, payment methods, promo codes used. Cancelled orders are excluded from revenue |
+| Customers and traffic | `/admin/traffic` | Visits, pages, hour of day, weekday, place, device |
+| Customer analysis | `/admin/customer-analysis` | Per customer: visit time, purchase time, promo code, place, device, orders |
+| Staff guide | `/admin/guide` | This handbook on screen, plus Download PDF |
+| Orders | `/admin/orders` | Lines, coupon, packaging, shipping, mail status, invoice. Create a manual order for a customer, including internal products. Cancel restores stock once |
+| Users | `/admin/users` | Phone is required. Name, email, password, and address are optional. Orders of that customer are listed |
+| Products | `/admin/products` | `is_internal`: inactive in the shop, available in admin pickers, bundles, and manual orders |
+| Bundles | `/admin/bundles` | Cover upload and gallery |
+| Categories, services, packaging, cities, coupons | catalog group | Shop structure and offers |
+| Banners, content strings, SEO | content group | Home and metadata |
+| Design assets, colors | design group | Logo, dark logo, icon, home picture, share image, empty cart, empty shop, sign-in picture, footer mark, wallpaper |
+| Social links | design / content | Footer icons |
+| Signup coupon | `/admin` signup offer page | Popup delay and the coupon that is emailed |
+| Payment attempts | payments resource | Paymob records. No card PAN |
 
-## Enhancements
+## What was added
 
-- Admin order page with lines, totals, invoice, and payment attempts.
-- Admin cancel that restores stock.
-- Low-stock notice.
-- Product import (the importer exists and is not connected).
-- One login for the shop and `/my`.
-- Arabic labels for payment and order statuses.
-- Real SMTP and a queue worker, or send status mail immediately.
+- Coffee catalog art under `storage/app/public` (products, banners, category, design). Git keeps those folders.
+- Cart line photos. Checkout shipping fee updates live from the selected city.
+- Footer social links, editable in admin, http and https only.
+- Sticky footer on short pages.
+- Dark mode text stays light. Buttons, hero, and footer keep cream text. Gold kickers stay gold.
+- Order is stored before email. Mail failure is a flag. Staff resend the PDF.
+- Internal products. Manual customers. Manual orders.
+- Bundle cover and gallery.
+- Dashboard charts and a latest-orders bar chart.
+- Sales analytics page, including promo codes.
+- Customer analysis: when they visited, when they bought, which promo code.
+- Wallpaper design asset.
+- Mobile header, cart controls, coupon button, login form, and search field spacing.
+- Empty cart, empty shop, and sign-in pictures no longer print file names. Admin lists those pictures with normal words.
+- Staff guide layout and PDF download.
+- phpMyAdmin import file at `database/phpmyadmin-import.sql` (shop tables plus Laravel `sessions`, `cache`, and `jobs`).
 
-## Execution plan
+## Commands
 
-### 1. Make checkout trustworthy
+- `php artisan orders:notify {order}` sends the order email and PDF.
+- `php artisan store:process-subscriptions` processes due subscriptions.
+- `php artisan migrate` creates tables. Tests use sqlite memory. Local shop data has been kept in MySQL database `e_comm`.
 
-Fix cart remove, coupon, and quantity so they return to the cart page. Show delivery on the cart as “chosen at checkout,” and show packaging as its own line. Add labels on checkout and track. Translate payment statuses.
+## Deploy notes
 
-This is the conversion work and should be done first.
+The store repository is `abdawyy/e_comm_2`. `/home/al-dawy.com/public_html` is a different project (`veg_fruits`). The coffee shop on the server is the directory whose remote is `e_comm_2`. After `git pull`, run `npm run build`, then `php artisan view:clear` and `php artisan config:clear`. Import `database/phpmyadmin-import.sql` in phpMyAdmin while the shop database is selected when the tables are missing.
 
-### 2. Make the admin able to run an order
-
-Show lines, address, coupon, packaging, and the invoice on the order screen. Cancelling restores stock. Add the invoice link. Set `is_admin` when a super admin creates a staff user.
-
-### 3. Finish the storefront screens
-
-Category and bundles empty states, stock state on cards, shop units in Arabic, search “view all,” and one signup-popup timer. Keep the store look on account pages where it is cheap to do.
-
-### 4. Put the server on a real database and mail
-
-Keep production on MySQL or PostgreSQL, not a SQLite file inside `public_html`. Set `DB_PASSWORD`, run migrations, and import `database/phpmyadmin-import.sql` if the current catalog should be loaded. Set SMTP. Either run `php artisan queue:work` or stop queueing status emails. Add Paymob keys only when the webhook URL is public.
-
-### 5. Tighten access
-
-Invoice download by signed link or logged-in owner. Stop exposing payment status by order reference alone. Add tests for cart page actions, admin cancel, and the invoice phone path.
+Do not commit `.env`. Mail and database passwords stay there.

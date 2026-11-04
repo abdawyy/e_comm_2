@@ -16,6 +16,17 @@ class DesignAsset extends Model
     /** @use HasFactory<DesignAssetFactory> */
     use HasFactory, HasPublicImage, HasTranslations;
 
+    public static function label(string $key): string
+    {
+        $translated = __("admin.design.$key");
+
+        if ($translated !== "admin.design.$key") {
+            return $translated;
+        }
+
+        return ucfirst(str_replace('_', ' ', $key));
+    }
+
     public const KEYS = [
         'logo',
         'logo_dark',

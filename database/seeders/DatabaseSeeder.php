@@ -47,18 +47,25 @@ class DatabaseSeeder extends Seeder
 
         foreach (DesignAsset::KEYS as $key) {
             $path = 'design/'.$key.'.svg';
-            Storage::disk('public')->put($path, $this->svg($key, $colors[$key]));
+
+            if (! Storage::disk('public')->exists($path)) {
+                Storage::disk('public')->put($path, $this->svg($colors[$key] ?? '#1A2B28'));
+            }
+
             DesignAsset::query()->updateOrCreate(['key' => $key], [
                 'image_path' => $path,
-                'alt' => ['en' => 'Atlas Market '.$key, 'ar' => 'سوق أطلس '.$key],
+                'alt' => [
+                    'en' => trans('admin.design.'.$key, [], 'en'),
+                    'ar' => trans('admin.design.'.$key, [], 'ar'),
+                ],
                 'is_active' => true,
             ]);
         }
     }
 
-    private function svg(string $label, string $color): string
+    private function svg(string $color): string
     {
-        return '<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360"><rect width="640" height="360" rx="28" fill="'.$color.'"/><text x="40" y="190" fill="white" font-size="42" font-family="sans-serif">Atlas '.$label.'</text></svg>';
+        return '<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360"><rect width="640" height="360" rx="28" fill="'.$color.'"/></svg>';
     }
 
     private function seedCatalog(): void

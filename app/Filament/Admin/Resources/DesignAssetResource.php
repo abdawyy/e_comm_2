@@ -57,7 +57,7 @@ class DesignAssetResource extends Resource
     {
         return $schema->columns(1)->components([
             Section::make(__('admin.forms.media'))->description(__('admin.help.design_sizes'))->icon(Heroicon::OutlinedPhoto)->schema([
-                Select::make('key')->label(__('admin.fields.key'))->options(array_combine(DesignAsset::KEYS, DesignAsset::KEYS))->required()->unique(ignoreRecord: true)->native(false),
+                Select::make('key')->label(__('admin.fields.key'))->options(collect(DesignAsset::KEYS)->mapWithKeys(fn (string $key) => [$key => DesignAsset::label($key)])->all())->required()->unique(ignoreRecord: true)->native(false),
                 Toggle::make('is_active')->onColor('success')->offColor('gray')->default(true)->label(__('admin.fields.active'))->inline(false),
                 FileUpload::make('image_path')
                     ->label(__('admin.fields.image'))
@@ -78,7 +78,7 @@ class DesignAssetResource extends Resource
     public static function table(Table $table): Table
     {
         return $table->columns([
-            TextColumn::make('key')->label(__('admin.fields.key'))->searchable(),
+            TextColumn::make('key')->label(__('admin.fields.key'))->formatStateUsing(fn (string $state) => DesignAsset::label($state))->searchable(),
             ImageColumn::make('preview')->label(__('admin.fields.image'))->state(fn (DesignAsset $record) => $record->url()),
             TextColumn::make('alt')->label(__('admin.fields.alt')),
             Columns::active(),

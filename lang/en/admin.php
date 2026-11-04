@@ -1,6 +1,18 @@
 <?php
 
 return [
+    'design' => [
+        'logo' => 'Logo',
+        'logo_dark' => 'Dark logo',
+        'favicon' => 'Icon',
+        'hero' => 'Home picture',
+        'og_default' => 'Share image',
+        'empty_cart' => 'Empty cart',
+        'empty_shop' => 'Empty shop',
+        'auth_side' => 'Sign in picture',
+        'footer_mark' => 'Footer mark',
+        'wallpaper' => 'Wallpaper',
+    ],
     'groups' => [
         'catalog' => 'Catalog',
         'sales' => 'Sales',

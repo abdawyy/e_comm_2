@@ -219,6 +219,8 @@ return [
         'admin_body' => 'الطلب :reference الإجمالي :total',
         'status_subject' => 'تحديث الطلب :reference',
         'status_body' => 'انتقل الطلب :reference من :from إلى :to.',
+        'payment_subject' => 'تحديث دفع الطلب :reference',
+        'payment_body' => 'انتقل دفع الطلب :reference من :from إلى :to.',
     ],
     'sms' => [
         'order_confirmed' => 'تم تأكيد الطلب :reference.',

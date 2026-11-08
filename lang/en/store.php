@@ -219,6 +219,8 @@ return [
         'admin_body' => 'Order :reference total :total',
         'status_subject' => 'Order :reference updated',
         'status_body' => 'Order :reference moved from :from to :to.',
+        'payment_subject' => 'Payment for order :reference updated',
+        'payment_body' => 'Payment for order :reference moved from :from to :to.',
     ],
     'sms' => [
         'order_confirmed' => 'Order :reference is confirmed.',

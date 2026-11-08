@@ -6,9 +6,11 @@ use App\Contracts\PaymentGatewayInterface;
 use App\Contracts\SmsSender;
 use App\Events\OrderCreated;
 use App\Events\OrderPaid;
+use App\Events\OrderPaymentChanged;
 use App\Events\OrderStatusChanged;
 use App\Listeners\HandleOrderCreated;
 use App\Listeners\HandleOrderPaid;
+use App\Listeners\HandleOrderPaymentChanged;
 use App\Listeners\HandleOrderStatusChanged;
 use App\Services\CustomerInsights;
 use App\Services\Payments\CashOnDeliveryGateway;
@@ -46,5 +48,6 @@ class AppServiceProvider extends ServiceProvider
         Event::listen(OrderCreated::class, HandleOrderCreated::class);
         Event::listen(OrderPaid::class, HandleOrderPaid::class);
         Event::listen(OrderStatusChanged::class, HandleOrderStatusChanged::class);
+        Event::listen(OrderPaymentChanged::class, HandleOrderPaymentChanged::class);
     }
 }

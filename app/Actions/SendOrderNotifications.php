@@ -6,10 +6,9 @@ use App\Contracts\SmsSender;
 use App\Mail\AdminOrderMail;
 use App\Mail\OrderConfirmationMail;
 use App\Models\Order;
-use App\Models\User;
+use App\Models\StoreSetting;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\URL;
 
 class SendOrderNotifications
 {
@@ -33,14 +32,8 @@ class SendOrderNotifications
             return;
         }
 
-        $url = URL::temporarySignedRoute(
-            'invoices.download',
-            now()->addDays((int) config('store.invoice_ttl_days', 14)),
-            ['order' => $order->id],
-        );
-
         if (filled($order->customer_email)) {
-            Mail::to($order->customer_email)->send(new OrderConfirmationMail($order, $url));
+            Mail::to($order->customer_email)->send(new OrderConfirmationMail($order));
         }
 
         $this->notifyAdmin($order);
@@ -61,18 +54,7 @@ class SendOrderNotifications
     {
         $order->refresh();
 
-        if (! $order->invoice_path) {
-            app(GenerateInvoiceAction::class)->execute($order);
-            $order->refresh();
-        }
-
-        $url = URL::temporarySignedRoute(
-            'invoices.download',
-            now()->addDays((int) config('store.invoice_ttl_days', 14)),
-            ['order' => $order->id],
-        );
-
-        Mail::to($email)->send(new OrderConfirmationMail($order, $url));
+        Mail::to($email)->send(new OrderConfirmationMail($order));
         $order->forceFill([
             'confirmation_sent_at' => $order->confirmation_sent_at ?? now(),
             'mail_status' => 'sent',
@@ -80,26 +62,36 @@ class SendOrderNotifications
         ])->save();
     }
 
-    public function notifyAdmin(Order $order): void
+    /**
+     * @return list<string>
+     */
+    public function parties(Order $order): array
     {
-        $key = 'orders.admin_mail.'.$order->id;
-
-        if (Cache::has($key)) {
-            return;
-        }
-
-        $admins = User::query()->where('is_admin', true)->pluck('email')
-            ->push(config('store.admin_email'))
-            ->filter()
+        return collect([$order->customer_email, StoreSetting::orderEmail()])
+            ->filter(fn ($email) => filled($email))
             ->map(fn ($email) => strtolower(trim((string) $email)))
             ->unique()
-            ->values();
+            ->values()
+            ->all();
+    }
 
-        if ($admins->isEmpty()) {
+    public function sendCopy(Order $order, callable $message): void
+    {
+        foreach ($this->parties($order) as $email) {
+            Mail::to($email)->send($message());
+        }
+    }
+
+    public function notifyAdmin(Order $order): void
+    {
+        $email = StoreSetting::orderEmail();
+        $key = 'orders.admin_mail.'.$order->id;
+
+        if (blank($email) || Cache::has($key)) {
             return;
         }
 
-        Mail::to($admins->all())->send(new AdminOrderMail($order));
+        Mail::to($email)->send(new AdminOrderMail($order));
         Cache::forever($key, true);
     }
 }

@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Mail\AdminOrderMail;
 use App\Mail\OrderConfirmationMail;
 use App\Models\Order;
+use App\Models\StoreSetting;
 use App\Models\PaymentTransaction;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
@@ -45,7 +46,7 @@ class PaymobWebhookTest extends TestCase
         Mail::assertSent(OrderConfirmationMail::class, function (OrderConfirmationMail $mail): bool {
             return $mail->hasTo('nour@example.test') && count($mail->attachments()) === 1;
         });
-        Mail::assertSent(AdminOrderMail::class, fn (AdminOrderMail $mail) => $mail->hasTo('admin@example.test'));
+        Mail::assertSent(AdminOrderMail::class, fn (AdminOrderMail $mail) => $mail->hasTo(StoreSetting::orderEmail()));
 
         $this->postJson('/payments/paymob/webhook?hmac='.$this->sign($payload), ['obj' => $payload])->assertOk();
         Mail::assertSent(OrderConfirmationMail::class, 1);

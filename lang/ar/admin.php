@@ -88,7 +88,7 @@ return [
     'actions' => ['save' => 'حفظ', 'export' => 'تصدير المنتجات', 'export_visitors' => 'تصدير الزوار', 'export_views' => 'تصدير المشاهدات', 'open' => 'فتح'],
     'status' => ['pending' => 'قيد الانتظار', 'confirmed' => 'مؤكد', 'processing' => 'قيد التجهيز', 'shipped' => 'تم الشحن', 'delivered' => 'تم التسليم', 'cancelled' => 'ملغى'],
     'payment' => ['unpaid' => 'غير مدفوع', 'pending' => 'معلّق', 'paid' => 'مدفوع', 'failed' => 'فشل', 'refunded' => 'مُسترد'],
-    'pages' => ['traffic' => 'العملاء والزيارات', 'customers' => 'تحليل العملاء', 'sales' => 'المبيعات', 'guide' => 'دليل الفريق', 'colors' => 'الألوان', 'signup_offer' => 'كوبون التسجيل'],
+    'pages' => ['traffic' => 'العملاء والزيارات', 'customers' => 'تحليل العملاء', 'sales' => 'المبيعات', 'guide' => 'دليل الفريق', 'colors' => 'الألوان', 'signup_offer' => 'كوبون التسجيل', 'order_email' => 'بريد الطلبات'],
     'theme' => [
         'brand' => 'العلامة', 'palette' => 'اللوحة', 'primary' => 'الأساسي', 'primary_dark' => 'الأساسي الداكن', 'primary_light' => 'الأساسي الفاتح',
         'accent' => 'الإبراز', 'accent_light' => 'الإبراز الفاتح', 'canvas' => 'الخلفية', 'surface' => 'السطح', 'border' => 'الحدود',
@@ -172,6 +172,9 @@ return [
         'sent' => 'تم إرسال الفاتورة',
         'failed' => 'لم يُرسل بريد الفاتورة',
         'no_address' => 'لا يوجد بريد للإرسال',
+        'order_email' => 'بريد المتجر',
+        'order_email_help' => 'الطلبات الجديدة وتحديثاتها تُرسل إلى هذا البريد وإلى العميل.',
+        'order_email_saved' => 'تم حفظ بريد الطلبات',
     ],
     'orders' => [
         'customer' => 'العميل والتوصيل',

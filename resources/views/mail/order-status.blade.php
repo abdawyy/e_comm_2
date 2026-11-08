@@ -4,6 +4,10 @@
         <strong>{{ $theme->brand_name }}</strong>
     </div>
     <div style="padding: 16px;">
-        <p>{{ __('store.mail.status_body', ['reference' => $order->reference, 'from' => $fromStatus, 'to' => $toStatus], $order->locale) }}</p>
+        <p>{{ __('store.mail.status_body', [
+            'reference' => $order->reference,
+            'from' => __('admin.status.'.$fromStatus, [], $order->locale ?: 'en'),
+            'to' => __('admin.status.'.$toStatus, [], $order->locale ?: 'en'),
+        ], $order->locale ?: 'en') }}</p>
     </div>
 </div>

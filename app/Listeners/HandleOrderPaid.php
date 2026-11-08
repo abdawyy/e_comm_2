@@ -2,14 +2,12 @@
 
 namespace App\Listeners;
 
-use App\Actions\GenerateInvoiceAction;
 use App\Actions\SendOrderNotifications;
 use App\Events\OrderPaid;
 
 class HandleOrderPaid
 {
     public function __construct(
-        private GenerateInvoiceAction $invoices,
         private SendOrderNotifications $notifications,
     ) {}
 
@@ -19,11 +17,6 @@ class HandleOrderPaid
 
         if (! $order || $order->payment_status !== 'paid') {
             return;
-        }
-
-        if (! $order->invoice_path) {
-            $this->invoices->execute($order);
-            $order->refresh();
         }
 
         $this->notifications->send($order);

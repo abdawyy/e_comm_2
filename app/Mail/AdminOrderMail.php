@@ -2,11 +2,12 @@
 
 namespace App\Mail;
 
-use App\Models\DesignAsset;
+use App\Actions\GenerateInvoiceAction;
 use App\Models\Order;
 use App\Models\SiteTheme;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
@@ -28,8 +29,17 @@ class AdminOrderMail extends Mailable
             view: 'mail.admin-order',
             with: [
                 'theme' => SiteTheme::current(),
-                'logo' => DesignAsset::urlFor('logo'),
             ],
         );
+    }
+
+    public function attachments(): array
+    {
+        $pdf = app(GenerateInvoiceAction::class)->execute($this->order);
+
+        return [
+            Attachment::fromData(fn () => $pdf, $this->order->reference.'.pdf')
+                ->withMime('application/pdf'),
+        ];
     }
 }

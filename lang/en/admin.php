@@ -88,7 +88,7 @@ return [
     'actions' => ['save' => 'Save', 'export' => 'Export products', 'export_visitors' => 'Export visitors', 'export_views' => 'Export page views', 'open' => 'Open'],
     'status' => ['pending' => 'Pending', 'confirmed' => 'Confirmed', 'processing' => 'Processing', 'shipped' => 'Shipped', 'delivered' => 'Delivered', 'cancelled' => 'Cancelled'],
     'payment' => ['unpaid' => 'Unpaid', 'pending' => 'Pending', 'paid' => 'Paid', 'failed' => 'Failed', 'refunded' => 'Refunded'],
-    'pages' => ['traffic' => 'Customers & traffic', 'customers' => 'Customer analysis', 'sales' => 'Sales', 'guide' => 'Staff guide', 'colors' => 'Colors', 'signup_offer' => 'Signup coupon'],
+    'pages' => ['traffic' => 'Customers & traffic', 'customers' => 'Customer analysis', 'sales' => 'Sales', 'guide' => 'Staff guide', 'colors' => 'Colors', 'signup_offer' => 'Signup coupon', 'order_email' => 'Order email'],
     'theme' => [
         'brand' => 'Brand', 'palette' => 'Palette', 'primary' => 'Primary', 'primary_dark' => 'Primary dark', 'primary_light' => 'Primary light',
         'accent' => 'Accent', 'accent_light' => 'Accent light', 'canvas' => 'Canvas', 'surface' => 'Surface', 'border' => 'Border',
@@ -172,6 +172,9 @@ return [
         'sent' => 'Invoice email sent',
         'failed' => 'Invoice email was not sent',
         'no_address' => 'There is no email address to send to',
+        'order_email' => 'Store inbox',
+        'order_email_help' => 'New orders and later updates are sent here and to the customer.',
+        'order_email_saved' => 'Order email saved',
     ],
     'orders' => [
         'customer' => 'Customer and delivery',

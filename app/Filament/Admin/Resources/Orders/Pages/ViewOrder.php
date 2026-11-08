@@ -2,8 +2,8 @@
 
 namespace App\Filament\Admin\Resources\Orders\Pages;
 
-use App\Actions\GenerateInvoiceAction;
 use App\Actions\SendOrderNotifications;
+use App\Models\StoreSetting;
 use App\Filament\Admin\Resources\OrderResource;
 use App\Models\Order;
 use Filament\Actions\Action;
@@ -25,7 +25,7 @@ class ViewOrder extends ViewRecord
             Action::make('sendAdmin')
                 ->label(__('admin.mail.send_admin'))
                 ->action(function (Order $record): void {
-                    $email = auth()->user()?->email ?: (string) config('store.admin_email');
+                    $email = (string) (StoreSetting::orderEmail() ?: config('store.admin_email'));
                     $this->sendInvoice($record, $email);
                 }),
         ];
@@ -40,7 +40,6 @@ class ViewOrder extends ViewRecord
         }
 
         try {
-            app(GenerateInvoiceAction::class)->execute($order);
             app(SendOrderNotifications::class)->sendInvoiceTo($order->fresh(), $email);
             Notification::make()->title(__('admin.mail.sent'))->success()->send();
         } catch (Throwable $exception) {

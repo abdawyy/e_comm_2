@@ -2,7 +2,6 @@
 
 namespace App\Listeners;
 
-use App\Actions\GenerateInvoiceAction;
 use App\Actions\SendOrderNotifications;
 use App\Events\OrderCreated;
 use App\Models\Order;
@@ -10,7 +9,6 @@ use App\Models\Order;
 class HandleOrderCreated
 {
     public function __construct(
-        private GenerateInvoiceAction $invoices,
         private SendOrderNotifications $notifications,
     ) {}
 
@@ -29,18 +27,14 @@ class HandleOrderCreated
 
     public function deliver(Order $order): void
     {
-        if (! $order->invoice_path) {
-            $this->invoices->execute($order);
-            $order = $order->fresh() ?? $order;
-        }
-
         if ($order->payment_gateway === 'cod') {
             $this->notifications->send($order->fresh() ?? $order);
 
             return;
         }
 
-        $this->notifications->notifyAdmin($order->fresh() ?? $order);
+        $order = $order->fresh() ?? $order;
+        $this->notifications->notifyAdmin($order);
         $order->forceFill([
             'mail_status' => filled($order->customer_email) ? 'sent' : 'failed',
             'mail_error' => filled($order->customer_email) ? null : 'Customer has no email',

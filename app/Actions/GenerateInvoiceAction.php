@@ -6,7 +6,6 @@ use App\Models\DesignAsset;
 use App\Models\Order;
 use App\Models\SiteTheme;
 use App\Services\DecimalMath;
-use Illuminate\Support\Facades\Storage;
 use Mpdf\Mpdf;
 
 class GenerateInvoiceAction
@@ -47,10 +46,6 @@ class GenerateInvoiceAction
         ]);
         $mpdf->WriteHTML($html);
 
-        $path = 'invoices/'.$order->reference.'.pdf';
-        Storage::disk('local')->put($path, $mpdf->Output('', 'S'));
-        $order->forceFill(['invoice_path' => $path])->save();
-
-        return $path;
+        return $mpdf->Output('', 'S');
     }
 }

@@ -5,23 +5,22 @@ namespace App\Http\Controllers;
 use App\Actions\GenerateInvoiceAction;
 use App\Models\Order;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Symfony\Component\HttpFoundation\StreamedResponse;
+use Illuminate\Http\Response;
 
 class InvoiceController extends Controller
 {
-    public function __invoke(Request $request, Order $order, GenerateInvoiceAction $invoices): StreamedResponse
+    public function __invoke(Request $request, Order $order, GenerateInvoiceAction $invoices): Response
     {
         if (! $this->allowed($request, $order)) {
             abort(403);
         }
 
-        if (! $order->invoice_path || ! Storage::disk('local')->exists($order->invoice_path)) {
-            $invoices->execute($order);
-            $order->refresh();
-        }
+        $filename = preg_replace('/[^A-Za-z0-9._-]/', '', (string) $order->reference) ?: 'invoice';
 
-        return Storage::disk('local')->download($order->invoice_path, $order->reference.'.pdf');
+        return response($invoices->execute($order), 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'attachment; filename="'.$filename.'.pdf"',
+        ]);
     }
 
     private function allowed(Request $request, Order $order): bool

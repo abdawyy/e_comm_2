@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Actions\RestoreStock;
+use App\Events\OrderPaymentChanged;
 use App\Events\OrderStatusChanged;
 use Database\Factories\OrderFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -57,6 +58,14 @@ class Order extends Model
                     $order,
                     (string) $order->getOriginal('status'),
                     (string) $order->status,
+                ));
+            }
+
+            if ($order->wasChanged('payment_status')) {
+                event(new OrderPaymentChanged(
+                    $order,
+                    (string) $order->getOriginal('payment_status'),
+                    (string) $order->payment_status,
                 ));
             }
         });

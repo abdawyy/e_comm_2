@@ -5,6 +5,8 @@ namespace App\Listeners;
 use App\Actions\SendOrderNotifications;
 use App\Events\OrderCreated;
 use App\Models\Order;
+use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class HandleOrderCreated
 {
@@ -14,15 +16,38 @@ class HandleOrderCreated
 
     public function handle(OrderCreated $event): void
     {
-        if (! app()->runningUnitTests()) {
+        $orderId = $event->order->getKey();
+
+        if (app()->runningUnitTests()) {
+            $order = Order::query()->find($orderId);
+
+            if ($order) {
+                $this->deliver($order);
+            }
+
             return;
         }
 
-        $order = Order::query()->find($event->order->getKey());
+        dispatch(function () use ($orderId): void {
+            $order = Order::query()->find($orderId);
 
-        if ($order) {
-            $this->deliver($order);
-        }
+            if (! $order) {
+                return;
+            }
+
+            try {
+                app(self::class)->deliver($order);
+            } catch (Throwable $exception) {
+                $order->forceFill([
+                    'mail_status' => 'failed',
+                    'mail_error' => $exception->getMessage(),
+                ])->save();
+                Log::error('order.notifications_failed', [
+                    'order_id' => $order->id,
+                    'message' => $exception->getMessage(),
+                ]);
+            }
+        })->afterResponse();
     }
 
     public function deliver(Order $order): void

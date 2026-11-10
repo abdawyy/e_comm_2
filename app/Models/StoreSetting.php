@@ -13,6 +13,7 @@ class StoreSetting extends Model
     {
         return [
             'announcement_active' => 'boolean',
+            'invoice_pdf' => 'array',
         ];
     }
 
@@ -24,6 +25,7 @@ class StoreSetting extends Model
         'announcement_active',
         'announcement_color',
         'announcement_opacity',
+        'invoice_pdf',
     ];
 
     protected static function booted(): void
@@ -32,11 +34,13 @@ class StoreSetting extends Model
             Cache::forget('store.order_email');
             Cache::forget('store.whatsapp_number');
             Cache::forget('store.announcement');
+            Cache::forget('store.invoice_pdf');
         });
         static::deleted(function (): void {
             Cache::forget('store.order_email');
             Cache::forget('store.whatsapp_number');
             Cache::forget('store.announcement');
+            Cache::forget('store.invoice_pdf');
         });
     }
 
@@ -109,6 +113,93 @@ class StoreSetting extends Model
     private static function announcementUnset(array $cached): bool
     {
         return trim((string) ($cached['en'] ?? '')) === '' && trim((string) ($cached['ar'] ?? '')) === '';
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public static function invoiceProfile(): array
+    {
+        $cached = Cache::get('store.invoice_pdf');
+
+        if (! is_array($cached)) {
+            $cached = static::storedInvoice();
+            Cache::forever('store.invoice_pdf', $cached);
+        }
+
+        return static::mergeInvoice($cached);
+    }
+
+    public static function invoiceLine(string $locale, string $key): string
+    {
+        $profile = static::invoiceProfile();
+        $locale = $locale === 'en' ? 'en' : 'ar';
+        $custom = trim((string) ($profile[$locale][$key] ?? ''));
+
+        return $custom !== '' ? $custom : (string) __('store.invoice.'.$key, [], $locale);
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public static function invoiceDefaults(): array
+    {
+        return [
+            'paper' => '#fdfbf6',
+            'accent' => '#492b18',
+            'card' => '#f4ebe1',
+            'border' => '#886d5a',
+            'show_qr' => true,
+            'show_tax' => true,
+            'tax_percent' => '0',
+            'seller_phone' => '',
+            'seller_tax' => '',
+            'contact' => '',
+            'ar' => ['title' => '', 'tagline' => '', 'policy' => '', 'thanks' => '', 'address' => ''],
+            'en' => ['title' => '', 'tagline' => '', 'policy' => '', 'thanks' => '', 'address' => ''],
+        ];
+    }
+
+    /**
+     * @param  array<string, mixed>  $stored
+     * @return array<string, mixed>
+     */
+    private static function mergeInvoice(array $stored): array
+    {
+        $defaults = static::invoiceDefaults();
+        $merged = array_replace($defaults, $stored);
+        foreach (['paper', 'accent', 'card', 'border'] as $color) {
+            $merged[$color] = static::hexColor((string) ($merged[$color] ?? '')) ?? $defaults[$color];
+        }
+        $merged['show_qr'] = (bool) ($merged['show_qr'] ?? true);
+        $merged['show_tax'] = (bool) ($merged['show_tax'] ?? true);
+        $percent = trim((string) ($merged['tax_percent'] ?? '0'));
+        $merged['tax_percent'] = preg_match('/^\d+(\.\d{1,2})?$/', $percent) === 1 ? $percent : '0';
+        foreach (['ar', 'en'] as $locale) {
+            $text = is_array($merged[$locale] ?? null) ? $merged[$locale] : [];
+            $merged[$locale] = array_replace($defaults[$locale], $text);
+        }
+
+        return $merged;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private static function storedInvoice(): array
+    {
+        try {
+            if (! Schema::hasTable('store_settings') || ! Schema::hasColumn('store_settings', 'invoice_pdf')) {
+                return [];
+            }
+        } catch (Throwable) {
+            return [];
+        }
+
+        $row = static::query()->orderByDesc('id')->first();
+        $value = $row?->invoice_pdf;
+
+        return is_array($value) ? $value : [];
     }
 
     private static function hexColor(string $color): ?string

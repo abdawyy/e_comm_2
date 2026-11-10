@@ -14,7 +14,7 @@ class GenerateInvoiceAction
 
     public function execute(Order $order): string
     {
-        $order->loadMissing('items');
+        $order->loadMissing(['items', 'shippingCarrier']);
         $theme = SiteTheme::current();
         $logo = DesignAsset::urlFor('logo');
         $locale = in_array($order->locale, ['en', 'ar'], true) ? $order->locale : 'ar';
@@ -44,6 +44,10 @@ class GenerateInvoiceAction
             'tempDir' => $directory,
             'autoScriptToLang' => true,
             'autoLangToFont' => true,
+            'margin_left' => 10,
+            'margin_right' => 10,
+            'margin_top' => 10,
+            'margin_bottom' => 10,
         ]);
         $mpdf->WriteHTML($html);
 

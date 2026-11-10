@@ -95,7 +95,10 @@
                     <td class="card" width="48%" style="padding: 10px;">
                         <div style="font-weight: bold; text-align: center; margin-bottom: 6px;">{{ __('store.invoice.payment_block', [], $locale) }}</div>
                         <div><strong>{{ __('store.invoice.method', [], $locale) }}:</strong> {{ $payment }}</div>
-                        <div><strong>{{ __('store.invoice.kind', [], $locale) }}:</strong> {{ __('store.invoice.delivery', [], $locale) }}@if($order->shippingCarrier) — {{ $order->shippingCarrier->getTranslation('name', $locale) }}@endif</div>
+                        <div><strong>{{ __('store.invoice.kind', [], $locale) }}:</strong> {{ __('store.invoice.delivery', [], $locale) }}</div>
+                        @if(($forDelivery ?? false) || $order->shippingCarrier)
+                            <div><strong>{{ __('store.delivery.carrier', [], $locale) }}:</strong> {{ $order->shippingCarrier?->getTranslation('name', $locale) }}</div>
+                        @endif
                         <div><strong>{{ __('store.invoice.status', [], $locale) }}:</strong> {{ $status }}</div>
                     </td>
                 </tr>

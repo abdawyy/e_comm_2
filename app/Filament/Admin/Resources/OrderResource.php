@@ -12,6 +12,7 @@ use App\Services\DecimalMath;
 use Filament\Actions\ViewAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Section;
@@ -44,6 +45,13 @@ class OrderResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema->columns(1)->components([
+            Section::make(__('admin.orders.customer'))->schema([
+                TextInput::make('customer_name')->label(__('admin.fields.customer'))->required()->maxLength(120),
+                TextInput::make('customer_phone')->label(__('admin.fields.phone'))->maxLength(40),
+                TextInput::make('customer_email')->label(__('admin.fields.email'))->email()->maxLength(190),
+                TextInput::make('city_name')->label(__('admin.fields.city'))->maxLength(120),
+                Textarea::make('address')->label(__('admin.fields.address'))->rows(2)->columnSpanFull(),
+            ])->columns(2),
             Section::make(__('store.checkout.shipping'))->icon(Heroicon::OutlinedTruck)->schema([
                 Select::make('shipping_carrier_id')->label(__('store.delivery.carrier'))->options(fn (): array => ShippingCarrier::query()->where('is_active', true)->orderBy('sort_order')->get()->mapWithKeys(fn (ShippingCarrier $carrier): array => [$carrier->id => (string) $carrier->name])->all())->searchable()->native(false)->nullable()->helperText(__('store.delivery.note')),
             ]),
@@ -55,7 +63,11 @@ class OrderResource extends Resource
                     'paid' => __('admin.payment.paid'),
                     'failed' => __('admin.payment.failed'),
                     'refunded' => __('admin.payment.refunded'),
-                ])->native(false)->disabled(fn () => ! auth()->user()?->can('update', Order::class)),
+                ])->native(false)->required(),
+                Select::make('payment_gateway')->label(__('admin.fields.gateway'))->options([
+                    'cod' => __('store.payment.cod'),
+                    'paymob' => __('store.payment.visa'),
+                ])->native(false),
                 Textarea::make('notes')->label(__('admin.fields.notes'))->rows(4)->columnSpanFull(),
             ])->columns(2),
         ]);

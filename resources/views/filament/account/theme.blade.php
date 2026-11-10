@@ -98,3 +98,4 @@
         color: #131316;
     }
 </style>
+@include('store.partials.whatsapp')

@@ -44,9 +44,11 @@ class OrderResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema->columns(1)->components([
+            Section::make(__('store.checkout.shipping'))->icon(Heroicon::OutlinedTruck)->schema([
+                Select::make('shipping_carrier_id')->label(__('store.delivery.carrier'))->options(fn (): array => ShippingCarrier::query()->where('is_active', true)->orderBy('sort_order')->get()->mapWithKeys(fn (ShippingCarrier $carrier): array => [$carrier->id => (string) $carrier->name])->all())->searchable()->native(false)->nullable()->helperText(__('store.delivery.note')),
+            ]),
             Section::make(__('admin.forms.publish'))->icon(Heroicon::OutlinedClipboardDocumentList)->schema([
                 Select::make('status')->label(__('admin.fields.status'))->options(self::statusOptions())->required()->native(false),
-                Select::make('shipping_carrier_id')->label(__('store.delivery.carrier'))->options(fn (): array => ShippingCarrier::query()->where('is_active', true)->orderBy('sort_order')->get()->mapWithKeys(fn (ShippingCarrier $carrier): array => [$carrier->id => (string) $carrier->name])->all())->searchable()->native(false)->nullable(),
                 Select::make('payment_status')->label(__('admin.fields.payment_status'))->options([
                     'unpaid' => __('admin.payment.unpaid'),
                     'pending' => __('admin.payment.pending'),

@@ -5,6 +5,31 @@
         <p>{{ __('store.delivery.unassigned') }}: {{ $unassigned }}</p>
     </section>
     <section class="insight-card">
+        <h2>{{ __('store.delivery.waiting') }}</h2>
+        <div class="insight-table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>{{ __('admin.fields.reference') }}</th>
+                        <th>{{ __('admin.fields.customer') }}</th>
+                        <th>{{ __('admin.fields.city') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($waiting as $order)
+                        <tr>
+                            <td>{{ $order->reference }}</td>
+                            <td>{{ $order->customer_name }}</td>
+                            <td>{{ $order->city_name }}</td>
+                        </tr>
+                    @empty
+                        <tr><td colspan="3">{{ __('admin.stats.empty') }}</td></tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <section class="insight-card">
         <h2>{{ __('store.delivery.analysis') }}</h2>
         <div class="insight-table-wrap">
             <table>

@@ -43,6 +43,24 @@ class DeliveryLabelTest extends TestCase
     }
 
     #[Test]
+    public function the_delivery_page_includes_the_carrier_assignment_form(): void
+    {
+        $this->seed(AdminRolesSeeder::class);
+        $admin = \App\Models\User::query()->where('email', 'admin@example.test')->firstOrFail();
+        $order = Order::factory()->create([
+            'reference' => 'DL-WAIT',
+            'customer_name' => 'Eyad Omar',
+        ]);
+
+        $this->actingAs($admin)
+            ->get('/admin/delivery')
+            ->assertOk()
+            ->assertSee(__('store.delivery.assign'), false)
+            ->assertSee($order->reference, false)
+            ->assertSee(__('store.delivery.waiting'), false);
+    }
+
+    #[Test]
     public function the_storefront_defaults_to_arabic(): void
     {
         $this->get('/')->assertOk()->assertSee('lang="ar"', false);

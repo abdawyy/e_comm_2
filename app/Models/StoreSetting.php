@@ -47,6 +47,10 @@ class StoreSetting extends Model
             Cache::forever('store.announcement', $cached);
         }
 
+        if (static::announcementUnset($cached)) {
+            $cached = static::defaultAnnouncement();
+        }
+
         if (! ($cached['active'] ?? false)) {
             return null;
         }
@@ -59,6 +63,26 @@ class StoreSetting extends Model
         }
 
         return $text !== '' ? $text : null;
+    }
+
+    /**
+     * @return array{active: bool, en: string, ar: string}
+     */
+    public static function defaultAnnouncement(): array
+    {
+        return [
+            'active' => true,
+            'en' => 'Free shipping on orders of 1000 EGP or more. Discount code: ( CA1 )',
+            'ar' => 'شحن مجاني عند الطلب بـ1000 جنيه أو أكثر كود خصم : ( CA1 )',
+        ];
+    }
+
+    /**
+     * @param  array{active?: bool, en?: string, ar?: string}  $cached
+     */
+    private static function announcementUnset(array $cached): bool
+    {
+        return trim((string) ($cached['en'] ?? '')) === '' && trim((string) ($cached['ar'] ?? '')) === '';
     }
 
     /**
@@ -107,15 +131,25 @@ class StoreSetting extends Model
     {
         $digits = preg_replace('/\D+/', '', (string) static::whatsappNumber()) ?? '';
 
-        if ($digits === '') {
+        if ($digits !== '') {
+            if (str_starts_with($digits, '0')) {
+                $digits = '20'.substr($digits, 1);
+            }
+
+            return 'https://wa.me/'.$digits;
+        }
+
+        try {
+            if (! Schema::hasTable('social_links')) {
+                return null;
+            }
+        } catch (Throwable) {
             return null;
         }
 
-        if (str_starts_with($digits, '0')) {
-            $digits = '20'.substr($digits, 1);
-        }
+        $url = SocialLink::query()->where('platform', 'whatsapp')->where('is_active', true)->value('url');
 
-        return 'https://wa.me/'.$digits;
+        return filled($url) ? (string) $url : null;
     }
 
     private static function storedWhatsapp(): string

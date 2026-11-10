@@ -847,6 +847,12 @@ html.dark .store-shell a {
     color: var(--dm-ink);
 }
 
+html.dark .store-announce,
+html.dark .store-announce span {
+    color: #000;
+    background: #eeddb0;
+}
+
 html.dark .store-btn-primary,
 html.dark .store-btn-primary:hover,
 html.dark .store-hero-visual,

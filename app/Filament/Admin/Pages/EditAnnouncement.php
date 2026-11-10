@@ -49,10 +49,14 @@ class EditAnnouncement extends Page
     {
         abort_unless(static::canAccess(), 403);
         $row = StoreSetting::query()->orderByDesc('id')->first();
+        $fallback = StoreSetting::defaultAnnouncement();
+        $english = $row?->announcement_en;
+        $arabic = $row?->announcement_ar;
+        $unset = trim((string) $english) === '' && trim((string) $arabic) === '';
         $this->form->fill([
-            'announcement_active' => (bool) ($row?->announcement_active),
-            'announcement_en' => $row?->announcement_en,
-            'announcement_ar' => $row?->announcement_ar,
+            'announcement_active' => $unset ? true : (bool) $row?->announcement_active,
+            'announcement_en' => $unset ? $fallback['en'] : $english,
+            'announcement_ar' => $unset ? $fallback['ar'] : $arabic,
         ]);
     }
 

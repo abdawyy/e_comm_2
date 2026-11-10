@@ -53,6 +53,8 @@ class EditInvoice extends Page
         $this->form->fill([
             'paper' => $profile['paper'],
             'accent' => $profile['accent'],
+            'titles' => $profile['titles'],
+            'bar_text' => $profile['bar_text'],
             'card' => $profile['card'],
             'border' => $profile['border'],
             'show_qr' => $profile['show_qr'],
@@ -85,6 +87,8 @@ class EditInvoice extends Page
             Section::make(__('store.invoice.colors'))->schema([
                 TextInput::make('paper')->label(__('store.invoice.paper'))->type('color')->required(),
                 TextInput::make('accent')->label(__('store.invoice.accent'))->type('color')->required(),
+                TextInput::make('titles')->label(__('store.invoice.titles'))->type('color')->required(),
+                TextInput::make('bar_text')->label(__('store.invoice.bar_text'))->type('color')->required(),
                 TextInput::make('card')->label(__('store.invoice.card'))->type('color')->required(),
                 TextInput::make('border')->label(__('store.invoice.border'))->type('color')->required(),
             ])->columns(2),
@@ -134,6 +138,8 @@ class EditInvoice extends Page
         $setting->invoice_pdf = [
             'paper' => $state['paper'],
             'accent' => $state['accent'],
+            'titles' => $state['titles'],
+            'bar_text' => $state['bar_text'],
             'card' => $state['card'],
             'border' => $state['border'],
             'show_qr' => (bool) ($state['show_qr'] ?? false),

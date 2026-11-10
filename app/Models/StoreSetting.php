@@ -147,6 +147,8 @@ class StoreSetting extends Model
         return [
             'paper' => '#fdfbf6',
             'accent' => '#492b18',
+            'titles' => '#492b18',
+            'bar_text' => '#ffffff',
             'card' => '#f4ebe1',
             'border' => '#886d5a',
             'show_qr' => true,
@@ -168,7 +170,7 @@ class StoreSetting extends Model
     {
         $defaults = static::invoiceDefaults();
         $merged = array_replace($defaults, $stored);
-        foreach (['paper', 'accent', 'card', 'border'] as $color) {
+        foreach (['paper', 'accent', 'titles', 'bar_text', 'card', 'border'] as $color) {
             $merged[$color] = static::hexColor((string) ($merged[$color] ?? '')) ?? $defaults[$color];
         }
         $merged['show_qr'] = (bool) ($merged['show_qr'] ?? true);

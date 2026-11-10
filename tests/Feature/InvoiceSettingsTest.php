@@ -20,6 +20,7 @@ class InvoiceSettingsTest extends TestCase
         $setting = StoreSetting::query()->first() ?? new StoreSetting;
         $setting->invoice_pdf = [
             'accent' => '#112233',
+            'titles' => '#aa1166',
             'ar' => ['tagline' => 'سطر المحمصة', 'title' => 'فاتورة المتجر'],
             'show_tax' => true,
             'tax_percent' => '14',
@@ -44,6 +45,7 @@ class InvoiceSettingsTest extends TestCase
         $this->assertStringContainsString('سطر المحمصة', $html);
         $this->assertStringContainsString('فاتورة المتجر', $html);
         $this->assertStringContainsString('#112233', $html);
+        $this->assertStringContainsString('#aa1166', $html);
         $this->assertStringContainsString('01099999999', $html);
         $this->assertStringContainsString('14.00 EGP', $html);
     }

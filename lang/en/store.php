@@ -135,6 +135,14 @@ return [
         'snapchat' => 'Snapchat',
         'linkedin' => 'LinkedIn',
     ],
+    'announcement' => [
+        'text' => 'Top streaming line',
+        'saved' => 'Streaming line saved',
+    ],
+    'whatsapp' => [
+        'help' => 'Phone number for the green WhatsApp button. Example: 01000000000. Leave empty to hide the button.',
+        'saved' => 'WhatsApp number saved',
+    ],
     'auth' => [
         'failed' => 'Those credentials do not match.',
         'remember' => 'Remember me',

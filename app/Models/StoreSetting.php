@@ -9,14 +9,126 @@ use Throwable;
 
 class StoreSetting extends Model
 {
+    protected function casts(): array
+    {
+        return [
+            'announcement_active' => 'boolean',
+        ];
+    }
+
     protected $fillable = [
         'order_email',
+        'whatsapp_number',
+        'announcement_en',
+        'announcement_ar',
+        'announcement_active',
     ];
 
     protected static function booted(): void
     {
-        static::saved(fn () => Cache::forget('store.order_email'));
-        static::deleted(fn () => Cache::forget('store.order_email'));
+        static::saved(function (): void {
+            Cache::forget('store.order_email');
+            Cache::forget('store.whatsapp_number');
+            Cache::forget('store.announcement');
+        });
+        static::deleted(function (): void {
+            Cache::forget('store.order_email');
+            Cache::forget('store.whatsapp_number');
+            Cache::forget('store.announcement');
+        });
+    }
+
+    public static function announcement(): ?string
+    {
+        $cached = Cache::get('store.announcement');
+
+        if (! is_array($cached)) {
+            $cached = static::storedAnnouncement();
+            Cache::forever('store.announcement', $cached);
+        }
+
+        if (! ($cached['active'] ?? false)) {
+            return null;
+        }
+
+        $locale = app()->getLocale() === 'en' ? 'en' : 'ar';
+        $text = trim((string) ($cached[$locale] ?? ''));
+
+        if ($text === '') {
+            $text = trim((string) ($cached[$locale === 'ar' ? 'en' : 'ar'] ?? ''));
+        }
+
+        return $text !== '' ? $text : null;
+    }
+
+    /**
+     * @return array{active: bool, en: string, ar: string}
+     */
+    private static function storedAnnouncement(): array
+    {
+        $empty = ['active' => false, 'en' => '', 'ar' => ''];
+
+        try {
+            if (! Schema::hasTable('store_settings') || ! Schema::hasColumn('store_settings', 'announcement_en')) {
+                return $empty;
+            }
+        } catch (Throwable) {
+            return $empty;
+        }
+
+        $row = static::query()->orderByDesc('id')->first();
+
+        if (! $row) {
+            return $empty;
+        }
+
+        return [
+            'active' => (bool) $row->announcement_active,
+            'en' => (string) $row->announcement_en,
+            'ar' => (string) $row->announcement_ar,
+        ];
+    }
+
+    public static function whatsappNumber(): ?string
+    {
+        $number = Cache::get('store.whatsapp_number');
+
+        if (! is_string($number)) {
+            $number = static::storedWhatsapp();
+            Cache::forever('store.whatsapp_number', (string) $number);
+        }
+
+        $number = trim($number);
+
+        return $number !== '' ? $number : null;
+    }
+
+    public static function whatsappUrl(): ?string
+    {
+        $digits = preg_replace('/\D+/', '', (string) static::whatsappNumber()) ?? '';
+
+        if ($digits === '') {
+            return null;
+        }
+
+        if (str_starts_with($digits, '0')) {
+            $digits = '20'.substr($digits, 1);
+        }
+
+        return 'https://wa.me/'.$digits;
+    }
+
+    private static function storedWhatsapp(): string
+    {
+        try {
+            if (! Schema::hasTable('store_settings') || ! Schema::hasColumn('store_settings', 'whatsapp_number')) {
+                return '';
+            }
+        } catch (Throwable) {
+            return '';
+        }
+
+        return (string) static::query()->whereNotNull('whatsapp_number')->orderByDesc('id')->value('whatsapp_number');
     }
 
     public static function orderEmail(): ?string

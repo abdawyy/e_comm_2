@@ -57,6 +57,7 @@
 </head>
 @php($wallpaper = \App\Models\DesignAsset::urlFor('wallpaper'))
 <body @class(['store-shell', 'has-wallpaper' => filled($wallpaper)]) @if($wallpaper) style="--store-wallpaper: url('{{ str_replace(["'", '\\'], '', $wallpaper) }}')" @endif x-data="storefront">
+    @include('store.partials.announcement')
     @include('store.partials.navbar')
 
     @if(session('status'))
@@ -96,6 +97,7 @@
             <div class="store-toast rounded-xl px-4 py-3 shadow-lg" x-text="toast.message"></div>
         </template>
     </div>
+    @include('store.partials.whatsapp')
     @include('store.partials.signup-offer')
 </body>
 </html>

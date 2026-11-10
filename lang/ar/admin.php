@@ -90,7 +90,7 @@ return [
     'actions' => ['save' => 'حفظ', 'export' => 'تصدير المنتجات', 'export_visitors' => 'تصدير الزوار', 'export_views' => 'تصدير المشاهدات', 'open' => 'فتح'],
     'status' => ['pending' => 'قيد الانتظار', 'confirmed' => 'مؤكد', 'processing' => 'قيد التجهيز', 'shipped' => 'تم الشحن', 'delivered' => 'تم التسليم', 'cancelled' => 'ملغى'],
     'payment' => ['unpaid' => 'غير مدفوع', 'pending' => 'معلّق', 'paid' => 'مدفوع', 'failed' => 'فشل', 'refunded' => 'مُسترد'],
-    'pages' => ['traffic' => 'العملاء والزيارات', 'customers' => 'تحليل العملاء', 'sales' => 'المبيعات', 'guide' => 'دليل الفريق', 'delivery' => 'التوصيل', 'colors' => 'الألوان', 'signup_offer' => 'كوبون التسجيل', 'order_email' => 'بريد الطلبات'],
+    'pages' => ['traffic' => 'العملاء والزيارات', 'customers' => 'تحليل العملاء', 'sales' => 'المبيعات', 'guide' => 'دليل الفريق', 'delivery' => 'التوصيل', 'colors' => 'الألوان', 'signup_offer' => 'كوبون التسجيل', 'order_email' => 'بريد الطلبات', 'whatsapp' => 'واتساب', 'announcement' => 'السطر العلوي'],
     'theme' => [
         'brand' => 'العلامة', 'palette' => 'اللوحة', 'primary' => 'الأساسي', 'primary_dark' => 'الأساسي الداكن', 'primary_light' => 'الأساسي الفاتح',
         'accent' => 'الإبراز', 'accent_light' => 'الإبراز الفاتح', 'canvas' => 'الخلفية', 'surface' => 'السطح', 'border' => 'الحدود',

@@ -56,7 +56,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 @php($wallpaper = \App\Models\DesignAsset::urlFor('wallpaper'))
-<body @class(['store-shell', 'has-wallpaper' => filled($wallpaper)]) @if($wallpaper) style="--store-wallpaper: url('{{ str_replace(["'", '\\'], '', $wallpaper) }}')" @endif x-data="storefront">
+<body @class(['store-shell', 'has-wallpaper' => filled($wallpaper)]) @if($wallpaper) style="--store-wallpaper: url('{{ str_replace(["'", '\\'], '', $wallpaper) }}')" @endif x-data="storefront" :class="{ 'menu-open': drawer }">
     @include('store.partials.announcement')
     @include('store.partials.navbar')
 

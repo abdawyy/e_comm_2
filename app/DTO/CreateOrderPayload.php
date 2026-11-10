@@ -19,7 +19,7 @@ class CreateOrderPayload
         public ?string $couponCode = null,
         public ?int $orderPackagingId = null,
         public ?string $notes = null,
-        public string $locale = 'en',
+        public string $locale = 'ar',
         public bool $subscriptionRenewal = false,
         public bool $includeInternal = false,
     ) {}

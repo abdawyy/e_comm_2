@@ -7,6 +7,7 @@ use App\Filament\Admin\Resources\Orders\Pages\EditOrder;
 use App\Filament\Admin\Resources\Orders\Pages\ListOrders;
 use App\Filament\Admin\Resources\Orders\Pages\ViewOrder;
 use App\Models\Order;
+use App\Models\ShippingCarrier;
 use App\Services\DecimalMath;
 use Filament\Actions\ViewAction;
 use Filament\Forms\Components\Select;
@@ -45,6 +46,7 @@ class OrderResource extends Resource
         return $schema->columns(1)->components([
             Section::make(__('admin.forms.publish'))->icon(Heroicon::OutlinedClipboardDocumentList)->schema([
                 Select::make('status')->label(__('admin.fields.status'))->options(self::statusOptions())->required()->native(false),
+                Select::make('shipping_carrier_id')->label(__('store.delivery.carrier'))->options(fn (): array => ShippingCarrier::query()->where('is_active', true)->orderBy('sort_order')->get()->mapWithKeys(fn (ShippingCarrier $carrier): array => [$carrier->id => (string) $carrier->name])->all())->searchable()->native(false)->nullable(),
                 Select::make('payment_status')->label(__('admin.fields.payment_status'))->options([
                     'unpaid' => __('admin.payment.unpaid'),
                     'pending' => __('admin.payment.pending'),
@@ -82,6 +84,9 @@ class OrderResource extends Resource
                 }),
                 TextEntry::make('mail_status')->label(__('admin.mail.status'))->badge(),
                 TextEntry::make('mail_error')->label(__('admin.mail.error'))->visible(fn (Order $record) => filled($record->mail_error)),
+                TextEntry::make('shippingCarrier.name')->label(__('store.delivery.carrier'))->placeholder('—'),
+                TextEntry::make('shipping_label_fee')->label(__('store.delivery.fee'))->placeholder('—')->formatStateUsing(fn ($state) => $state === null ? '—' : app(DecimalMath::class)->format((string) $state)),
+                TextEntry::make('label_link')->label(__('store.delivery.print'))->visible(fn (Order $record): bool => filled($record->shipping_carrier_id))->state(__('store.delivery.print'))->url(fn (Order $record): string => route('delivery.label', $record))->openUrlInNewTab(),
                 TextEntry::make('invoice_link')->label(__('store.orders.invoice'))->state(__('store.orders.invoice'))->url(fn (Order $record): string => route('invoices.download', $record))->openUrlInNewTab(),
                 TextEntry::make('masked_pan')->label(__('admin.fields.masked_pan')),
             ])->columns(2),

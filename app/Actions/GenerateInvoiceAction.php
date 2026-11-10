@@ -17,7 +17,7 @@ class GenerateInvoiceAction
         $order->loadMissing('items');
         $theme = SiteTheme::current();
         $logo = DesignAsset::urlFor('logo');
-        $locale = $order->locale ?: 'en';
+        $locale = in_array($order->locale, ['en', 'ar'], true) ? $order->locale : 'ar';
         $previous = app()->getLocale();
         app()->setLocale($locale);
 
@@ -26,6 +26,7 @@ class GenerateInvoiceAction
             'theme' => $theme,
             'logo' => $logo,
             'math' => $this->math,
+            'locale' => $locale,
         ])->render();
 
         app()->setLocale($previous);

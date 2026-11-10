@@ -28,6 +28,7 @@ class Order extends Model
         'customer_phone',
         'city_id',
         'city_name',
+        'shipping_carrier_id',
         'address',
         'subtotal',
         'discount',
@@ -36,6 +37,7 @@ class Order extends Model
         'order_packaging_fee',
         'order_packaging_snapshot',
         'shipping_fee',
+        'shipping_label_fee',
         'total',
         'amount_cents',
         'notes',
@@ -48,6 +50,17 @@ class Order extends Model
 
     protected static function booted(): void
     {
+        static::saving(function (Order $order): void {
+            if (! $order->isDirty('shipping_carrier_id')) {
+                return;
+            }
+
+            $carrier = $order->shipping_carrier_id
+                ? ShippingCarrier::query()->find($order->shipping_carrier_id)
+                : null;
+            $order->shipping_label_fee = $carrier?->fee;
+        });
+
         static::updated(function (Order $order): void {
             if ($order->wasChanged('status')) {
                 if ($order->status === 'cancelled' && $order->getOriginal('status') !== 'cancelled') {
@@ -78,6 +91,7 @@ class Order extends Model
             'discount' => 'decimal:4',
             'order_packaging_fee' => 'decimal:4',
             'shipping_fee' => 'decimal:4',
+            'shipping_label_fee' => 'decimal:4',
             'total' => 'decimal:4',
             'order_packaging_snapshot' => 'array',
             'paid_at' => 'datetime',
@@ -94,6 +108,11 @@ class Order extends Model
     public function city(): BelongsTo
     {
         return $this->belongsTo(City::class);
+    }
+
+    public function shippingCarrier(): BelongsTo
+    {
+        return $this->belongsTo(ShippingCarrier::class);
     }
 
     public function coupon(): BelongsTo

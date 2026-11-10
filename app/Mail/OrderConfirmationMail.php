@@ -30,7 +30,7 @@ class OrderConfirmationMail extends Mailable
         return new Envelope(
             from: new Address($from, $brand),
             replyTo: [new Address($from, $brand)],
-            subject: __('store.mail.confirmed_subject', ['reference' => $this->order->reference], $this->order->locale ?: 'en'),
+            subject: __('store.mail.confirmed_subject', ['reference' => $this->order->reference], $this->order->locale ?: 'ar'),
             using: [
                 function (Email $message): void {
                     $headers = $message->getHeaders();
@@ -55,7 +55,7 @@ class OrderConfirmationMail extends Mailable
                 'theme' => SiteTheme::current(),
                 'logo' => is_string($logo) && str_starts_with($logo, 'https://') ? $logo : null,
                 'math' => app(DecimalMath::class),
-                'locale' => $this->order->locale ?: 'en',
+                'locale' => $this->order->locale ?: 'ar',
             ],
         );
     }

@@ -10,6 +10,7 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\PaymobReturnController;
 use App\Http\Controllers\PaymobWebhookController;
+use App\Http\Controllers\ShippingLabelController;
 use App\Http\Controllers\SignupOfferController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\TrackOrderController;
@@ -61,5 +62,6 @@ Route::middleware('guest')->group(function () {
 
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
 Route::get('/staff-guide.pdf', AdminGuideController::class)->middleware('auth')->name('admin.guide.pdf');
+Route::get('/delivery-labels/{order}', ShippingLabelController::class)->middleware('auth')->name('delivery.label');
 Route::post('/bundles/{bundle}/subscribe', [SubscriptionController::class, 'store'])->middleware('auth')->name('bundles.subscribe');
 Route::redirect('/account', '/my')->name('account.home');

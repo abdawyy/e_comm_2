@@ -17,7 +17,7 @@ class AdminRolesSeeder extends Seeder
         $subjects = [
             'Category', 'Product', 'Bundle', 'Coupon', 'Order', 'City', 'PreparationService',
             'PackagingType', 'User', 'ContentString', 'SeoSetting', 'HomeBanner', 'SiteVisitor',
-            'DesignAsset', 'SiteTheme', 'PaymentTransaction', 'SocialLink',
+            'DesignAsset', 'SiteTheme', 'PaymentTransaction', 'SocialLink', 'ShippingCarrier',
         ];
         $abilities = [
             'viewAny', 'view', 'create', 'update', 'delete', 'deleteAny', 'restore',

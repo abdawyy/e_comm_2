@@ -17,7 +17,7 @@ class OrderFactory extends Factory
             'status' => 'pending',
             'payment_gateway' => 'cod',
             'currency' => 'EGP',
-            'locale' => 'en',
+            'locale' => 'ar',
             'customer_name' => fake()->name(),
             'customer_email' => fake()->safeEmail(),
             'customer_phone' => '01000000000',

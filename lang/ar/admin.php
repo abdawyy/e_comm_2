@@ -20,6 +20,7 @@ return [
         'content' => 'المحتوى',
         'design' => 'التصميم',
         'analytics' => 'التحليلات',
+        'delivery' => 'التوصيل',
     ],
     'fields' => [
         'name' => 'الاسم', 'description' => 'الوصف', 'image' => 'الصورة', 'sort' => 'الترتيب', 'active' => 'نشط',
@@ -54,6 +55,7 @@ return [
         'design_assets' => ['label' => 'صورة', 'plural' => 'الصور', 'nav' => 'الصور'],
         'payments' => ['label' => 'دفعة', 'plural' => 'المدفوعات'],
         'social' => ['label' => 'رابط تواصل', 'plural' => 'روابط التواصل'],
+        'carriers' => ['label' => 'شركة شحن', 'plural' => 'شركات الشحن'],
     ],
     'help' => [
         'category_image' => 'غلاف اختياري 800×800، بحد 4 ميغابايت.',
@@ -88,7 +90,7 @@ return [
     'actions' => ['save' => 'حفظ', 'export' => 'تصدير المنتجات', 'export_visitors' => 'تصدير الزوار', 'export_views' => 'تصدير المشاهدات', 'open' => 'فتح'],
     'status' => ['pending' => 'قيد الانتظار', 'confirmed' => 'مؤكد', 'processing' => 'قيد التجهيز', 'shipped' => 'تم الشحن', 'delivered' => 'تم التسليم', 'cancelled' => 'ملغى'],
     'payment' => ['unpaid' => 'غير مدفوع', 'pending' => 'معلّق', 'paid' => 'مدفوع', 'failed' => 'فشل', 'refunded' => 'مُسترد'],
-    'pages' => ['traffic' => 'العملاء والزيارات', 'customers' => 'تحليل العملاء', 'sales' => 'المبيعات', 'guide' => 'دليل الفريق', 'colors' => 'الألوان', 'signup_offer' => 'كوبون التسجيل', 'order_email' => 'بريد الطلبات'],
+    'pages' => ['traffic' => 'العملاء والزيارات', 'customers' => 'تحليل العملاء', 'sales' => 'المبيعات', 'guide' => 'دليل الفريق', 'delivery' => 'التوصيل', 'colors' => 'الألوان', 'signup_offer' => 'كوبون التسجيل', 'order_email' => 'بريد الطلبات'],
     'theme' => [
         'brand' => 'العلامة', 'palette' => 'اللوحة', 'primary' => 'الأساسي', 'primary_dark' => 'الأساسي الداكن', 'primary_light' => 'الأساسي الفاتح',
         'accent' => 'الإبراز', 'accent_light' => 'الإبراز الفاتح', 'canvas' => 'الخلفية', 'surface' => 'السطح', 'border' => 'الحدود',

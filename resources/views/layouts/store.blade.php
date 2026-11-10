@@ -79,6 +79,17 @@
         </div>
     </section>
 
+    <style>
+        .store-footer { background: #ffffff; color: #131316; border-top: 1px solid #e6e6e6; }
+        .store-footer > div { padding-block: 1.15rem; }
+        .store-footer p { color: #3a3a40; }
+        .store-social a { color: #131316; background: #ffffff; border-color: #d9d9de; }
+        .store-social a:hover { background: #131316; border-color: #131316; color: #ffffff; }
+        html.dark .store-footer { background: #121418; color: #f4fbf6; border-top-color: #2a2e33; }
+        html.dark .store-footer p { color: #d5ddd8; }
+        html.dark .store-social a { color: #f4fbf6; background: transparent; border-color: #8d9790; }
+        html.dark .store-social a:hover { background: #f4fbf6; border-color: #f4fbf6; color: #121418; }
+    </style>
     <footer class="store-footer">
         <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-8">
             <div>

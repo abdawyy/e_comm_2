@@ -371,8 +371,17 @@ html.dark .store-input {
 }
 
 .store-footer {
-    background: var(--color-brand-dark);
-    color: var(--color-surface-base);
+    background: #ffffff;
+    color: #131316;
+    border-top: 1px solid #e6e6e6;
+}
+
+.store-footer > div {
+    padding-block: 1.15rem;
+}
+
+.store-footer p {
+    color: #3a3a40;
 }
 
 .store-social {
@@ -386,15 +395,16 @@ html.dark .store-input {
     width: 2.4rem;
     height: 2.4rem;
     place-items: center;
-    border: 1px solid color-mix(in srgb, var(--color-surface) 45%, transparent);
+    border: 1px solid #d9d9de;
     border-radius: 999px;
-    color: var(--color-surface-base);
+    color: #131316;
+    background: #ffffff;
 }
 
 .store-social a:hover {
-    background: var(--color-accent);
-    border-color: var(--color-accent);
-    color: var(--color-brand);
+    background: #131316;
+    border-color: #131316;
+    color: #ffffff;
 }
 
 .store-social svg {
@@ -956,8 +966,25 @@ html.dark .store-trust {
 }
 
 html.dark .store-footer {
-    background: #070b09;
-    border-top: 1px solid var(--color-border);
+    background: #121418;
+    color: #f4fbf6;
+    border-top: 1px solid #2a2e33;
+}
+
+html.dark .store-footer p {
+    color: #d5ddd8;
+}
+
+html.dark .store-social a {
+    color: #f4fbf6;
+    background: transparent;
+    border-color: #8d9790;
+}
+
+html.dark .store-social a:hover {
+    background: #f4fbf6;
+    border-color: #f4fbf6;
+    color: #121418;
 }
 
 html.dark .store-kicker,
@@ -1346,7 +1373,8 @@ html[dir="rtl"] .store-announce-track {
     height: 52px;
 }
 
-.menu-open .store-whatsapp {
+.menu-open .store-whatsapp,
+.store-whatsapp.is-hidden {
     visibility: hidden;
     pointer-events: none;
 }

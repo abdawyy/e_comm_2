@@ -88,7 +88,6 @@ class OrderResource extends Resource
                 TextEntry::make('mail_error')->label(__('admin.mail.error'))->visible(fn (Order $record) => filled($record->mail_error)),
                 TextEntry::make('shippingCarrier.name')->label(__('store.delivery.carrier'))->placeholder('—'),
                 TextEntry::make('shipping_label_fee')->label(__('store.delivery.fee'))->placeholder('—')->formatStateUsing(fn ($state) => $state === null ? '—' : app(DecimalMath::class)->format((string) $state)),
-                TextEntry::make('label_link')->label(__('store.delivery.print'))->visible(fn (Order $record): bool => filled($record->shipping_carrier_id))->state(__('store.delivery.print'))->url(fn (Order $record): string => route('delivery.label', $record))->openUrlInNewTab(),
                 TextEntry::make('invoice_link')->label(__('store.orders.invoice'))->state(__('store.orders.invoice'))->url(fn (Order $record): string => route('invoices.download', $record))->openUrlInNewTab(),
                 TextEntry::make('masked_pan')->label(__('admin.fields.masked_pan')),
             ])->columns(2),

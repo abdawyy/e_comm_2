@@ -133,7 +133,12 @@ class DeliveryAnalytics extends Page
                     'rows' => $rows,
                     'unassigned' => Order::query()->whereNull('shipping_carrier_id')->count(),
                     'waiting' => Order::query()->whereNull('shipping_carrier_id')->latest('id')->limit(20)->get(['id', 'reference', 'customer_name', 'city_name']),
-                    'recent' => Order::query()->with('shippingCarrier')->whereNotNull('shipping_carrier_id')->latest('id')->limit(12)->get(),
+                    'groups' => $carriers->map(function (ShippingCarrier $carrier) use ($assigned) {
+                        return [
+                            'name' => (string) $carrier->name,
+                            'orders' => $assigned->where('shipping_carrier_id', $carrier->id)->sortByDesc('id')->values(),
+                        ];
+                    })->filter(fn (array $group): bool => $group['orders']->isNotEmpty())->values(),
                     'math' => $math,
                 ];
             }),

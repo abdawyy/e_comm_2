@@ -36,10 +36,28 @@ class DeliveryLabelTest extends TestCase
 
         $this->assertSame('15.0000', (string) $order->shipping_label_fee);
 
+        $plain = Order::factory()->create(['reference' => 'DL-NONE']);
+
         $this->actingAs($admin)
             ->get(route('delivery.label', $order))
             ->assertOk()
             ->assertHeader('content-type', 'application/pdf');
+
+        $this->actingAs($admin)
+            ->get(route('delivery.label', $plain))
+            ->assertNotFound();
+
+        $this->actingAs($admin)
+            ->get('/admin/delivery')
+            ->assertOk()
+            ->assertSee((string) $carrier->name, false)
+            ->assertSee(route('delivery.label', $order), false)
+            ->assertDontSee(route('delivery.label', $plain), false);
+
+        $this->actingAs($admin)
+            ->get('/admin/orders/'.$order->id)
+            ->assertOk()
+            ->assertDontSee(route('delivery.label', $order), false);
     }
 
     #[Test]

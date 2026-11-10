@@ -57,31 +57,35 @@
         </div>
     </section>
     <section class="insight-card">
-        <h2>{{ __('store.delivery.assigned') }}</h2>
-        <div class="insight-table-wrap">
-            <table>
-                <thead>
-                    <tr>
-                        <th>{{ __('admin.fields.reference') }}</th>
-                        <th>{{ __('admin.fields.customer') }}</th>
-                        <th>{{ __('store.delivery.carrier') }}</th>
-                        <th>{{ __('store.delivery.fee') }}</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($recent as $order)
+        <h2>{{ __('store.delivery.print') }}</h2>
+        <p>{{ __('store.delivery.print_only') }}</p>
+        @forelse($groups as $group)
+            <h3>{{ $group['name'] }}</h3>
+            <div class="insight-table-wrap">
+                <table>
+                    <thead>
                         <tr>
-                            <td>{{ $order->reference }}</td>
-                            <td>{{ $order->customer_name }}</td>
-                            <td>{{ $order->shippingCarrier?->name }}</td>
-                            <td>{{ $order->shipping_label_fee !== null ? $math->format((string) $order->shipping_label_fee) : '—' }}</td>
-                            <td><a href="{{ route('delivery.label', $order) }}" target="_blank">{{ __('store.delivery.print') }}</a></td>
+                            <th>{{ __('admin.fields.reference') }}</th>
+                            <th>{{ __('admin.fields.customer') }}</th>
+                            <th>{{ __('store.delivery.fee') }}</th>
+                            <th></th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+                    </thead>
+                    <tbody>
+                        @foreach($group['orders'] as $order)
+                            <tr>
+                                <td>{{ $order->reference }}</td>
+                                <td>{{ $order->customer_name }}</td>
+                                <td>{{ $order->shipping_label_fee !== null ? $math->format((string) $order->shipping_label_fee) : '—' }}</td>
+                                <td><a href="{{ route('delivery.label', $order) }}" target="_blank">{{ __('store.delivery.print') }}</a></td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        @empty
+            <p>{{ __('admin.stats.empty') }}</p>
+        @endforelse
     </section>
 </div>
 @include('filament.admin.partials.insight-styles')

@@ -3,7 +3,7 @@
     @include('store.partials.order-timeline', ['order' => $order])
     <ul class="space-y-2 text-sm">
         @foreach($order->items as $item)
-            <li class="rounded-xl bg-[#f6f6f8] px-3 py-2">{{ $item->localizedName() }} × {{ $item->quantity }} — {{ app(\App\Services\DecimalMath::class)->format((string) $item->line_subtotal) }}</li>
+            <li class="rounded-xl border border-[#e6e6e6] bg-white px-3 py-2">{{ $item->localizedName() }} × {{ $item->quantity }} — {{ app(\App\Services\DecimalMath::class)->format((string) $item->line_subtotal) }}</li>
         @endforeach
     </ul>
     <p class="font-bold">{{ __('store.checkout.total') }} {{ app(\App\Services\DecimalMath::class)->format((string) $order->total) }}</p>

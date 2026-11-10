@@ -1,110 +1,97 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
+    html,
+    body,
     .fi-body,
     .fi-body .fi-layout,
-    .fi-simple-layout {
-        background: #f6f6f8;
-        color: #131316;
+    .fi-main-ctn,
+    .fi-main,
+    .fi-page,
+    .fi-simple-layout,
+    .fi-simple-main,
+    .fi-sidebar,
+    .fi-sidebar-header,
+    .fi-topbar,
+    .fi-topbar-ctn {
+        background: #ffffff !important;
+        color: #131316 !important;
         font-family: "IBM Plex Sans Arabic", "Segoe UI", sans-serif;
     }
 
     .fi-topbar {
-        background: #eeddb0;
-        border-bottom: 0;
-        box-shadow: none;
-        color: #131316;
-    }
-
-    .fi-topbar .fi-icon-btn,
-    .fi-sidebar-header {
-        color: #131316;
+        border-bottom: 1px solid #e6e6e6;
+        box-shadow: none !important;
     }
 
     .fi-sidebar {
-        background: #ffffff;
         border-inline-end: 1px solid #e6e6e6;
-        box-shadow: none;
+        box-shadow: none !important;
+    }
+
+    .fi-sidebar-item-btn,
+    .fi-sidebar-item-button,
+    .fi-topbar .fi-icon-btn,
+    .fi-sidebar-header,
+    .fi-header-heading,
+    .fi-section-header-heading,
+    .fi-simple-header-heading,
+    .fi-ta-header-cell,
+    .fi-ta-cell {
+        color: #131316 !important;
     }
 
     .fi-sidebar-item-btn,
     .fi-sidebar-item-button {
         border-radius: 999px;
-        color: #212a2f;
     }
 
     .fi-sidebar-item.fi-active .fi-sidebar-item-btn,
     .fi-sidebar-item.fi-active .fi-sidebar-item-button,
     .fi-sidebar-item-active > a,
     .fi-sidebar-item-active > button {
-        background: #eeddb0;
-        color: #131316;
-    }
-
-    .fi-main,
-    .fi-page,
-    .fi-simple-main {
-        background: transparent;
+        background: #eeddb0 !important;
+        color: #131316 !important;
     }
 
     .fi-section,
     .fi-ta-ctn,
     .fi-wi-widget,
     .fi-sc-section,
+    .fi-simple-page,
     .account-card {
-        background: #ffffff;
-        border: 1px solid #e6e6e6;
-        border-radius: 16px;
-        box-shadow: none;
-    }
-
-    .fi-header-heading,
-    .fi-section-header-heading,
-    .fi-simple-header-heading {
-        color: #131316;
-        font-weight: 700;
+        background: #ffffff !important;
+        border: 1px solid #e6e6e6 !important;
+        border-radius: 16px !important;
+        box-shadow: none !important;
+        color: #131316 !important;
     }
 
     .fi-btn.fi-color-primary,
     .fi-btn-color-primary {
-        background: #131316;
-        color: #ffffff;
-        border-radius: 999px;
-        border-color: #131316;
-    }
-
-    .fi-btn.fi-color-primary:hover,
-    .fi-btn-color-primary:hover {
-        background: #212a2f;
+        background: #131316 !important;
+        color: #ffffff !important;
+        border-radius: 999px !important;
+        border-color: #131316 !important;
     }
 
     .fi-input-wrp,
     .fi-fo-text-input .fi-input-wrp,
-    .fi-select-input {
-        background: #f6f6f8;
-        border-color: #e6e6e6;
-        border-radius: 12px;
-        box-shadow: none;
+    .fi-select-input,
+    .fi-input {
+        background: #ffffff !important;
+        border-color: #e6e6e6 !important;
+        color: #131316 !important;
+        box-shadow: none !important;
     }
 
-    .fi-input,
-    .fi-select-input,
-    textarea {
-        color: #131316;
+    .fi-ta-row,
+    .fi-ta-row:hover {
+        background: #ffffff !important;
     }
 
     .fi-ta-row:hover {
-        background: #f3f3f3;
-    }
-
-    .fi-badge {
-        border-radius: 999px;
-    }
-
-    .fi-simple-page {
-        background: #ffffff;
-        border: 1px solid #e6e6e6;
-        border-radius: 18px;
+        background: #f6f6f8 !important;
     }
 
     a {

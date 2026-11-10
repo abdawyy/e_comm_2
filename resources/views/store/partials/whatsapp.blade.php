@@ -15,6 +15,8 @@
             color: #fff;
             box-shadow: 0 8px 18px rgba(37, 211, 102, .45);
             text-decoration: none;
+            opacity: 1;
+            transition: opacity .45s ease;
         }
         .store-whatsapp svg {
             width: 30px;
@@ -28,8 +30,11 @@
             width: 52px;
             height: 52px;
         }
-        .store-whatsapp.is-hidden {
-            visibility: hidden;
+        .store-whatsapp.is-hidden,
+        .menu-open .store-whatsapp,
+        body:has(.signup-offer:not([hidden])) .store-whatsapp,
+        body:has(.fi-modal-open) .store-whatsapp {
+            opacity: 0;
             pointer-events: none;
         }
         @media (max-width: 899px) {
@@ -40,12 +45,6 @@
             .store-hero-visual {
                 margin-bottom: 4.5rem;
             }
-        }
-        .menu-open .store-whatsapp,
-        body:has(.signup-offer:not([hidden])) .store-whatsapp,
-        body:has(.fi-modal-open) .store-whatsapp {
-            visibility: hidden;
-            pointer-events: none;
         }
         .fi-body .store-whatsapp {
             left: 18px;

@@ -57,6 +57,8 @@ class EditAnnouncement extends Page
             'announcement_active' => $unset ? true : (bool) $row?->announcement_active,
             'announcement_en' => $unset ? $fallback['en'] : $english,
             'announcement_ar' => $unset ? $fallback['ar'] : $arabic,
+            'announcement_color' => $row?->announcement_color ?: $fallback['color'],
+            'announcement_opacity' => $row?->announcement_opacity ?? $fallback['opacity'],
         ]);
     }
 
@@ -72,6 +74,8 @@ class EditAnnouncement extends Page
                 Toggle::make('announcement_active')->label(__('admin.fields.active'))->default(false),
                 TextInput::make('announcement_ar')->label(__('store.announcement.text').' (AR)')->maxLength(190)->extraInputAttributes(['dir' => 'rtl']),
                 TextInput::make('announcement_en')->label(__('store.announcement.text').' (EN)')->maxLength(190),
+                TextInput::make('announcement_color')->label(__('store.announcement.color'))->type('color')->required(),
+                TextInput::make('announcement_opacity')->label(__('store.announcement.opacity'))->numeric()->minValue(0)->maxValue(100)->required()->helperText(__('store.announcement.opacity_help')),
             ]),
         ]);
     }

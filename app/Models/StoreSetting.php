@@ -22,6 +22,8 @@ class StoreSetting extends Model
         'announcement_en',
         'announcement_ar',
         'announcement_active',
+        'announcement_color',
+        'announcement_opacity',
     ];
 
     protected static function booted(): void
@@ -40,16 +42,7 @@ class StoreSetting extends Model
 
     public static function announcement(): ?string
     {
-        $cached = Cache::get('store.announcement');
-
-        if (! is_array($cached)) {
-            $cached = static::storedAnnouncement();
-            Cache::forever('store.announcement', $cached);
-        }
-
-        if (static::announcementUnset($cached)) {
-            $cached = static::defaultAnnouncement();
-        }
+        $cached = static::announcementState();
 
         if (! ($cached['active'] ?? false)) {
             return null;
@@ -65,8 +58,39 @@ class StoreSetting extends Model
         return $text !== '' ? $text : null;
     }
 
+    public static function announcementBackground(): string
+    {
+        $cached = static::announcementState();
+        $color = static::hexColor((string) ($cached['color'] ?? '')) ?? '#eeddb0';
+        $opacity = max(0, min(100, (int) ($cached['opacity'] ?? 100))) / 100;
+        $red = hexdec(substr($color, 1, 2));
+        $green = hexdec(substr($color, 3, 2));
+        $blue = hexdec(substr($color, 5, 2));
+
+        return 'rgba('.$red.','.$green.','.$blue.','.number_format($opacity, 2, '.', '').')';
+    }
+
     /**
-     * @return array{active: bool, en: string, ar: string}
+     * @return array{active: bool, en: string, ar: string, color: string, opacity: int}
+     */
+    private static function announcementState(): array
+    {
+        $cached = Cache::get('store.announcement');
+
+        if (! is_array($cached)) {
+            $cached = static::storedAnnouncement();
+            Cache::forever('store.announcement', $cached);
+        }
+
+        if (static::announcementUnset($cached)) {
+            return static::defaultAnnouncement();
+        }
+
+        return $cached;
+    }
+
+    /**
+     * @return array{active: bool, en: string, ar: string, color: string, opacity: int}
      */
     public static function defaultAnnouncement(): array
     {
@@ -74,6 +98,8 @@ class StoreSetting extends Model
             'active' => true,
             'en' => 'Free shipping on orders of 1000 EGP or more. Discount code: ( CA1 )',
             'ar' => 'شحن مجاني عند الطلب بـ1000 جنيه أو أكثر كود خصم : ( CA1 )',
+            'color' => '#eeddb0',
+            'opacity' => 100,
         ];
     }
 
@@ -85,17 +111,24 @@ class StoreSetting extends Model
         return trim((string) ($cached['en'] ?? '')) === '' && trim((string) ($cached['ar'] ?? '')) === '';
     }
 
+    private static function hexColor(string $color): ?string
+    {
+        return preg_match('/^#[0-9A-Fa-f]{6}$/', $color) === 1 ? strtolower($color) : null;
+    }
+
     /**
-     * @return array{active: bool, en: string, ar: string}
+     * @return array{active: bool, en: string, ar: string, color: string, opacity: int}
      */
     private static function storedAnnouncement(): array
     {
-        $empty = ['active' => false, 'en' => '', 'ar' => ''];
+        $empty = ['active' => false, 'en' => '', 'ar' => '', 'color' => '#eeddb0', 'opacity' => 100];
 
         try {
             if (! Schema::hasTable('store_settings') || ! Schema::hasColumn('store_settings', 'announcement_en')) {
                 return $empty;
             }
+
+            $hasColor = Schema::hasColumn('store_settings', 'announcement_color');
         } catch (Throwable) {
             return $empty;
         }
@@ -110,6 +143,8 @@ class StoreSetting extends Model
             'active' => (bool) $row->announcement_active,
             'en' => (string) $row->announcement_en,
             'ar' => (string) $row->announcement_ar,
+            'color' => $hasColor ? (static::hexColor((string) $row->announcement_color) ?? '#eeddb0') : '#eeddb0',
+            'opacity' => $hasColor ? max(0, min(100, (int) $row->announcement_opacity)) : 100,
         ];
     }
 

@@ -137,6 +137,9 @@ return [
     ],
     'announcement' => [
         'text' => 'Top streaming line',
+        'color' => 'Line color',
+        'opacity' => 'Transparency',
+        'opacity_help' => '100 is solid. A lower number makes the line more transparent. The scroll stays smooth.',
         'saved' => 'Streaming line saved',
     ],
     'whatsapp' => [

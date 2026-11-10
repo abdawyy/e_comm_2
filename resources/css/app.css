@@ -1373,9 +1373,14 @@ html[dir="rtl"] .store-announce-track {
     height: 52px;
 }
 
+.store-whatsapp {
+    opacity: 1;
+    transition: opacity .45s ease;
+}
+
 .menu-open .store-whatsapp,
 .store-whatsapp.is-hidden {
-    visibility: hidden;
+    opacity: 0;
     pointer-events: none;
 }
 

@@ -19,6 +19,8 @@ class WhatsappButtonTest extends TestCase
         $setting->announcement_active = true;
         $setting->announcement_ar = 'شحن مجاني كود خصم CA1';
         $setting->announcement_en = 'Free shipping code CA1';
+        $setting->announcement_color = '#112233';
+        $setting->announcement_opacity = 40;
         $setting->save();
 
         $this->get('/')
@@ -26,6 +28,8 @@ class WhatsappButtonTest extends TestCase
             ->assertSee('https://wa.me/201011111111', false)
             ->assertSee('store-whatsapp', false)
             ->assertSee('شحن مجاني كود خصم CA1', false)
-            ->assertSee('store-announce', false);
+            ->assertSee('store-announce', false)
+            ->assertSee('rgba(17,34,51,0.40)', false)
+            ->assertDontSee('viewBox="0 0 640 512"', false);
     }
 }

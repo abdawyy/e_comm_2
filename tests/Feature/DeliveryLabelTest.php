@@ -75,7 +75,8 @@ class DeliveryLabelTest extends TestCase
             ->assertOk()
             ->assertSee(__('store.delivery.assign'), false)
             ->assertSee($order->reference, false)
-            ->assertSee(__('store.delivery.waiting'), false);
+            ->assertSee(__('store.delivery.waiting'), false)
+            ->assertSee(__('store.delivery.search'), false);
     }
 
     #[Test]

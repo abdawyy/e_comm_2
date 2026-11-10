@@ -227,6 +227,8 @@ return [
         'assign_order' => 'Order',
         'assign_saved' => 'Shipping company assigned',
         'waiting' => 'Orders waiting for a shipping company',
+        'search' => 'Search',
+        'no_match' => 'Nothing matches this search.',
         'analysis' => 'Carriers and fees',
         'unassigned' => 'Orders with no carrier',
         'fee_orders' => 'Orders with a fee',

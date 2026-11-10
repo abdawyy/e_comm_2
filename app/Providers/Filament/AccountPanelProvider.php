@@ -32,19 +32,18 @@ class AccountPanelProvider extends PanelProvider
             ->maxContentWidth(Width::Full)
             ->sidebarFullyCollapsibleOnDesktop()
             ->brandName(fn (): string => SiteTheme::current()->brand_name)
-            ->darkMode()
+            ->darkMode(false)
             ->brandLogo(fn (): ?string => DesignAsset::urlFor('logo'))
-            ->darkModeBrandLogo(fn (): ?string => DesignAsset::urlFor('logo_dark') ?: DesignAsset::urlFor('logo'))
             ->favicon(fn (): ?string => DesignAsset::urlFor('favicon'))
-            ->colors(fn (): array => [
-                'primary' => Color::hex(SiteTheme::current()->css('primary')),
+            ->colors([
+                'primary' => Color::hex('#131316'),
+                'gray' => Color::hex('#212a2f'),
             ])
             ->discoverResources(in: app_path('Filament/Account/Resources'), for: 'App\\Filament\\Account\\Resources')
             ->discoverPages(in: app_path('Filament/Account/Pages'), for: 'App\\Filament\\Account\\Pages')
             ->discoverWidgets(in: app_path('Filament/Account/Widgets'), for: 'App\\Filament\\Account\\Widgets')
             ->renderHook(PanelsRenderHook::HEAD_END, fn () => view('filament.hooks.direction'))
-            ->renderHook(PanelsRenderHook::TOPBAR_END, fn () => view('filament.hooks.theme-switcher'))
-            ->renderHook(PanelsRenderHook::SIMPLE_LAYOUT_START, fn () => view('filament.hooks.theme-switcher', ['fixed' => true]))
+            ->renderHook(PanelsRenderHook::HEAD_END, fn () => view('filament.account.theme'))
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,

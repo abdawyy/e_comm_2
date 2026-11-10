@@ -36,6 +36,19 @@
     if ($invoice['show_tax']) {
         $rows[$text['tax']] = $math->format($taxAmount);
     }
+    $light = function (string $hex): bool {
+        $hex = ltrim(strtolower($hex), '#');
+        if (strlen($hex) !== 6 || ! ctype_xdigit($hex)) {
+            return false;
+        }
+        $red = hexdec(substr($hex, 0, 2));
+        $green = hexdec(substr($hex, 2, 2));
+        $blue = hexdec(substr($hex, 4, 2));
+
+        return ((0.299 * $red) + (0.587 * $green) + (0.114 * $blue)) >= 186;
+    };
+    $ink = $light($invoice['titles']) ? '#2b2118' : $invoice['titles'];
+    $barText = strtolower((string) $invoice['bar_text']) === '#ffffff' ? '#f7f7f7' : $invoice['bar_text'];
 @endphp
 <!DOCTYPE html>
 <html lang="{{ $locale }}">
@@ -45,13 +58,13 @@
         body { font-family: dejavusans, sans-serif; color: #2b2118; font-size: 11px; background: {{ $invoice['paper'] }}; }
         table { width: 100%; border-collapse: collapse; }
         .frame { border: 1.4px solid {{ $invoice['border'] }}; background: {{ $invoice['paper'] }}; }
-        .brand { font-size: 18px; font-weight: bold; color: {{ $invoice['titles'] }}; }
+        .brand { font-size: 18px; font-weight: bold; color: {{ $ink }}; }
         .muted { color: #6d5b4e; font-size: 10px; }
-        .pill { background: {{ $invoice['accent'] }}; color: {{ $invoice['bar_text'] }}; font-weight: bold; font-size: 13px; padding: 7px 12px; }
+        .pill { background: {{ $invoice['accent'] }}; color: {{ $barText }}; font-weight: bold; font-size: 13px; padding: 7px 12px; }
         .card { background: {{ $invoice['card'] }}; }
-        .head { background: {{ $invoice['accent'] }}; color: {{ $invoice['bar_text'] }}; font-weight: bold; }
+        .head { background: {{ $invoice['accent'] }}; color: {{ $barText }}; font-weight: bold; }
         .line { border-bottom: 1px solid #e4d9cc; }
-        .total { background: {{ $invoice['accent'] }}; color: {{ $invoice['bar_text'] }}; font-weight: bold; }
+        .total { background: {{ $invoice['accent'] }}; color: {{ $barText }}; font-weight: bold; }
         .qr { border: 1px dashed {{ $invoice['border'] }}; color: #6d5b4e; text-align: center; }
         td, th { padding: 6px 8px; vertical-align: top; }
     </style>
@@ -63,7 +76,7 @@
             <table>
                 <tr>
                     <td width="58%">
-                        <div class="brand" style="color: {{ $invoice['titles'] }};">{{ $theme->brand_name }}</div>
+                        <div class="brand" style="color: {{ $ink }}; background: {{ $invoice['paper'] }};">{{ $theme->brand_name }}</div>
                         <div class="muted">{{ $text['tagline'] }}</div>
                         @if(trim((string) ($invoice[$locale]['address'] ?? '')) !== '')
                             <div>{{ $invoice[$locale]['address'] }}</div>
@@ -76,7 +89,7 @@
                         @endif
                     </td>
                     <td width="42%" align="{{ $locale === 'ar' ? 'left' : 'right' }}">
-                        <div class="pill" style="color: {{ $invoice['bar_text'] }}; background: {{ $invoice['accent'] }};">{{ $text['title'] }}</div>
+                        <div class="pill" style="color: {{ $barText }}; background: {{ $invoice['accent'] }};">{{ $text['title'] }}</div>
                         <div style="margin-top: 8px;"><strong>{{ __('store.invoice.number', [], $locale) }}:</strong> {{ $order->reference }}</div>
                         <div><strong>{{ __('store.invoice.date', [], $locale) }}:</strong> {{ $when?->format('d/m/Y') }}</div>
                         <div><strong>{{ __('store.invoice.time', [], $locale) }}:</strong> {{ $when?->format('H:i') }}</div>
@@ -86,14 +99,14 @@
             <table style="margin-top: 12px;">
                 <tr>
                     <td class="card" width="48%" style="padding: 10px;">
-                        <div style="font-weight: bold; text-align: center; margin-bottom: 6px; color: {{ $invoice['titles'] }};">{{ __('store.invoice.customer_block', [], $locale) }}</div>
+                        <div style="font-weight: bold; text-align: center; margin-bottom: 6px; color: {{ $ink }}; background: {{ $invoice['card'] }};">{{ __('store.invoice.customer_block', [], $locale) }}</div>
                         <div><strong>{{ __('store.invoice.customer', [], $locale) }}:</strong> {{ $order->customer_name }}</div>
                         <div><strong>{{ __('store.invoice.phone', [], $locale) }}:</strong> {{ $order->customer_phone }}</div>
                         <div><strong>{{ __('store.invoice.address', [], $locale) }}:</strong> {{ $order->city_name }} — {{ $order->address }}</div>
                     </td>
                     <td width="4%"></td>
                     <td class="card" width="48%" style="padding: 10px;">
-                        <div style="font-weight: bold; text-align: center; margin-bottom: 6px; color: {{ $invoice['titles'] }};">{{ __('store.invoice.payment_block', [], $locale) }}</div>
+                        <div style="font-weight: bold; text-align: center; margin-bottom: 6px; color: {{ $ink }}; background: {{ $invoice['card'] }};">{{ __('store.invoice.payment_block', [], $locale) }}</div>
                         <div><strong>{{ __('store.invoice.method', [], $locale) }}:</strong> {{ $payment }}</div>
                         <div><strong>{{ __('store.invoice.kind', [], $locale) }}:</strong> {{ __('store.invoice.delivery', [], $locale) }}</div>
                         @if(($forDelivery ?? false) || $order->shippingCarrier)
@@ -106,12 +119,12 @@
             <table style="margin-top: 14px;">
                 <thead>
                     <tr class="head">
-                        <th align="center" width="6%" style="color: {{ $invoice['bar_text'] }}; background: {{ $invoice['accent'] }};">{{ __('store.invoice.hash', [], $locale) }}</th>
-                        <th align="{{ $locale === 'ar' ? 'right' : 'left' }}" style="color: {{ $invoice['bar_text'] }}; background: {{ $invoice['accent'] }};">{{ __('store.invoice.item', [], $locale) }}</th>
-                        <th align="{{ $locale === 'ar' ? 'right' : 'left' }}" style="color: {{ $invoice['bar_text'] }}; background: {{ $invoice['accent'] }};">{{ __('store.invoice.grind', [], $locale) }}</th>
-                        <th align="center" width="10%" style="color: {{ $invoice['bar_text'] }}; background: {{ $invoice['accent'] }};">{{ __('store.invoice.qty', [], $locale) }}</th>
-                        <th align="center" width="16%" style="color: {{ $invoice['bar_text'] }}; background: {{ $invoice['accent'] }};">{{ __('store.invoice.price', [], $locale) }}</th>
-                        <th align="center" width="16%" style="color: {{ $invoice['bar_text'] }}; background: {{ $invoice['accent'] }};">{{ __('store.invoice.total', [], $locale) }}</th>
+                        <th align="center" width="6%" style="color: {{ $barText }}; background: {{ $invoice['accent'] }};">{{ __('store.invoice.hash', [], $locale) }}</th>
+                        <th align="{{ $locale === 'ar' ? 'right' : 'left' }}" style="color: {{ $barText }}; background: {{ $invoice['accent'] }};">{{ __('store.invoice.item', [], $locale) }}</th>
+                        <th align="{{ $locale === 'ar' ? 'right' : 'left' }}" style="color: {{ $barText }}; background: {{ $invoice['accent'] }};">{{ __('store.invoice.grind', [], $locale) }}</th>
+                        <th align="center" width="10%" style="color: {{ $barText }}; background: {{ $invoice['accent'] }};">{{ __('store.invoice.qty', [], $locale) }}</th>
+                        <th align="center" width="16%" style="color: {{ $barText }}; background: {{ $invoice['accent'] }};">{{ __('store.invoice.price', [], $locale) }}</th>
+                        <th align="center" width="16%" style="color: {{ $barText }}; background: {{ $invoice['accent'] }};">{{ __('store.invoice.total', [], $locale) }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -168,8 +181,8 @@
                                 </tr>
                             @endforeach
                             <tr class="total">
-                                <td width="58%" style="color: {{ $invoice['bar_text'] }}; background: {{ $invoice['accent'] }};">{{ __('store.invoice.grand', [], $locale) }}:</td>
-                                <td width="42%" align="{{ $locale === 'ar' ? 'left' : 'right' }}" style="color: {{ $invoice['bar_text'] }}; background: {{ $invoice['accent'] }};">{{ $math->format((string) $order->total) }}</td>
+                                <td width="58%" style="color: {{ $barText }}; background: {{ $invoice['accent'] }};">{{ __('store.invoice.grand', [], $locale) }}:</td>
+                                <td width="42%" align="{{ $locale === 'ar' ? 'left' : 'right' }}" style="color: {{ $barText }}; background: {{ $invoice['accent'] }};">{{ $math->format((string) $order->total) }}</td>
                             </tr>
                         </table>
                     </td>

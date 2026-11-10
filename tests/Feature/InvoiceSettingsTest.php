@@ -46,6 +46,18 @@ class InvoiceSettingsTest extends TestCase
         $this->assertStringContainsString('فاتورة المتجر', $html);
         $this->assertStringContainsString('#112233', $html);
         $this->assertStringContainsString('#aa1166', $html);
+
+        $setting->invoice_pdf = array_merge($setting->invoice_pdf, ['titles' => '#ffffff']);
+        $setting->save();
+        $white = view('pdf.invoice', [
+            'order' => $order->load('items'),
+            'theme' => SiteTheme::current(),
+            'logo' => null,
+            'math' => app(DecimalMath::class),
+            'locale' => 'ar',
+        ])->render();
+        $this->assertStringNotContainsString('color: #ffffff', $white);
+        $this->assertStringContainsString('color: #2b2118', $white);
         $this->assertStringContainsString('01099999999', $html);
         $this->assertStringContainsString('14.00 EGP', $html);
     }

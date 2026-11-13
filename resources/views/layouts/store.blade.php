@@ -54,10 +54,24 @@
         .store-hero-visual div {
             background: linear-gradient(transparent, rgb(247 241 228 / 88%));
         }
+        html.dark .store-hero-visual,
+        html.dark .store-hero-visual div,
+        html.dark .store-hero-visual strong,
+        html.dark .store-hero-visual p {
+            color: #f4fbf6;
+        }
+        html.dark .store-hero-visual {
+            background: #141816;
+            border-color: #2a2e33;
+        }
+        html.dark .store-hero-visual div {
+            background: linear-gradient(transparent, rgb(20 24 22 / 88%));
+        }
     </style>
     <script>
-        localStorage.removeItem('theme');
-        document.documentElement.classList.remove('dark');
+        if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.classList.add('dark');
+        }
     </script>
     @if($ga = config('store.ga4_measurement_id'))
         <script async src="https://www.googletagmanager.com/gtag/js?id={{ $ga }}"></script>

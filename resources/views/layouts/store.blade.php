@@ -63,70 +63,12 @@
         .store-departments { display: flex; flex-wrap: wrap; gap: 1.5rem 2rem; margin-top: 1.5rem; justify-content: center; }
         .store-department { display: grid; justify-items: center; gap: 0.75rem; width: 8.5rem; color: #131316; font-weight: 700; text-align: center; }
         .store-department-icon { display: grid; width: 8.5rem; height: 8.5rem; place-items: center; overflow: hidden; border-radius: 999px; background: #f3f3f3; }
-        .store-shell.has-photo {
-            color: #f7f4ee;
-        }
-        .store-shell.has-photo::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            z-index: 0;
-            pointer-events: none;
-            background: rgb(20 14 10 / 42%);
-        }
-        .store-shell.has-photo > * {
-            position: relative;
-            z-index: 1;
-        }
-        .store-shell.has-photo .store-hero,
-        .store-shell.has-photo .store-section,
-        .store-shell.has-photo .store-shop,
-        .store-shell.has-photo main > section {
-            background: transparent;
-        }
-        .store-shell.has-photo .store-hero-photo { display: none; }
-        .store-header,
-        .store-announce,
-        .store-footer {
-            background: #ffffff;
-            color: #131316;
-        }
-        .store-shell.has-photo :is(.store-card, .store-product, .product-page, .product-buy) {
-            color: #131316;
-        }
-        .store-shell.has-photo .product-page {
-            background: rgb(255 255 255 / 94%);
-            border-radius: 1.5rem;
-        }
-        .store-shell.has-photo .store-section-title,
-        .store-shell.has-photo .store-department,
-        .store-shell.has-photo .store-department span {
-            color: #f7f4ee;
-            text-shadow: 0 2px 12px rgb(0 0 0 / 55%);
-        }
         .store-hero h1,
         .store-hero .store-lead,
         .store-hero .store-kicker,
         .store-hero-copy {
             color: #f7f4ee !important;
             text-shadow: 0 2px 16px rgb(0 0 0 / 45%);
-        }
-        html.dark .store-header,
-        html.dark .store-announce,
-        html.dark .store-footer {
-            background: #121418;
-            color: #f7f4ee;
-        }
-        html.dark .store-shell.has-photo :is(.store-card, .store-product, .product-page, .product-buy) {
-            color: #f7f4ee;
-        }
-        html.dark .store-shell.has-photo .product-page {
-            background: rgb(18 20 24 / 92%);
-        }
-        html.dark .store-hero h1,
-        html.dark .store-hero .store-lead,
-        html.dark .store-hero .store-kicker {
-            color: #f7f4ee !important;
         }
     </style>
     <script>
@@ -142,8 +84,7 @@
     @endif
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-@php($wallpaper = str_replace(["'", '\\'], '', \App\Models\DesignAsset::urlFor('hero') ?: '/storage/design/hero.jpg'))
-<body @class(['store-shell', 'has-photo']) style="background: #1c140f url('{{ $wallpaper }}') center / cover no-repeat fixed" x-data="storefront" :class="{ 'menu-open': drawer }">
+<body class="store-shell" x-data="storefront" :class="{ 'menu-open': drawer }">
     @include('store.partials.announcement')
     @include('store.partials.navbar')
     @include('store.partials.department-rail')

@@ -35,18 +35,6 @@ html.dark {
     min-height: 100vh;
 }
 
-.store-shell.has-photo {
-    color: #f7f4ee;
-}
-
-.store-shell.has-photo .store-hero {
-    background: transparent;
-}
-
-.store-shell.has-photo .store-hero-photo {
-    display: none;
-}
-
 .store-hero h1,
 .store-hero .store-lead,
 .store-hero .store-kicker {
@@ -58,8 +46,11 @@ html.dark {
     flex: 1 0 auto;
 }
 
-html.dark .store-shell.has-photo {
-    color: #f7f4ee;
+html.dark .store-shell {
+    color: var(--dm-ink);
+    background:
+        radial-gradient(900px 420px at 8% -10%, color-mix(in srgb, var(--color-brand) 22%, transparent), transparent 62%),
+        var(--color-canvas);
 }
 
 .store-header {

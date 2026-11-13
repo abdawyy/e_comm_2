@@ -1,13 +1,20 @@
 @extends('layouts.store')
 @section('content')
 <style>
-    .store-hero { position: relative; overflow: hidden; min-height: 34rem; }
-    .store-hero-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .store-photo-band { position: relative; isolation: isolate; background: #1c140f center / cover no-repeat; color: #f7f4ee; }
+    .store-photo-band::before { content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none; background: rgb(20 14 10 / 40%); }
+    .store-photo-band > * { position: relative; z-index: 1; }
+    .store-photo-band .store-hero { background: transparent; min-height: 28rem; }
+    .store-photo-band .store-hero-photo { display: none; }
+    .store-photo-band .store-section { background: transparent; }
+    .store-photo-band .store-section-title,
+    .store-photo-band .store-department,
+    .store-photo-band .store-department span { color: #f7f4ee; text-shadow: 0 2px 12px rgb(0 0 0 / 55%); }
     .store-hero-copy { position: relative; z-index: 1; }
 </style>
-@php($hero = \App\Models\DesignAsset::urlFor('hero') ?: '/storage/design/hero.jpg')
+@php($hero = str_replace(["'", '\\'], '', \App\Models\DesignAsset::urlFor('hero') ?: '/storage/design/hero.jpg'))
+<div class="store-photo-band" style="background-image: url('{{ $hero }}')">
 <section class="store-hero">
-    <img class="store-hero-photo" src="{{ $hero }}" alt="{{ \App\Models\DesignAsset::altFor('hero') }}">
     <div class="store-hero-copy">
         <p class="store-kicker">{{ \App\Support\Cms::text('home.kicker', __('store.home.kicker')) }}</p>
         <h1>{{ \App\Support\Cms::text('home.hero_title', __('store.home.title')) }}</h1>
@@ -32,6 +39,7 @@
         @endforeach
     </div>
 </section>
+</div>
 
 @if($banners->isNotEmpty())
 <section class="mx-auto max-w-6xl px-4 pb-8">

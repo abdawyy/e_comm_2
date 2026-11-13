@@ -64,7 +64,7 @@
             }
             new IntersectionObserver(([entry]) => {
                 button.classList.toggle('is-hidden', entry.isIntersecting);
-            }, { threshold: 0.2 }).observe(footer);
+            }, { rootMargin: '0px 0px -80px 0px', threshold: 0 }).observe(footer);
         });
     </script>
 @endif

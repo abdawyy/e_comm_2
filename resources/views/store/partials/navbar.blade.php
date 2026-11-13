@@ -8,11 +8,8 @@
         </button>
 
         <a href="{{ route('home') }}" class="store-brand">
-            @if($logo = \App\Models\DesignAsset::urlFor('logo'))
+            @if($logo = \App\Models\DesignAsset::urlFor('logo') ?: \App\Models\DesignAsset::urlFor('logo_dark'))
                 <img class="store-logo-light" src="{{ $logo }}" alt="" onerror="this.remove()">
-            @endif
-            @if($logoDark = \App\Models\DesignAsset::urlFor('logo_dark'))
-                <img class="store-logo-dark" src="{{ $logoDark }}" alt="" onerror="this.remove()">
             @endif
             <span class="store-brand-name">{{ $theme->brand_name }}</span>
         </a>
@@ -30,7 +27,7 @@
 
         <div class="store-nav-tools">
             <a class="store-lang" href="{{ request()->fullUrlWithQuery(['locale' => app()->getLocale() === 'ar' ? 'en' : 'ar']) }}">{{ app()->getLocale() === 'ar' ? 'EN' : 'ع' }}</a>
-            <a class="store-account" {{ request()->routeIs('login') || request()->is('my*') ? 'is-active' : '' }}" href="{{ auth()->check() ? url('/my') : route('login') }}">
+            <a class="store-account {{ request()->routeIs('login') || request()->is('my*') ? 'is-active' : '' }}" href="{{ auth()->check() ? url('/my') : route('login') }}">
                 <span class="store-icon-btn" aria-hidden="true">
                     <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M5.5 19.2a6.5 6.5 0 0 1 13 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
                 </span>

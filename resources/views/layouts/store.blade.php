@@ -27,25 +27,24 @@
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&family=IBM+Plex+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --color-brand: {{ $theme->css('primary') }};
-            --color-brand-dark: {{ $theme->css('primary_dark') }};
-            --color-brand-light: {{ $theme->css('primary_light') }};
-            --color-accent: {{ $theme->css('accent') }};
-            --color-accent-light: {{ $theme->css('accent_light') }};
-            --color-canvas: {{ $theme->css('canvas') }};
-            --color-surface: {{ $theme->css('surface') }};
-            --color-border: {{ $theme->css('border') }};
-            --color-success: {{ $theme->css('success') }};
-            --color-danger: {{ $theme->css('danger') }};
-            --color-canvas-base: {{ $theme->css('canvas') }};
-            --color-surface-base: {{ $theme->css('surface') }};
-            --color-border-base: {{ $theme->css('border') }};
+            --color-brand: #131316;
+            --color-brand-dark: #131316;
+            --color-brand-light: #2a2a2e;
+            --color-accent: #eeddb0;
+            --color-accent-light: #f7f1e4;
+            --color-canvas: #ffffff;
+            --color-surface: #ffffff;
+            --color-border: #e6e6e6;
+            --color-success: #131316;
+            --color-danger: #b42318;
+            --color-canvas-base: #ffffff;
+            --color-surface-base: #ffffff;
+            --color-border-base: #e6e6e6;
         }
     </style>
     <script>
-        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-        }
+        localStorage.removeItem('theme');
+        document.documentElement.classList.remove('dark');
     </script>
     @if($ga = config('store.ga4_measurement_id'))
         <script async src="https://www.googletagmanager.com/gtag/js?id={{ $ga }}"></script>

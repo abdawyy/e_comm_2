@@ -9,10 +9,12 @@ use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\NavigationItem;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\Width;
+use Filament\Support\Icons\Heroicon;
 use Filament\View\PanelsRenderHook;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -29,8 +31,9 @@ class AccountPanelProvider extends PanelProvider
             ->id('account')
             ->path('my')
             ->login()
-            ->maxContentWidth(Width::Full)
-            ->sidebarFullyCollapsibleOnDesktop()
+            ->topNavigation()
+            ->globalSearch(false)
+            ->maxContentWidth(Width::SevenExtraLarge)
             ->brandName(fn (): string => SiteTheme::current()->brand_name)
             ->darkMode(false)
             ->brandLogo(fn (): ?string => DesignAsset::urlFor('logo'))
@@ -38,6 +41,13 @@ class AccountPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::hex('#131316'),
                 'gray' => Color::hex('#212a2f'),
+            ])
+            ->navigationItems([
+                NavigationItem::make('shop')
+                    ->label(fn (): string => __('store.nav.shop'))
+                    ->url(fn (): string => url('/'))
+                    ->icon(Heroicon::OutlinedShoppingBag)
+                    ->sort(-10),
             ])
             ->discoverResources(in: app_path('Filament/Account/Resources'), for: 'App\\Filament\\Account\\Resources')
             ->discoverPages(in: app_path('Filament/Account/Pages'), for: 'App\\Filament\\Account\\Pages')

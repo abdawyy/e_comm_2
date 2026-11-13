@@ -30,11 +30,7 @@
 
         <div class="store-nav-tools">
             <a class="store-lang" href="{{ request()->fullUrlWithQuery(['locale' => app()->getLocale() === 'ar' ? 'en' : 'ar']) }}">{{ app()->getLocale() === 'ar' ? 'EN' : 'ع' }}</a>
-            <button type="button" class="store-icon-btn" @click="toggleDark()" aria-label="{{ __('store.nav.theme') }}">
-                <svg x-show="!dark" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-                <svg x-show="dark" x-cloak viewBox="0 0 24 24" aria-hidden="true"><path d="M16 3.2A8.5 8.5 0 1 0 20.8 14 7 7 0 0 1 16 3.2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
-            </button>
-            <a class="store-account {{ request()->routeIs('login') || request()->is('my*') ? 'is-active' : '' }}" href="{{ auth()->check() ? url('/my') : route('login') }}">
+            <a class="store-account" {{ request()->routeIs('login') || request()->is('my*') ? 'is-active' : '' }}" href="{{ auth()->check() ? url('/my') : route('login') }}">
                 <span class="store-icon-btn" aria-hidden="true">
                     <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M5.5 19.2a6.5 6.5 0 0 1 13 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
                 </span>

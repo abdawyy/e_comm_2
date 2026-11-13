@@ -1,6 +1,39 @@
 @extends('layouts.store')
 @section('content')
-<section class="store-hero">
+@section('content')
+<style>
+    .store-hero {
+        width: 100% !important;
+        max-width: none !important;
+        min-height: 34rem;
+        display: flex !important;
+        align-items: center;
+        justify-content: flex-start;
+        margin: 0 !important;
+        padding: 4.5rem max(1.25rem, calc((100% - 76rem) / 2));
+        background-color: #f4efe6;
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-image: linear-gradient(90deg, rgb(244 239 230 / 92%), rgb(244 239 230 / 8%)), var(--hero);
+    }
+    html[dir="rtl"] .store-hero {
+        background-image: linear-gradient(270deg, rgb(244 239 230 / 92%), rgb(244 239 230 / 8%)), var(--hero);
+    }
+    html.dark .store-hero {
+        background-color: #121418;
+        background-image: linear-gradient(90deg, rgb(18 20 24 / 88%), rgb(18 20 24 / 12%)), var(--hero);
+    }
+    html.dark[dir="rtl"] .store-hero {
+        background-image: linear-gradient(270deg, rgb(18 20 24 / 88%), rgb(18 20 24 / 12%)), var(--hero);
+    }
+    .store-hero-copy { max-width: 36rem; text-align: start; color: #131316; }
+    html.dark .store-hero-copy,
+    html.dark .store-hero h1,
+    html.dark .store-hero .store-lead,
+    html.dark .store-hero .store-kicker { color: #f7f4ee !important; }
+</style>
+<section class="store-hero" @if($hero = \App\Models\DesignAsset::urlFor('hero')) style="--hero: url('{{ str_replace(["'", '\\'], '', $hero) }}')" @endif>
     <div class="store-hero-copy">
         <p class="store-kicker">{{ \App\Support\Cms::text('home.kicker', __('store.home.kicker')) }}</p>
         <h1>{{ \App\Support\Cms::text('home.hero_title', __('store.home.title')) }}</h1>
@@ -9,11 +42,6 @@
             <a class="store-btn-primary" href="{{ route('shop') }}">{{ __('store.home.shop_cta') }}</a>
             <a class="store-btn-accent" href="{{ route('bundles.index') }}">{{ __('store.home.bundle_cta') }}</a>
         </div>
-    </div>
-    <div class="store-hero-visual">
-        @if($hero = \App\Models\DesignAsset::urlFor('hero'))
-            <img src="{{ $hero }}" alt="{{ \App\Models\DesignAsset::altFor('hero') }}">
-        @endif
     </div>
 </section>
 

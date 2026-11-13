@@ -744,42 +744,49 @@ html.dark .store-logo-dark { display: inline; }
 .store-hero {
     display: grid;
     align-items: center;
-    gap: 2rem;
-    padding-block: 3rem 2rem;
+    gap: 2.5rem;
+    padding: 2.5rem 0 1.5rem;
+}
+
+.store-hero-copy {
+    display: grid;
+    align-content: center;
+    gap: 0.2rem;
 }
 
 .store-hero h1 {
-    margin-top: 0.6rem;
-    max-width: 14ch;
-    font-size: clamp(2.4rem, 5vw, 4.2rem);
-    line-height: 0.95;
+    margin-top: 0.35rem;
+    max-width: 12ch;
+    font-size: clamp(2.6rem, 5vw, 4.4rem);
+    line-height: 1.05;
     font-weight: 750;
+    letter-spacing: -0.03em;
 }
 
 .store-lead {
-    max-width: 36rem;
-    margin-top: 1rem;
-    font-size: 1.1rem;
-    line-height: 1.6;
-    opacity: 0.82;
+    max-width: 34rem;
+    margin-top: 0.85rem;
+    font-size: 1.15rem;
+    line-height: 1.7;
+    color: #3a3a40;
+    opacity: 1;
 }
 
 .store-hero-actions {
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem;
-    margin-top: 1.5rem;
+    margin-top: 1.6rem;
 }
 
 .store-hero-visual {
     position: relative;
     min-height: 22rem;
     overflow: hidden;
-    border: 1px solid #e6e6e6;
-    border-radius: 1.6rem;
+    border: 0;
+    border-radius: 2rem;
     background: #f7f1e4;
-    color: #131316;
-    box-shadow: none;
+    box-shadow: 0 24px 50px rgb(19 19 22 / 8%);
 }
 
 .store-hero-visual img {
@@ -790,22 +797,11 @@ html.dark .store-logo-dark { display: inline; }
     object-fit: cover;
 }
 
-.store-hero-visual div {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    min-height: 22rem;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: 1.5rem;
-    background: linear-gradient(transparent, rgb(247 241 228 / 88%));
-    color: #131316;
-}
-
-.store-hero-visual strong {
-    max-width: 16ch;
-    font-size: 1.8rem;
-    line-height: 1.1;
+@media (min-width: 900px) {
+    .store-hero {
+        grid-template-columns: 1fr 1.05fr;
+        min-height: 32rem;
+    }
 }
 
 .store-section {

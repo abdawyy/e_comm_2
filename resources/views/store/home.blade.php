@@ -1,8 +1,7 @@
 @extends('layouts.store')
 @section('content')
-@php($theme = \App\Models\SiteTheme::current())
 <section class="store-hero">
-    <div>
+    <div class="store-hero-copy">
         <p class="store-kicker">{{ \App\Support\Cms::text('home.kicker', __('store.home.kicker')) }}</p>
         <h1>{{ \App\Support\Cms::text('home.hero_title', __('store.home.title')) }}</h1>
         <p class="store-lead">{{ \App\Support\Cms::text('home.hero_subtitle', __('store.home.subtitle')) }}</p>
@@ -13,12 +12,8 @@
     </div>
     <div class="store-hero-visual">
         @if($hero = \App\Models\DesignAsset::urlFor('hero'))
-            <img src="{{ $hero }}" alt="{{ \App\Models\DesignAsset::altFor('hero') }}" onerror="this.remove()">
+            <img src="{{ $hero }}" alt="{{ \App\Models\DesignAsset::altFor('hero') }}">
         @endif
-        <div>
-            <p class="store-kicker">{{ $theme->brand_name }}</p>
-            <strong>{{ \App\Support\Cms::text('home.hero_title', __('store.home.title')) }}</strong>
-        </div>
     </div>
 </section>
 

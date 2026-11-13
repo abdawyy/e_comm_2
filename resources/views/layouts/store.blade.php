@@ -41,19 +41,12 @@
             --color-surface-base: #ffffff;
             --color-border-base: #e6e6e6;
         }
-        .store-hero-visual,
-        .store-hero-visual div,
-        .store-hero-visual strong,
-        .store-hero-visual p {
-            color: #131316;
-        }
         .store-hero-visual {
             background: #f7f1e4;
-            border-color: #e6e6e6;
+            border: 0;
+            box-shadow: 0 24px 50px rgb(19 19 22 / 8%);
         }
-        .store-hero-visual div {
-            background: linear-gradient(transparent, rgb(247 241 228 / 88%));
-        }
+        .store-hero-visual div { background: transparent; }
         html.dark .store-hero-visual,
         html.dark .store-hero-visual div,
         html.dark .store-hero-visual strong,

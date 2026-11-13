@@ -20,7 +20,7 @@ return [
         'subtitle' => 'Olive oil, dates, coffee, and household staples, packed the way you like.',
         'shop_cta' => 'Browse the shop',
         'bundle_cta' => 'See bundles',
-        'categories' => 'Shop by aisle',
+        'categories' => 'Departments',
         'featured' => 'Featured',
     ],
     'shop' => [
@@ -43,6 +43,13 @@ return [
         'out_of_stock' => 'Out of stock',
         'decrease' => 'Decrease quantity',
         'increase' => 'Increase quantity',
+        'reviews' => 'Reviews',
+        'write_review' => 'Write a review',
+        'your_name' => 'Your name',
+        'your_review' => 'Your review',
+        'stars' => 'Stars',
+        'review_sent' => 'Your review was sent and will appear after it is checked.',
+        'no_reviews' => 'No reviews yet.',
     ],
     'cart' => [
         'added' => 'Added to your cart',

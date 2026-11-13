@@ -22,6 +22,7 @@ class Category extends Model
         'slug',
         'description',
         'image_path',
+        'icon_path',
         'sort_order',
         'is_active',
     ];
@@ -36,8 +37,18 @@ class Category extends Model
 
     protected static function booted(): void
     {
+        static::updating(function (Category $category): void {
+            if ($category->isDirty('image_path')) {
+                static::deletePublicFile($category->getOriginal('image_path'));
+            }
+            if ($category->isDirty('icon_path')) {
+                static::deletePublicFile($category->getOriginal('icon_path'));
+            }
+        });
+
         static::deleting(function (Category $category): void {
             static::deletePublicFile($category->image_path);
+            static::deletePublicFile($category->icon_path);
         });
     }
 
@@ -49,5 +60,10 @@ class Category extends Model
     public function imageUrl(): ?string
     {
         return $this->publicUrl($this->image_path);
+    }
+
+    public function iconUrl(): ?string
+    {
+        return $this->publicUrl($this->icon_path) ?: $this->imageUrl();
     }
 }

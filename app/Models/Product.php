@@ -78,6 +78,16 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(ProductReview::class);
+    }
+
+    public function approvedReviews(): HasMany
+    {
+        return $this->reviews()->where('is_approved', true);
+    }
+
     public function images(): HasMany
     {
         return $this->hasMany(ProductImage::class)->orderBy('sort_order');

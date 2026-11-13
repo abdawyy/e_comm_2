@@ -53,7 +53,7 @@ class CatalogController extends Controller
     public function product(Product $product): View
     {
         abort_unless($product->is_active, 404);
-        $product->load(['images', 'services', 'packagingTypes', 'category']);
+        $product->load(['images', 'services', 'packagingTypes', 'category', 'approvedReviews']);
 
         $related = Product::query()
             ->with(['category', 'images'])

@@ -12,6 +12,7 @@ use App\Models\HomeBanner;
 use App\Models\PackagingType;
 use App\Models\PreparationService;
 use App\Models\Product;
+use App\Models\ProductReview;
 use App\Models\SeoSetting;
 use App\Models\SiteTheme;
 use Illuminate\Database\Seeder;
@@ -169,6 +170,67 @@ class DatabaseSeeder extends Seeder
             'sort_order' => 1,
         ]);
 
+        $this->seedDepartments();
+        $this->seedReviews();
+
         $cairo->id;
+    }
+
+    private function seedDepartments(): void
+    {
+        $rows = [
+            [10, 'Turkish coffee', 'القهوة التركي'],
+            [11, 'Espresso', 'الإسبريسو'],
+            [12, 'Coffee sachets', 'أظرف القهوة'],
+            [13, 'Coffee beans', 'حبوب القهوة'],
+            [14, 'Specialty coffee', 'القهوة المختصة'],
+            [15, 'Coffee tools', 'أدوات القهوة'],
+        ];
+
+        foreach ($rows as [$sort, $en, $ar]) {
+            $category = Category::query()->get()->first(fn (Category $item): bool => $item->getTranslation('name', 'en') === $en) ?? new Category;
+            $category->name = ['en' => $en, 'ar' => $ar];
+            $category->description = ['en' => $en, 'ar' => $ar];
+            $category->is_active = true;
+            $category->sort_order = $sort;
+            if (! filled($category->icon_path)) {
+                $path = 'categories/icons/department-'.$sort.'.svg';
+                Storage::disk('public')->put($path, $this->departmentIcon($ar));
+                $category->icon_path = $path;
+            }
+            $category->save();
+        }
+    }
+
+    private function departmentIcon(string $letter): string
+    {
+        $mark = mb_substr($letter, 0, 1);
+
+        return '<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160"><circle cx="80" cy="80" r="78" fill="#f7f1e4" stroke="#131316" stroke-width="3"/><text x="80" y="96" text-anchor="middle" font-size="54" font-family="Tahoma" fill="#131316">'.$mark.'</text></svg>';
+    }
+
+    private function seedReviews(): void
+    {
+        $notes = [
+            ['Nour', 5, 'تحميص متوازن وريحة واضحة من أول كوب.'],
+            ['Omar', 4, 'الطعم ثابت والعبوة وصلت سليمة.'],
+            ['Mariam', 5, 'مناسب للتحضير اليومي وطعمه نظيف.'],
+        ];
+
+        foreach (Product::query()->where('is_active', true)->get() as $product) {
+            if ($product->reviews()->exists()) {
+                continue;
+            }
+
+            foreach ($notes as $note) {
+                ProductReview::query()->create([
+                    'product_id' => $product->id,
+                    'author_name' => $note[0],
+                    'rating' => $note[1],
+                    'body' => $note[2],
+                    'is_approved' => true,
+                ]);
+            }
+        }
     }
 }

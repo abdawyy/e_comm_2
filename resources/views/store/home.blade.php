@@ -43,12 +43,18 @@
 @endif
 
 <section class="store-section">
-    <h2 class="store-section-title">{{ __('store.home.categories') }}</h2>
-    <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <h2 class="store-section-title store-departments-title">{{ __('store.home.categories') }}</h2>
+    <div class="store-departments">
         @foreach($categories as $category)
-            <a class="store-card p-4" href="{{ route('categories.show', $category) }}">
-                @if($category->imageUrl())<img class="mb-3 h-28 w-full rounded-lg object-cover" src="{{ $category->imageUrl() }}" alt="">@endif
-                <strong>{{ $category->name }}</strong>
+            <a class="store-department" href="{{ route('categories.show', $category) }}">
+                <span class="store-department-icon">
+                    @if($icon = $category->iconUrl())
+                        <img src="{{ $icon }}" alt="">
+                    @else
+                        <span>{{ mb_substr((string) $category->name, 0, 1) }}</span>
+                    @endif
+                </span>
+                <span>{{ $category->name }}</span>
             </a>
         @endforeach
     </div>

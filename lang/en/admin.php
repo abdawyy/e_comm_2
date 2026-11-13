@@ -23,7 +23,7 @@ return [
         'delivery' => 'Delivery',
     ],
     'fields' => [
-        'name' => 'Name', 'description' => 'Description', 'image' => 'Image', 'sort' => 'Sort', 'active' => 'Active',
+        'name' => 'Name', 'description' => 'Description', 'image' => 'Image', 'icon' => 'Icon', 'sort' => 'Sort', 'active' => 'Active',
         'sku' => 'SKU', 'price' => 'Price', 'unit' => 'Unit', 'secondary_unit' => 'Second unit', 'secondary_price' => 'Second price',
         'track_stock' => 'Track stock', 'stock' => 'Stock', 'cover' => 'Cover', 'image_url' => 'Image URL', 'featured' => 'Featured',
         'gallery' => 'Gallery', 'status' => 'Status', 'payment_status' => 'Payment status', 'notes' => 'Notes', 'reference' => 'Reference',
@@ -56,9 +56,11 @@ return [
         'payments' => ['label' => 'Payment', 'plural' => 'Payments'],
         'social' => ['label' => 'Social link', 'plural' => 'Social links'],
         'carriers' => ['label' => 'Carrier', 'plural' => 'Carriers'],
+        'reviews' => ['label' => 'Review', 'plural' => 'Reviews'],
     ],
     'help' => [
         'category_image' => 'Optional cover, 800×800, jpg/png/webp, max 4 MB.',
+        'category_icon' => 'Round clickable icon for the departments row. Upload a square png or svg.',
         'product_image' => 'Cover image. An uploaded file wins over the external URL. Gallery images are ordered.',
         'bundle_image' => 'Upload a cover for the bundle card and cart. Add more pictures in the gallery.',
         'internal' => 'Hidden from the shop. Staff can still add it to bundles and manual orders.',

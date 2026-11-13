@@ -63,6 +63,43 @@
         </div>
     </div>
 </section>
+<section class="product-reviews">
+    @php
+        $reviews = $product->approvedReviews;
+        $average = $reviews->isEmpty() ? null : number_format($reviews->avg('rating'), 1);
+    @endphp
+    <h2>{{ __('store.product.reviews') }}@if($average) <span class="product-stars">★ {{ $average }}</span>@endif</h2>
+    @forelse($reviews as $review)
+        <article class="product-review">
+            <strong>{{ $review->author_name }}</strong>
+            <div class="product-stars">{{ str_repeat('★', (int) $review->rating) }}{{ str_repeat('☆', 5 - (int) $review->rating) }}</div>
+            <p>{{ $review->body }}</p>
+        </article>
+    @empty
+        <p>{{ __('store.product.no_reviews') }}</p>
+    @endforelse
+    <form class="product-review-form" method="post" action="{{ route('products.reviews.store', $product) }}">
+        @csrf
+        <h3>{{ __('store.product.write_review') }}</h3>
+        <label>
+            <span>{{ __('store.product.your_name') }}</span>
+            <input class="store-input" name="author_name" value="{{ old('author_name', auth()->user()->name ?? '') }}" required>
+        </label>
+        <label>
+            <span>{{ __('store.product.stars') }}</span>
+            <select class="store-input" name="rating" required>
+                @for($star = 5; $star >= 1; $star--)
+                    <option value="{{ $star }}" @selected((int) old('rating', 5) === $star)>{{ $star }}</option>
+                @endfor
+            </select>
+        </label>
+        <label>
+            <span>{{ __('store.product.your_review') }}</span>
+            <textarea class="store-input" name="body" rows="4" required>{{ old('body') }}</textarea>
+        </label>
+        <button class="store-btn-primary" type="submit">{{ __('store.product.write_review') }}</button>
+    </form>
+</section>
 @if($related->isNotEmpty())
 <section class="product-related">
     <h2>{{ $relatedTitle }}</h2>

@@ -179,12 +179,12 @@ class DatabaseSeeder extends Seeder
     private function seedDepartments(): void
     {
         $rows = [
-            [10, 'Turkish coffee', 'القهوة التركي', 'https://files.easy-orders.net/1747404331498686274.jpg'],
-            [11, 'Espresso', 'الإسبريسو', 'https://files.easy-orders.net/1747406902995715463.jpg'],
-            [12, 'Coffee sachets', 'أظرف القهوة', 'https://files.easy-orders.net/1772048269810781313.jpg'],
-            [13, 'Coffee beans', 'حبوب القهوة', 'https://files.easy-orders.net/1747404748060403340.jpg'],
-            [14, 'Specialty coffee', 'القهوة المختصة', 'https://files.easy-orders.net/1747407182010509082.jpg'],
-            [15, 'Coffee tools', 'أدوات القهوة', 'https://files.easy-orders.net/1763760857960912789.jpg'],
+            [10, 'Turkish coffee', 'القهوة التركي', 'categories/icons/turkish.jpg'],
+            [11, 'Espresso', 'الإسبريسو', 'categories/icons/espresso.jpg'],
+            [12, 'Coffee sachets', 'أظرف القهوة', 'categories/icons/sachets.jpg'],
+            [13, 'Coffee beans', 'حبوب القهوة', 'categories/icons/beans.jpg'],
+            [14, 'Specialty coffee', 'القهوة المختصة', 'categories/icons/specialty.jpg'],
+            [15, 'Coffee tools', 'أدوات القهوة', 'categories/icons/tools.jpg'],
         ];
 
         foreach ($rows as [$sort, $en, $ar, $icon]) {

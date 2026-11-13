@@ -23,7 +23,7 @@
 
         <nav class="store-nav-links" aria-label="{{ __('store.nav.menu') }}">
             <a class="store-nav-link {{ request()->routeIs('home') ? 'is-active' : '' }}" href="{{ route('home') }}">{{ __('store.nav.home') }}</a>
-            @foreach(\App\Models\Category::query()->where('is_active', true)->where('icon_path', 'like', 'http%')->orderBy('sort_order')->get() as $department)
+            @foreach(\App\Models\Category::query()->where('is_active', true)->whereNotNull('icon_path')->orderBy('sort_order')->get() as $department)
                 <a class="store-nav-link {{ request()->routeIs('categories.show') && request()->route('category')?->is($department) ? 'is-active' : '' }}" href="{{ $department->destination() }}">{{ $department->name }}</a>
             @endforeach
             <a class="store-nav-link {{ request()->routeIs('orders.track') ? 'is-active' : '' }}" href="{{ route('orders.track') }}">{{ __('store.nav.track') }}</a>
@@ -63,7 +63,7 @@
         </div>
         <nav class="store-drawer-links">
             <a class="{{ request()->routeIs('home') ? 'is-active' : '' }}" href="{{ route('home') }}">{{ __('store.nav.home') }}</a>
-            @foreach(\App\Models\Category::query()->where('is_active', true)->where('icon_path', 'like', 'http%')->orderBy('sort_order')->get() as $department)
+            @foreach(\App\Models\Category::query()->where('is_active', true)->whereNotNull('icon_path')->orderBy('sort_order')->get() as $department)
                 <a href="{{ $department->destination() }}">{{ $department->name }}</a>
             @endforeach
             <a class="{{ request()->routeIs('orders.track') ? 'is-active' : '' }}" href="{{ route('orders.track') }}">{{ __('store.nav.track') }}</a>

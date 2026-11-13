@@ -35,15 +35,26 @@ html.dark {
     min-height: 100vh;
 }
 
+.store-shell.has-photo {
+    background: #1c140f center / cover fixed no-repeat;
+    background-image: var(--site-photo);
+}
+
+.store-hero h1,
+.store-hero .store-lead,
+.store-hero .store-kicker {
+    color: #f7f4ee;
+    text-shadow: 0 2px 16px rgb(0 0 0 / 45%);
+}
+
 .store-shell > main {
     flex: 1 0 auto;
 }
 
-html.dark .store-shell {
-    color: var(--dm-ink);
-    background:
-        radial-gradient(900px 420px at 8% -10%, color-mix(in srgb, var(--color-brand) 22%, transparent), transparent 62%),
-        var(--color-canvas);
+html.dark .store-shell.has-photo {
+    color: #f7f4ee;
+    background: #1c140f center / cover fixed no-repeat;
+    background-image: var(--site-photo);
 }
 
 .store-header {

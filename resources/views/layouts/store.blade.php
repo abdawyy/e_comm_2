@@ -63,7 +63,41 @@
         .store-departments { display: flex; flex-wrap: wrap; gap: 1.5rem 2rem; margin-top: 1.5rem; justify-content: center; }
         .store-department { display: grid; justify-items: center; gap: 0.75rem; width: 8.5rem; color: #131316; font-weight: 700; text-align: center; }
         .store-department-icon { display: grid; width: 8.5rem; height: 8.5rem; place-items: center; overflow: hidden; border-radius: 999px; background: #f3f3f3; }
-        .store-department-icon img { width: 100%; height: 100%; object-fit: cover; }
+        .store-shell.has-photo {
+            background: #1c140f center / cover fixed no-repeat;
+            background-image: var(--site-photo);
+        }
+        .store-header,
+        .store-announce,
+        .store-footer,
+        .store-trust,
+        .store-section,
+        .store-shop,
+        main > section:not(.store-hero) {
+            background: #ffffff;
+        }
+        .store-hero h1,
+        .store-hero .store-lead,
+        .store-hero .store-kicker,
+        .store-hero-copy {
+            color: #f7f4ee !important;
+            text-shadow: 0 2px 16px rgb(0 0 0 / 45%);
+        }
+        html.dark .store-header,
+        html.dark .store-announce,
+        html.dark .store-footer,
+        html.dark .store-trust,
+        html.dark .store-section,
+        html.dark .store-shop,
+        html.dark main > section:not(.store-hero) {
+            background: #121418;
+            color: #f7f4ee;
+        }
+        html.dark .store-hero h1,
+        html.dark .store-hero .store-lead,
+        html.dark .store-hero .store-kicker {
+            color: #f7f4ee !important;
+        }
     </style>
     <script>
         if (localStorage.getItem('theme') === 'dark') {
@@ -78,8 +112,8 @@
     @endif
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-@php($wallpaper = \App\Models\DesignAsset::urlFor('wallpaper'))
-<body @class(['store-shell', 'has-wallpaper' => filled($wallpaper)]) @if($wallpaper) style="--store-wallpaper: url('{{ str_replace(["'", '\\'], '', $wallpaper) }}')" @endif x-data="storefront" :class="{ 'menu-open': drawer }">
+@php($wallpaper = \App\Models\DesignAsset::urlFor('hero') ?: '/storage/design/hero.jpg')
+<body @class(['store-shell', 'has-photo']) style="--site-photo: url('{{ str_replace(["'", '\\'], '', $wallpaper) }}')" x-data="storefront" :class="{ 'menu-open': drawer }">
     @include('store.partials.announcement')
     @include('store.partials.navbar')
     @include('store.partials.department-rail')

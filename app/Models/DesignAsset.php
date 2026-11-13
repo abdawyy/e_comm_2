@@ -77,7 +77,13 @@ class DesignAsset extends Model
             return null;
         }
 
-        return $this->publicUrl($this->image_path);
+        $path = (string) $this->image_path;
+
+        if ($this->key === 'hero' && is_file(storage_path('app/public/design/hero.jpg'))) {
+            $path = 'design/hero.jpg';
+        }
+
+        return $this->publicUrl($path);
     }
 
     public static function urlFor(string $key): ?string

@@ -742,6 +742,7 @@ html.dark .store-logo-dark { display: inline; }
 }
 
 .store-hero {
+    position: relative;
     width: 100%;
     max-width: none;
     min-height: 34rem;
@@ -749,25 +750,29 @@ html.dark .store-logo-dark { display: inline; }
     align-items: center;
     justify-content: flex-start;
     margin: 0;
+    overflow: hidden;
     padding: 4.5rem max(1.25rem, calc((100% - 76rem) / 2));
-    background-color: #f4efe6;
-    background-image: linear-gradient(90deg, rgb(244 239 230 / 92%) 0%, rgb(244 239 230 / 72%) 42%, rgb(244 239 230 / 8%) 100%), var(--hero);
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
+    background: #1c140f;
 }
 
-html[dir="rtl"] .store-hero {
-    background-image: linear-gradient(270deg, rgb(244 239 230 / 92%) 0%, rgb(244 239 230 / 72%) 42%, rgb(244 239 230 / 8%) 100%), var(--hero);
+.store-hero-photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
 }
 
-html.dark .store-hero {
-    background-color: #121418;
-    background-image: linear-gradient(90deg, rgb(18 20 24 / 88%) 0%, rgb(18 20 24 / 62%) 46%, rgb(18 20 24 / 12%) 100%), var(--hero);
+.store-hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgb(20 14 10 / 72%), rgb(20 14 10 / 10%));
 }
 
-html.dark[dir="rtl"] .store-hero {
-    background-image: linear-gradient(270deg, rgb(18 20 24 / 88%) 0%, rgb(18 20 24 / 62%) 46%, rgb(18 20 24 / 12%) 100%), var(--hero);
+html[dir="rtl"] .store-hero::after {
+    background: linear-gradient(270deg, rgb(20 14 10 / 72%), rgb(20 14 10 / 10%));
 }
 
 .store-hero-copy {
@@ -778,13 +783,12 @@ html.dark[dir="rtl"] .store-hero {
     justify-items: start;
     max-width: 36rem;
     text-align: start;
-    color: #131316;
+    color: #f7f4ee;
 }
 
-html.dark .store-hero-copy,
-html.dark .store-hero h1,
-html.dark .store-hero .store-lead,
-html.dark .store-hero .store-kicker {
+.store-hero h1,
+.store-hero .store-lead,
+.store-hero .store-kicker {
     color: #f7f4ee;
 }
 

@@ -22,6 +22,20 @@
     </div>
 </section>
 
+<section class="store-section">
+    <h2 class="store-section-title store-departments-title">{{ __('store.home.categories') }}</h2>
+    <div class="store-departments">
+        @foreach($departments as $category)
+            <a class="store-department" href="{{ route('categories.show', $category) }}">
+                <span class="store-department-icon">
+                    <img src="{{ $category->iconUrl() }}" alt="{{ $category->name }}">
+                </span>
+                <span>{{ $category->name }}</span>
+            </a>
+        @endforeach
+    </div>
+</section>
+
 @if($banners->isNotEmpty())
 <section class="mx-auto max-w-6xl px-4 pb-8">
     <div class="grid gap-4 md:grid-cols-2">
@@ -41,24 +55,6 @@
     </div>
 </section>
 @endif
-
-<section class="store-section">
-    <h2 class="store-section-title store-departments-title">{{ __('store.home.categories') }}</h2>
-    <div class="store-departments">
-        @foreach($categories as $category)
-            <a class="store-department" href="{{ route('categories.show', $category) }}">
-                <span class="store-department-icon">
-                    @if($icon = $category->iconUrl())
-                        <img src="{{ $icon }}" alt="">
-                    @else
-                        <span>{{ mb_substr((string) $category->name, 0, 1) }}</span>
-                    @endif
-                </span>
-                <span>{{ $category->name }}</span>
-            </a>
-        @endforeach
-    </div>
-</section>
 
 <section class="store-section">
     <h2 class="store-section-title">{{ __('store.home.featured') }}</h2>

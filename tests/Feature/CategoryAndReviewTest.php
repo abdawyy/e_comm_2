@@ -18,7 +18,7 @@ class CategoryAndReviewTest extends TestCase
     {
         $category = Category::factory()->create([
             'name' => ['en' => 'Espresso', 'ar' => 'الإسبريسو'],
-            'icon_path' => 'categories/icons/department-11.svg',
+            'icon_path' => 'https://files.easy-orders.net/1747406902995715463.jpg',
         ]);
         $product = Product::factory()->create([
             'category_id' => $category->id,

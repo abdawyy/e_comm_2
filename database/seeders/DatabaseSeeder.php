@@ -193,7 +193,7 @@ class DatabaseSeeder extends Seeder
             $category->description = ['en' => $en, 'ar' => $ar];
             $category->is_active = true;
             $category->sort_order = $sort;
-            if (! filled($category->icon_path) || str_ends_with((string) $category->icon_path, '.svg')) {
+            if (blank($category->icon_path) || str_ends_with((string) $category->icon_path, '.svg') || str_starts_with((string) $category->icon_path, 'http')) {
                 $category->icon_path = $icon;
             }
             $category->save();

@@ -67,9 +67,9 @@
         html.dark .store-hero-visual div {
             background: linear-gradient(transparent, rgb(20 24 22 / 88%));
         }
-        .store-departments { display: flex; gap: 1.25rem; margin-top: 1.25rem; overflow-x: auto; justify-content: center; }
-        .store-department { display: grid; justify-items: center; gap: 0.55rem; min-width: 6.5rem; color: #131316; font-weight: 700; text-align: center; }
-        .store-department-icon { display: grid; width: 8.5rem; height: 8.5rem; place-items: center; overflow: hidden; border-radius: 999px; background: #f3f3f3; cursor: pointer; }
+        .store-departments { display: flex; flex-wrap: wrap; gap: 1.5rem 2rem; margin-top: 1.5rem; justify-content: center; }
+        .store-department { display: grid; justify-items: center; gap: 0.75rem; width: 8.5rem; color: #131316; font-weight: 700; text-align: center; }
+        .store-department-icon { display: grid; width: 8.5rem; height: 8.5rem; place-items: center; overflow: hidden; border-radius: 999px; background: #f3f3f3; }
         .store-department-icon img { width: 100%; height: 100%; object-fit: cover; }
     </style>
     <script>

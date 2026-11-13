@@ -36,8 +36,15 @@ html.dark {
 }
 
 .store-shell.has-photo {
-    background: #1c140f center / cover fixed no-repeat;
-    background-image: var(--site-photo);
+    color: #f7f4ee;
+}
+
+.store-shell.has-photo .store-hero {
+    background: transparent;
+}
+
+.store-shell.has-photo .store-hero-photo {
+    display: none;
 }
 
 .store-hero h1,
@@ -53,8 +60,6 @@ html.dark {
 
 html.dark .store-shell.has-photo {
     color: #f7f4ee;
-    background: #1c140f center / cover fixed no-repeat;
-    background-image: var(--site-photo);
 }
 
 .store-header {
@@ -817,7 +822,7 @@ html[dir="rtl"] .store-hero::after {
     margin-top: 0.85rem;
     font-size: 1.15rem;
     line-height: 1.7;
-    color: #3a3a40;
+    color: #f7f4ee;
     opacity: 1;
 }
 

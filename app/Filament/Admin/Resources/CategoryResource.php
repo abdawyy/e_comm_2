@@ -60,6 +60,7 @@ class CategoryResource extends Resource
             Section::make(__('admin.forms.media'))->description(__('admin.forms.media_help'))->icon(Heroicon::OutlinedPhoto)->schema([
                 FileUpload::make('image_path')->label(__('admin.fields.image'))->disk('public')->directory('categories')->image()->imagePreviewHeight('180')->maxSize(4096)->helperText(__('admin.help.category_image'))->columnSpanFull(),
                 FileUpload::make('icon_path')->label(__('admin.fields.icon'))->disk('public')->directory('categories/icons')->image()->imagePreviewHeight('96')->maxSize(2048)->helperText(__('admin.help.category_icon'))->columnSpanFull(),
+                TextInput::make('link_url')->label(__('admin.fields.url'))->maxLength(255)->helperText(__('admin.help.category_link'))->columnSpanFull(),
             ]),
             Section::make(__('admin.forms.publish'))->icon(Heroicon::OutlinedEye)->schema([
                 TextInput::make('sort_order')->numeric()->default(0)->label(__('admin.fields.sort')),

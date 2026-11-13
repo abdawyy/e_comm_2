@@ -89,6 +89,7 @@
 <body @class(['store-shell', 'has-wallpaper' => filled($wallpaper)]) @if($wallpaper) style="--store-wallpaper: url('{{ str_replace(["'", '\\'], '', $wallpaper) }}')" @endif x-data="storefront" :class="{ 'menu-open': drawer }">
     @include('store.partials.announcement')
     @include('store.partials.navbar')
+    @include('store.partials.department-rail')
 
     @if(session('status'))
         <div class="hidden" x-init="window.dispatchEvent(new CustomEvent('toast', { detail: { message: @js(session('status')) } }))"></div>

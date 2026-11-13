@@ -26,7 +26,7 @@
     <h2 class="store-section-title store-departments-title">{{ __('store.home.categories') }}</h2>
     <div class="store-departments">
         @foreach($departments as $category)
-            <a class="store-department" href="{{ route('categories.show', $category) }}">
+                    <a class="store-department" href="{{ $category->destination() }}">
                 <span class="store-department-icon">
                     <img src="{{ $category->iconUrl() }}" alt="{{ $category->name }}">
                 </span>

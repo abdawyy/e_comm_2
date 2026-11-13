@@ -23,6 +23,7 @@ class Category extends Model
         'description',
         'image_path',
         'icon_path',
+        'link_url',
         'sort_order',
         'is_active',
     ];
@@ -69,5 +70,20 @@ class Category extends Model
         }
 
         return $this->publicUrl($this->icon_path) ?: $this->imageUrl();
+    }
+
+    public function destination(): string
+    {
+        $link = trim((string) $this->link_url);
+
+        if ($link === '') {
+            return route('categories.show', $this);
+        }
+
+        if (str_starts_with($link, '/') || str_starts_with($link, 'http://') || str_starts_with($link, 'https://')) {
+            return $link;
+        }
+
+        return route('categories.show', $this);
     }
 }

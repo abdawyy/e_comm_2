@@ -61,6 +61,7 @@ return [
     'help' => [
         'category_image' => 'Optional cover, 800×800, jpg/png/webp, max 4 MB.',
         'category_icon' => 'Round clickable icon for the departments row. Upload a square png or svg.',
+        'category_link' => 'Optional. Where the icon opens. Leave empty to open this category. Example: /shop or https://...',
         'product_image' => 'Cover image. An uploaded file wins over the external URL. Gallery images are ordered.',
         'bundle_image' => 'Upload a cover for the bundle card and cart. Add more pictures in the gallery.',
         'internal' => 'Hidden from the shop. Staff can still add it to bundles and manual orders.',

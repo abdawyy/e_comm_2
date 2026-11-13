@@ -41,6 +41,19 @@
             --color-surface-base: #ffffff;
             --color-border-base: #e6e6e6;
         }
+        .store-hero-visual,
+        .store-hero-visual div,
+        .store-hero-visual strong,
+        .store-hero-visual p {
+            color: #131316;
+        }
+        .store-hero-visual {
+            background: #f7f1e4;
+            border-color: #e6e6e6;
+        }
+        .store-hero-visual div {
+            background: linear-gradient(transparent, rgb(247 241 228 / 88%));
+        }
     </style>
     <script>
         localStorage.removeItem('theme');

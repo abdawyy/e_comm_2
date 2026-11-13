@@ -26,14 +26,14 @@
 <section class="mx-auto max-w-6xl px-4 pb-8">
     <div class="grid gap-4 md:grid-cols-2">
         @foreach($banners as $banner)
-            <article class="store-card p-6" style="background: linear-gradient(120deg, {{ $banner->gradient_start ?: 'var(--color-brand)' }}, {{ $banner->gradient_end ?: 'var(--color-accent)' }}); color: white;">
+            <article class="store-card p-6">
                 @if($banner->badge)<span class="store-badge">{{ $banner->badge }}</span>@endif
                 <h2 class="mt-3 text-2xl font-bold">{{ $banner->title }}</h2>
                 <p class="mt-2">{{ $banner->subtitle }}</p>
                 @if($banner->imageUrl())<img class="mt-4 rounded-xl" src="{{ $banner->imageUrl() }}" alt="">@endif
                 <div class="mt-4 flex flex-wrap gap-2">
                     @foreach($banner->localizedButtons() as $button)
-                        <a class="store-btn-ghost" style="color: white; border-color: white" href="{{ $button['url'] }}">{{ $button['label'] }}</a>
+                        <a class="store-btn-ghost" href="{{ $button['url'] }}">{{ $button['label'] }}</a>
                     @endforeach
                 </div>
             </article>

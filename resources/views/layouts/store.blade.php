@@ -69,7 +69,7 @@
         }
         .store-departments { display: flex; gap: 1.25rem; margin-top: 1.25rem; overflow-x: auto; justify-content: center; }
         .store-department { display: grid; justify-items: center; gap: 0.55rem; min-width: 6.5rem; color: #131316; font-weight: 700; text-align: center; }
-        .store-department-icon { display: grid; width: 6.2rem; height: 6.2rem; place-items: center; overflow: hidden; border: 1px solid #e6e6e6; border-radius: 999px; background: #fff; }
+        .store-department-icon { display: grid; width: 8.5rem; height: 8.5rem; place-items: center; overflow: hidden; border-radius: 999px; background: #f3f3f3; cursor: pointer; }
         .store-department-icon img { width: 100%; height: 100%; object-fit: cover; }
     </style>
     <script>

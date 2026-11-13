@@ -23,8 +23,9 @@
 
         <nav class="store-nav-links" aria-label="{{ __('store.nav.menu') }}">
             <a class="store-nav-link {{ request()->routeIs('home') ? 'is-active' : '' }}" href="{{ route('home') }}">{{ __('store.nav.home') }}</a>
-            <a class="store-nav-link {{ request()->routeIs('shop', 'products.*', 'categories.*') ? 'is-active' : '' }}" href="{{ route('shop') }}">{{ __('store.nav.shop') }}</a>
-            <a class="store-nav-link {{ request()->routeIs('bundles.*') ? 'is-active' : '' }}" href="{{ route('bundles.index') }}">{{ __('store.nav.bundles') }}</a>
+            @foreach(\App\Models\Category::query()->where('is_active', true)->orderBy('sort_order')->limit(8)->get() as $department)
+                <a class="store-nav-link {{ request()->routeIs('categories.show') && request()->route('category')?->is($department) ? 'is-active' : '' }}" href="{{ route('categories.show', $department) }}">{{ $department->name }}</a>
+            @endforeach
             <a class="store-nav-link {{ request()->routeIs('orders.track') ? 'is-active' : '' }}" href="{{ route('orders.track') }}">{{ __('store.nav.track') }}</a>
         </nav>
 
@@ -62,8 +63,9 @@
         </div>
         <nav class="store-drawer-links">
             <a class="{{ request()->routeIs('home') ? 'is-active' : '' }}" href="{{ route('home') }}">{{ __('store.nav.home') }}</a>
-            <a class="{{ request()->routeIs('shop', 'products.*', 'categories.*') ? 'is-active' : '' }}" href="{{ route('shop') }}">{{ __('store.nav.shop') }}</a>
-            <a class="{{ request()->routeIs('bundles.*') ? 'is-active' : '' }}" href="{{ route('bundles.index') }}">{{ __('store.nav.bundles') }}</a>
+            @foreach(\App\Models\Category::query()->where('is_active', true)->orderBy('sort_order')->limit(8)->get() as $department)
+                <a href="{{ route('categories.show', $department) }}">{{ $department->name }}</a>
+            @endforeach
             <a class="{{ request()->routeIs('orders.track') ? 'is-active' : '' }}" href="{{ route('orders.track') }}">{{ __('store.nav.track') }}</a>
             <a class="{{ request()->is('my*') ? 'is-active' : '' }}" href="{{ auth()->check() ? url('/my') : route('login') }}">{{ auth()->check() ? __('store.nav.account') : __('store.nav.login') }}</a>
             <a class="{{ request()->routeIs('cart.*') ? 'is-active' : '' }}" href="{{ route('cart.show') }}">{{ __('store.nav.cart') }}</a>

@@ -64,6 +64,10 @@ class Category extends Model
 
     public function iconUrl(): ?string
     {
+        if (filled($this->icon_path) && str_starts_with((string) $this->icon_path, 'http')) {
+            return $this->icon_path;
+        }
+
         return $this->publicUrl($this->icon_path) ?: $this->imageUrl();
     }
 }

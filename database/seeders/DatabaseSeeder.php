@@ -179,24 +179,22 @@ class DatabaseSeeder extends Seeder
     private function seedDepartments(): void
     {
         $rows = [
-            [10, 'Turkish coffee', 'القهوة التركي'],
-            [11, 'Espresso', 'الإسبريسو'],
-            [12, 'Coffee sachets', 'أظرف القهوة'],
-            [13, 'Coffee beans', 'حبوب القهوة'],
-            [14, 'Specialty coffee', 'القهوة المختصة'],
-            [15, 'Coffee tools', 'أدوات القهوة'],
+            [10, 'Turkish coffee', 'القهوة التركي', 'https://files.easy-orders.net/1747404331498686274.jpg'],
+            [11, 'Espresso', 'الإسبريسو', 'https://files.easy-orders.net/1747406902995715463.jpg'],
+            [12, 'Coffee sachets', 'أظرف القهوة', 'https://files.easy-orders.net/1772048269810781313.jpg'],
+            [13, 'Coffee beans', 'حبوب القهوة', 'https://files.easy-orders.net/1747404748060403340.jpg'],
+            [14, 'Specialty coffee', 'القهوة المختصة', 'https://files.easy-orders.net/1747407182010509082.jpg'],
+            [15, 'Coffee tools', 'أدوات القهوة', 'https://files.easy-orders.net/1763760857960912789.jpg'],
         ];
 
-        foreach ($rows as [$sort, $en, $ar]) {
+        foreach ($rows as [$sort, $en, $ar, $icon]) {
             $category = Category::query()->get()->first(fn (Category $item): bool => $item->getTranslation('name', 'en') === $en) ?? new Category;
             $category->name = ['en' => $en, 'ar' => $ar];
             $category->description = ['en' => $en, 'ar' => $ar];
             $category->is_active = true;
             $category->sort_order = $sort;
-            if (! filled($category->icon_path)) {
-                $path = 'categories/icons/department-'.$sort.'.svg';
-                Storage::disk('public')->put($path, $this->departmentIcon($ar));
-                $category->icon_path = $path;
+            if (! filled($category->icon_path) || str_ends_with((string) $category->icon_path, '.svg')) {
+                $category->icon_path = $icon;
             }
             $category->save();
         }
@@ -204,9 +202,7 @@ class DatabaseSeeder extends Seeder
 
     private function departmentIcon(string $letter): string
     {
-        $mark = mb_substr($letter, 0, 1);
-
-        return '<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160"><circle cx="80" cy="80" r="78" fill="#f7f1e4" stroke="#131316" stroke-width="3"/><text x="80" y="96" text-anchor="middle" font-size="54" font-family="Tahoma" fill="#131316">'.$mark.'</text></svg>';
+        return '';
     }
 
     private function seedReviews(): void

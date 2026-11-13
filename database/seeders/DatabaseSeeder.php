@@ -47,7 +47,7 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach (DesignAsset::KEYS as $key) {
-            $path = 'design/'.$key.'.svg';
+            $path = $key === 'hero' ? 'design/hero.jpg' : 'design/'.$key.'.svg';
 
             if (! Storage::disk('public')->exists($path)) {
                 Storage::disk('public')->put($path, $this->svg($colors[$key] ?? '#1A2B28'));

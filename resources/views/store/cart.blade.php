@@ -122,15 +122,6 @@
                 <div><dt>{{ __('store.checkout.shipping') }}</dt><dd>{{ __('store.cart.shipping_later') }}</dd></div>
                 <div class="is-total"><dt>{{ __('store.checkout.total') }}</dt><dd>{{ $math->format($quote->total) }}</dd></div>
             </dl>
-            <div class="cart-payments">
-                <span class="cart-pay-cash">{{ __('store.payment.cod') }}</span>
-                @if(\App\Models\StoreSetting::instapayEnabled())
-                    <span class="cart-pay-instapay">
-                        @include('store.partials.instapay-logo')
-                        <span>{{ \App\Models\StoreSetting::instapayNumber() }}</span>
-                    </span>
-                @endif
-            </div>
             <a class="store-btn-primary cart-checkout" href="{{ route('checkout.create') }}">{{ __('store.cart.checkout') }}</a>
         </div>
     @endif

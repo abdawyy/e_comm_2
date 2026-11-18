@@ -43,14 +43,16 @@
             @foreach($gateways as $gateway)
                 <label class="checkout-pay">
                     <input type="radio" name="payment_gateway" value="{{ $gateway->id() }}" @checked(old('payment_gateway', $gateways[0]->id()) === $gateway->id()) required>
-                    @if($gateway->id() === 'instapay')
-                        @include('store.partials.instapay-logo')
-                    @endif
-                    <span>
-                        {{ $gateway->label() }}
-                        @if($gateway->id() === 'instapay' && ($instapay = \App\Models\StoreSetting::instapayNumber()))
-                            <small class="checkout-pay-number">{{ $instapay }}</small>
+                    <span class="checkout-pay-body">
+                        @if($gateway->id() === 'instapay')
+                            @include('store.partials.instapay-logo')
                         @endif
+                        <span class="checkout-pay-copy">
+                            <span>{{ $gateway->label() }}</span>
+                            @if($gateway->id() === 'instapay' && ($instapay = \App\Models\StoreSetting::instapayNumber()))
+                                <small class="checkout-pay-number">{{ $instapay }}</small>
+                            @endif
+                        </span>
                     </span>
                 </label>
             @endforeach

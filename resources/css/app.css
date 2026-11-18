@@ -1116,8 +1116,23 @@ html.dark .store-search-icon {
 .checkout-pay {
     display: flex;
     align-items: center;
-    gap: 0.55rem;
-    margin-top: 0.45rem;
+    gap: 0.7rem;
+    width: 100%;
+    margin-top: 0.55rem;
+}
+
+.checkout-pay-body {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.45rem 0.75rem;
+    min-width: 0;
+}
+
+.checkout-pay-copy {
+    display: grid;
+    gap: 0.15rem;
+    min-width: 0;
 }
 
 .checkout-submit {
@@ -1645,8 +1660,7 @@ html.dark .cart-qty-input:focus-visible {
     margin-top: 1rem;
 }
 
-.cart-pay-cash,
-.checkout-pay {
+.cart-pay-cash {
     display: inline-flex;
     align-items: center;
     gap: 0.55rem;
@@ -1660,20 +1674,43 @@ html.dark .cart-qty-input:focus-visible {
 }
 
 .instapay-logo {
-    width: 7.4rem;
-    height: 2rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    flex: none;
+    padding: 0.28rem 0.6rem;
+    border-radius: 0.45rem;
+    background: #5c2d91;
+    color: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0;
+    direction: ltr;
+    unicode-bidi: isolate;
+}
+
+.instapay-logo svg {
+    width: 1.15rem;
+    height: 1.15rem;
+    flex: none;
 }
 
 .checkout-pay-number,
 .thanks-instapay p {
     display: block;
-    font-size: 0.85rem;
+    direction: ltr;
+    unicode-bidi: isolate;
+    font-size: 0.95rem;
+    font-weight: 650;
 }
 
-.checkout-pay {
-    display: flex;
-    width: 100%;
-    margin-top: 0.45rem;
+.thanks-instapay {
+    flex-wrap: wrap;
 }
 
 @media (min-width: 720px) {

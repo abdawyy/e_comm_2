@@ -56,8 +56,8 @@ class InstapayAndPlaceFeeTest extends TestCase
 
         $this->get('/cart')
             ->assertOk()
-            ->assertSee('instapay-logo', false)
-            ->assertSee('01099887766');
+            ->assertDontSee('instapay-logo', false)
+            ->assertDontSee('01099887766');
 
         $this->get('/checkout')
             ->assertOk()

@@ -1122,11 +1122,12 @@ html.dark .store-search-icon {
 }
 
 .checkout-pay-body {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
     align-items: center;
-    gap: 0.45rem 0.75rem;
+    gap: 0.7rem;
     min-width: 0;
+    flex: 1;
 }
 
 .checkout-pay-copy {
@@ -1673,11 +1674,16 @@ html.dark .cart-qty-input:focus-visible {
     gap: 0.55rem;
 }
 
-.instapay-logo {
+img.instapay-logo {
     display: block;
-    width: 4.25rem;
-    height: 4.25rem;
-    flex: none;
+    width: 3.5rem;
+    height: 3.5rem;
+    min-width: 3.5rem;
+    min-height: 3.5rem;
+    max-width: 3.5rem;
+    max-height: 3.5rem;
+    aspect-ratio: 1 / 1;
+    flex: 0 0 3.5rem;
     object-fit: contain;
 }
 
@@ -1686,6 +1692,7 @@ html.dark .cart-qty-input:focus-visible {
     display: block;
     direction: ltr;
     unicode-bidi: isolate;
+    text-align: end;
     font-size: 0.95rem;
     font-weight: 650;
 }

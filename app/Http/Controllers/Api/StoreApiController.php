@@ -54,10 +54,11 @@ class StoreApiController extends Controller
             'lines' => ['required', 'array', 'min:1'],
             'coupon_code' => ['nullable', 'string'],
             'city_id' => ['nullable', 'integer'],
+            'area_id' => ['nullable', 'integer'],
             'order_packaging_id' => ['nullable', 'integer'],
         ]);
 
-        $quote = $pricing->quote($data['lines'], $data['coupon_code'] ?? null, $data['city_id'] ?? null, $data['order_packaging_id'] ?? null);
+        $quote = $pricing->quote($data['lines'], $data['coupon_code'] ?? null, $data['city_id'] ?? null, $data['order_packaging_id'] ?? null, false, isset($data['area_id']) ? (int) $data['area_id'] : null);
 
         return response()->json($quote->toArray());
     }
@@ -71,6 +72,7 @@ class StoreApiController extends Controller
             'customer_email' => ['nullable', 'email'],
             'customer_phone' => ['required', 'string'],
             'city_id' => ['required', 'integer'],
+            'area_id' => ['nullable', 'integer'],
             'address' => ['required', 'string'],
             'payment_gateway' => ['required', 'in:'.implode(',', $enabled)],
             'coupon_code' => ['nullable', 'string'],
@@ -85,6 +87,7 @@ class StoreApiController extends Controller
                 customerPhone: Phone::normalize($data['customer_phone']),
                 cityId: (int) $data['city_id'],
                 address: $data['address'],
+                areaId: isset($data['area_id']) ? (int) $data['area_id'] : null,
                 paymentGateway: $data['payment_gateway'],
                 lines: $data['lines'],
                 couponCode: $data['coupon_code'] ?? null,

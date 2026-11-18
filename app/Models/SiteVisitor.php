@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Support\CountryNames;
+use App\Support\Places;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -52,6 +54,10 @@ class SiteVisitor extends Model
 
     public function locationLabel(): string
     {
-        return collect([$this->area, $this->city, $this->region, $this->country])->filter()->unique()->implode(', ');
+        return app(Places::class)->label(
+            app(CountryNames::class)->name($this->country),
+            $this->city,
+            $this->area,
+        );
     }
 }

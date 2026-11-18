@@ -114,7 +114,10 @@
             <table>
                 <thead>
                     <tr>
+                        <th>{{ __('admin.fields.country') }}</th>
+                        <th>{{ __('admin.fields.city') }}</th>
                         <th>{{ __('admin.customers.place') }}</th>
+                        <th>{{ __('admin.traffic.location') }}</th>
                         <th>{{ __('admin.traffic.device') }}</th>
                         <th>{{ __('admin.fields.name') }}</th>
                         <th>{{ __('admin.insights.last_visit') }}</th>
@@ -123,13 +126,16 @@
                 <tbody>
                     @forelse($visitors as $visitor)
                         <tr>
+                            <td>{{ $visitor['country'] ?: '—' }}</td>
+                            <td>{{ $visitor['city'] ?: '—' }}</td>
+                            <td>{{ $visitor['area'] ?: '—' }}</td>
                             <td>{{ $visitor['location'] ?: '—' }}</td>
                             <td>{{ $visitor['device'] ?: '—' }}</td>
                             <td>{{ $visitor['name'] ?: '—' }}</td>
-                            <td>{{ optional($visitor['last_seen_at'])->toDateTimeString() }}</td>
+                            <td>{{ $visitor['last_seen_at'] ? $visitor['last_seen_at']->copy()->timezone(config('store.analytics_timezone', 'Africa/Cairo'))->format('Y-m-d H:i') : '—' }}</td>
                         </tr>
                     @empty
-                        <tr><td colspan="4">{{ __('admin.customers.no_places') }}</td></tr>
+                        <tr><td colspan="7">{{ __('admin.customers.no_places') }}</td></tr>
                     @endforelse
                 </tbody>
             </table>

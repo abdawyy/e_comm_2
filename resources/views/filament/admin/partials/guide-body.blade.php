@@ -21,8 +21,8 @@
     </section>
     <section>
         <h2>المبيعات والعملاء</h2>
-        <p><strong>المبيعات</strong> في <strong>/admin/sales</strong> تعرض الإيراد والمنتجات والمدن والدفع وأكواد الخصم المستخدمة. الطلبات الملغاة لا تدخل في الإيراد.</p>
-        <p><strong>تحليل العملاء</strong> يعرض وقت الزيارة، وقت الشراء، كود الخصم، المكان، والجهاز. <strong>العملاء والزيارات</strong> تعرض الصفحات والساعات والأيام.</p>
+        <p><strong>المبيعات</strong> في <strong>/admin/sales</strong> تعرض الإيراد والمنتجات والمدن والدفع وأكواد الخصم المستخدمة. الطلبات الملغاة لا تدخل في الإيراد. إنستاباي يُشغَّل من صفحة إنستاباي، ورسوم التوصيل تُحدد لكل مكان داخل المحافظة.</p>
+        <p><strong>تحليل العملاء</strong> يعرض وقت الزيارة، وقت الشراء، كود الخصم، والدولة والمدينة والمكان (مثل مصر، القاهرة، الشيراتون) والجهاز. <strong>العملاء والزيارات</strong> تعرض أحدث الزيارات أولًا، ثم الصفحات والساعات والأيام. نفس الموقع يظهر في المبيعات والتوصيل.</p>
     </section>
     <section>
         <h2>الطلبات والعملاء اليدويون</h2>
@@ -65,8 +65,8 @@
     </section>
     <section>
         <h2>Sales and customers</h2>
-        <p><strong>Sales</strong> at <strong>/admin/sales</strong> shows revenue, products, cities, payment methods, and the promo codes used. Cancelled orders are left out of revenue.</p>
-        <p><strong>Customer analysis</strong> shows when someone visited, when they bought, and which promo code was on the order, plus place and device. <strong>Customers and traffic</strong> shows pages, hours, and weekdays.</p>
+        <p><strong>Sales</strong> at <strong>/admin/sales</strong> shows revenue, products, cities, payment methods, and the promo codes used. Cancelled orders are left out of revenue. InstaPay is switched on from the InstaPay page. Delivery fees are set per place inside each governorate.</p>
+        <p><strong>Customer analysis</strong> shows when someone visited, when they bought, and which promo code was on the order, plus country, city, and place (for example Egypt, Cairo, Sheraton) and device. <strong>Customers and traffic</strong> lists the newest visits first, then pages, hours, and weekdays. The same location is used on sales and delivery.</p>
     </section>
     <section>
         <h2>Orders and manual customers</h2>

@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Models\ProductView;
 use App\Models\SitePageView;
 use App\Models\SiteVisitor;
+use App\Support\CountryNames;
 use Illuminate\Support\Carbon;
 
 class TrafficReport
@@ -78,10 +79,25 @@ class TrafficReport
             'by_hour' => $this->bars($this->byHour($views, $productViews, $orders, $tz)),
             'by_weekday' => $this->bars($this->byWeekday($views, $productViews, $orders, $tz)),
             'cities' => $this->groupCount($visitors, 'city'),
-            'places' => $this->groupCount($visitors->filter(fn ($visitor) => filled($visitor->area)), 'area'),
+            'places' => $this->groupCount($visitors, 'area'),
             'regions' => $this->groupCount($visitors, 'region'),
-            'countries' => $this->groupCount($visitors, 'country'),
+            'countries' => $this->groupCount($visitors->map(function (SiteVisitor $visitor) {
+                $copy = clone $visitor;
+                $copy->country = app(CountryNames::class)->name($visitor->country);
+
+                return $copy;
+            }), 'country'),
             'devices' => $this->groupCount($visitors, 'device_type'),
+            'latest' => $visitors->sortByDesc('last_seen_at')->take(20)->map(function (SiteVisitor $visitor) use ($tz) {
+                return [
+                    'device' => $visitor->device_type,
+                    'country' => app(CountryNames::class)->name($visitor->country),
+                    'city' => $visitor->city,
+                    'place' => $visitor->area,
+                    'location' => $visitor->locationLabel(),
+                    'seen' => $visitor->last_seen_at?->copy()->timezone($tz)->format('Y-m-d H:i'),
+                ];
+            })->values()->all(),
             'referrers' => $this->referrers($visitors),
             'paths' => $views->groupBy('path')->map->count()->sortDesc()->take(8)->all(),
             'range_label' => $start->copy()->timezone($tz)->format('j M Y').' – '.$end->copy()->timezone($tz)->format('j M Y'),
@@ -292,7 +308,8 @@ class TrafficReport
     private function groupCount($visitors, string $field): array
     {
         return $visitors
-            ->groupBy(fn ($visitor) => $visitor->{$field} ?: '—')
+            ->filter(fn ($visitor) => filled($visitor->{$field}))
+            ->groupBy(fn ($visitor) => (string) $visitor->{$field})
             ->map->count()
             ->sortDesc()
             ->take(8)

@@ -49,14 +49,14 @@ class SiteVisitorResource extends Resource
 
     public static function table(Table $table): Table
     {
-        return $table->columns([
-            TextColumn::make('device_type')->label(__('admin.fields.device')),
-            TextColumn::make('country')->label(__('admin.fields.country')),
-            TextColumn::make('region')->label(__('admin.fields.region')),
-            TextColumn::make('area')->label(__('admin.customers.place')),
+        return $table->defaultSort('last_seen_at', 'desc')->columns([
+            TextColumn::make('last_seen_at')->dateTime()->label(__('admin.fields.last_seen'))->sortable(),
+            TextColumn::make('device_type')->label(__('admin.fields.device'))->sortable(),
+            TextColumn::make('country')->label(__('admin.fields.country'))->formatStateUsing(fn (?string $state) => app(\App\Support\CountryNames::class)->name($state)),
             TextColumn::make('city')->label(__('admin.fields.city')),
+            TextColumn::make('area')->label(__('admin.customers.place')),
+            TextColumn::make('location')->label(__('admin.traffic.location'))->getStateUsing(fn (SiteVisitor $record) => $record->locationLabel()),
             TextColumn::make('referrer_host')->label(__('admin.fields.referrer')),
-            TextColumn::make('last_seen_at')->dateTime()->label(__('admin.fields.last_seen')),
         ])->headerActions([
             Action::make('exportVisitors')->label(__('admin.actions.export_visitors'))->action(fn () => Excel::download(new VisitorsExport, 'visitors.xlsx')),
             Action::make('exportViews')->label(__('admin.actions.export_views'))->action(fn () => Excel::download(new PageViewsExport, 'page-views.xlsx')),

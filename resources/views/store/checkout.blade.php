@@ -14,7 +14,15 @@
             <select class="store-input" name="city_id" required>
                 <option value="" data-fee="0.0000">{{ __('store.checkout.city') }}</option>
                 @foreach($cities as $city)
-                    <option value="{{ $city->id }}" data-fee="{{ $math->normalize((string) $city->shipping_fee) }}" @selected(old('city_id') == $city->id)>{{ $city->name }} — {{ $math->format((string) $city->shipping_fee) }}</option>
+                    <option value="{{ $city->id }}" data-fee="{{ $math->normalize((string) $city->shipping_fee) }}" @selected(old('city_id') == $city->id)>{{ $city->name }}</option>
+                @endforeach
+            </select>
+        </label>
+        <label class="block" data-place-wrap hidden><span>{{ __('store.checkout.place') }}</span>
+            <select class="store-input" name="area_id">
+                <option value="" data-fee="0.0000">{{ __('store.checkout.place') }}</option>
+                @foreach($areas as $area)
+                    <option value="{{ $area->id }}" data-city="{{ $area->city_id }}" data-fee="{{ $math->normalize((string) $area->shipping_fee) }}" @selected(old('area_id') == $area->id) hidden>{{ $area->name }} — {{ $math->format((string) $area->shipping_fee) }}</option>
                 @endforeach
             </select>
         </label>
@@ -34,8 +42,16 @@
             <legend>{{ __('store.checkout.payment') }}</legend>
             @foreach($gateways as $gateway)
                 <label class="checkout-pay">
-                    <input type="radio" name="payment_gateway" value="{{ $gateway->id() }}" @checked($loop->first) required>
-                    <span>{{ $gateway->label() }}</span>
+                    <input type="radio" name="payment_gateway" value="{{ $gateway->id() }}" @checked(old('payment_gateway', $gateways[0]->id()) === $gateway->id()) required>
+                    @if($gateway->id() === 'instapay')
+                        @include('store.partials.instapay-logo')
+                    @endif
+                    <span>
+                        {{ $gateway->label() }}
+                        @if($gateway->id() === 'instapay' && ($instapay = \App\Models\StoreSetting::instapayNumber()))
+                            <small class="checkout-pay-number">{{ $instapay }}</small>
+                        @endif
+                    </span>
                 </label>
             @endforeach
         </fieldset>
@@ -90,8 +106,45 @@
             return toMinor(select.selectedOptions[0]?.dataset.fee || '0');
         };
 
+        const placeWrap = form.querySelector('[data-place-wrap]');
+        const placeSelect = form.querySelector('[name="area_id"]');
+        const placeBlank = placeSelect?.options[0]?.textContent || '';
+        const allPlaces = placeSelect ? [...placeSelect.querySelectorAll('option[data-city]')].map((option) => ({
+            value: option.value,
+            city: option.dataset.city,
+            fee: option.dataset.fee || '0',
+            label: option.textContent,
+        })) : [];
+
+        const syncPlaces = () => {
+            if (!placeSelect || !placeWrap) return 0;
+            const cityId = form.querySelector('[name="city_id"]')?.value || '';
+            const selected = placeSelect.value;
+            const matches = allPlaces.filter((place) => place.city === cityId);
+            placeSelect.replaceChildren();
+            const blank = document.createElement('option');
+            blank.value = '';
+            blank.dataset.fee = '0';
+            blank.textContent = placeBlank;
+            placeSelect.appendChild(blank);
+            matches.forEach((place) => {
+                const option = document.createElement('option');
+                option.value = place.value;
+                option.dataset.fee = place.fee;
+                option.textContent = place.label;
+                option.selected = place.value === selected;
+                placeSelect.appendChild(option);
+            });
+            if (placeSelect.selectedOptions[0]?.value && !matches.some((place) => place.value === placeSelect.value)) {
+                placeSelect.value = '';
+            }
+            placeWrap.hidden = matches.length === 0;
+            placeSelect.required = matches.length > 0;
+            return matches.length > 0 ? feeOf(placeSelect) : feeOf(form.querySelector('[name="city_id"]'));
+        };
+
         const paint = () => {
-            const shipping = feeOf(form.querySelector('[name="city_id"]'));
+            const shipping = syncPlaces();
             const packaging = feeOf(form.querySelector('[name="order_packaging_id"]'));
             const total = toMinor(summary.dataset.goods) + shipping + packaging;
             document.querySelectorAll('[data-shipping]').forEach((node) => { node.textContent = format(shipping); });
@@ -102,7 +155,7 @@
         };
 
         form.addEventListener('change', (event) => {
-            if (event.target.name === 'city_id' || event.target.name === 'order_packaging_id') paint();
+            if (event.target.name === 'city_id' || event.target.name === 'area_id' || event.target.name === 'order_packaging_id') paint();
         });
         paint();
     })();

@@ -16,15 +16,15 @@
                     <tr>
                         <th>{{ __('admin.fields.reference') }}</th>
                         <th>{{ __('admin.fields.customer') }}</th>
-                        <th>{{ __('admin.fields.city') }}</th>
+                        <th>{{ __('admin.traffic.location') }}</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($waiting as $order)
-                        <tr data-search="{{ $order->reference }} {{ $order->customer_name }} {{ $order->city_name }}">
+                        <tr data-search="{{ $order->reference }} {{ $order->customer_name }} {{ $order->city_name }} {{ $order->address }}">
                             <td>{{ $order->reference }}</td>
                             <td>{{ $order->customer_name }}</td>
-                            <td>{{ $order->city_name }}</td>
+                            <td>{{ app(\App\Support\Places::class)->orderLabel($order->city_name, $order->address) ?: $order->city_name }}</td>
                         </tr>
                     @empty
                         <tr><td colspan="3">{{ __('admin.stats.empty') }}</td></tr>

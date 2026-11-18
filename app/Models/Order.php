@@ -28,6 +28,8 @@ class Order extends Model
         'customer_phone',
         'city_id',
         'city_name',
+        'area_id',
+        'area_name',
         'shipping_carrier_id',
         'address',
         'subtotal',

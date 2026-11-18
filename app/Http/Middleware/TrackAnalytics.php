@@ -6,6 +6,7 @@ use App\Models\ProductView;
 use App\Models\SitePageView;
 use App\Models\SiteVisitor;
 use App\Services\VisitorLocator;
+use App\Support\CountryNames;
 use App\Support\Places;
 use Closure;
 use Illuminate\Http\Request;
@@ -44,7 +45,7 @@ class TrackAnalytics
                 }
             }
 
-            if ($isNew || blank($visitor->geo_resolved_at)) {
+            if ($isNew || $this->geoNeedsRefresh($visitor)) {
                 $this->applyGeo($visitor, $request);
             }
 
@@ -128,34 +129,54 @@ class TrackAnalytics
         return is_string($host) ? strtolower($host) : null;
     }
 
+    private function geoNeedsRefresh(SiteVisitor $visitor): bool
+    {
+        if (blank($visitor->geo_resolved_at)) {
+            return true;
+        }
+
+        if (filled($visitor->country) && filled($visitor->city) && filled($visitor->area)) {
+            return false;
+        }
+
+        return $visitor->geo_resolved_at->lt(now()->subHours(12));
+    }
+
     private function applyGeo(SiteVisitor $visitor, Request $request): void
     {
-        $country = $request->headers->get('CF-IPCountry');
-        $city = $request->headers->get('CF-IPCity');
-        $region = $request->headers->get('CF-Region') ?: $request->headers->get('CF-IPRegion');
+        $place = app(VisitorLocator::class)->locate($request->ip());
 
-        if (filled($country) && ! in_array(strtoupper($country), ['XX', 'T1'], true)) {
-            $visitor->country_code = strtoupper($country);
-            $visitor->country = strtoupper($country);
-            $visitor->region = $region;
-            $visitor->city = $city;
-            $visitor->area = app(Places::class)->match($city, $region);
+        if (is_array($place)) {
+            $visitor->country_code = $place['country_code'];
+            $visitor->country = $place['country'];
+            $visitor->region = $place['region'];
+            $visitor->city = $place['city'];
+            $visitor->area = $place['area'];
             $visitor->geo_resolved_at = now();
 
             return;
         }
 
-        $place = app(VisitorLocator::class)->locate($request->ip());
+        $country = strtoupper((string) $request->headers->get('CF-IPCountry'));
+        $city = $this->headerText($request->headers->get('CF-IPCity'));
+        $region = $this->headerText($request->headers->get('CF-Region') ?: $request->headers->get('CF-IPRegion'));
 
-        if ($place === null) {
+        if ($country === '' || in_array($country, ['XX', 'T1'], true)) {
             return;
         }
 
-        $visitor->country_code = $place['country_code'];
-        $visitor->country = $place['country'];
-        $visitor->region = $place['region'];
-        $visitor->city = $place['city'];
-        $visitor->area = $place['area'];
+        $visitor->country_code = $country;
+        $visitor->country = app(CountryNames::class)->name($country);
+        $visitor->region = $region;
+        $visitor->city = $city;
+        $visitor->area = app(Places::class)->match($city, $region);
         $visitor->geo_resolved_at = now();
+    }
+
+    private function headerText(?string $value): ?string
+    {
+        $value = rawurldecode(trim((string) $value));
+
+        return $value === '' ? null : $value;
     }
 }

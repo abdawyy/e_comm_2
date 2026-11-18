@@ -66,6 +66,7 @@ class OrderResource extends Resource
                 ])->native(false)->required(),
                 Select::make('payment_gateway')->label(__('admin.fields.gateway'))->options([
                     'cod' => __('store.payment.cod'),
+                    'instapay' => __('store.payment.instapay'),
                     'paymob' => __('store.payment.visa'),
                 ])->native(false),
                 Textarea::make('notes')->label(__('admin.fields.notes'))->rows(4)->columnSpanFull(),
@@ -84,6 +85,7 @@ class OrderResource extends Resource
                 TextEntry::make('customer_name')->label(__('admin.fields.customer')),
                 TextEntry::make('customer_phone')->label(__('admin.fields.phone')),
                 TextEntry::make('city_name')->label(__('admin.fields.city')),
+                TextEntry::make('area_name')->label(__('admin.customers.place')),
                 TextEntry::make('address')->label(__('admin.fields.address')),
                 TextEntry::make('coupon_code')->label(__('admin.fields.code')),
                 TextEntry::make('subtotal')->label(__('store.checkout.subtotal'))->formatStateUsing(fn ($state) => app(DecimalMath::class)->format((string) $state)),

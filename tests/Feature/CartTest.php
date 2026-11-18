@@ -62,7 +62,7 @@ class CartTest extends TestCase
         $this->get('/cart')
             ->assertOk()
             ->assertSee('products/cart-cover.svg', false)
-            ->assertSee('alt="Cart coffee"', false)
+            ->assertSee('alt="'.$product->name.'"', false)
             ->assertSee('value="1"', false)
             ->assertDontSee('1.0000');
     }

@@ -46,4 +46,70 @@ class Places
 
         return null;
     }
+
+    public function label(?string $country, ?string $city, ?string $place): string
+    {
+        $parts = [];
+
+        foreach ([$country, $city, $place] as $part) {
+            $part = trim((string) $part);
+
+            if ($part === '') {
+                continue;
+            }
+
+            $key = mb_strtolower($part);
+
+            if (in_array($key, array_map(mb_strtolower(...), $parts), true)) {
+                continue;
+            }
+
+            $parts[] = $part;
+        }
+
+        return implode(', ', $parts);
+    }
+
+    public function orderLabel(?string $city, ?string $address): string
+    {
+        $cityName = filled($city) ? trim((string) $city) : null;
+        $place = $this->match($address, $cityName);
+
+        if ($place !== null && $cityName !== null && mb_strtolower($place) === mb_strtolower($cityName)) {
+            $place = $this->match($address);
+        }
+
+        if ($place !== null && $cityName !== null && mb_strtolower($place) === mb_strtolower($cityName)) {
+            $place = null;
+        }
+
+        $country = $this->egyptian($cityName, $address, $place) ? 'Egypt' : null;
+
+        return $this->label($country, $cityName, $place);
+    }
+
+    private function egyptian(?string ...$parts): bool
+    {
+        $haystack = mb_strtolower(trim(implode(' ', array_filter($parts, fn ($part) => filled($part)))));
+
+        if ($haystack === '') {
+            return false;
+        }
+
+        if (str_contains($haystack, 'egypt') || str_contains($haystack, 'مصر')) {
+            return true;
+        }
+
+        if ($this->match($haystack) !== null) {
+            return true;
+        }
+
+        foreach (['cairo', 'giza', 'alexandria', 'القاهرة', 'الجيزة', 'الإسكندرية', 'اسكندرية'] as $needle) {
+            if (str_contains($haystack, $needle)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

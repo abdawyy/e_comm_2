@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Bundle;
 use App\Models\Category;
-use App\Models\City;
 use App\Models\ContentString;
 use App\Models\Coupon;
 use App\Models\DesignAsset;
@@ -71,9 +70,7 @@ class DatabaseSeeder extends Seeder
 
     private function seedCatalog(): void
     {
-        $cairo = City::query()->updateOrCreate(['id' => 1], ['name' => ['en' => 'Cairo', 'ar' => 'القاهرة'], 'shipping_fee' => '35.0000', 'is_active' => true, 'sort_order' => 1]);
-        City::query()->updateOrCreate(['id' => 2], ['name' => ['en' => 'Giza', 'ar' => 'الجيزة'], 'shipping_fee' => '40.0000', 'is_active' => true, 'sort_order' => 2]);
-        City::query()->updateOrCreate(['id' => 3], ['name' => ['en' => 'Alexandria', 'ar' => 'الإسكندرية'], 'shipping_fee' => '65.0000', 'is_active' => true, 'sort_order' => 3]);
+        $this->call(EgyptPlacesSeeder::class);
 
         $pantry = Category::query()->updateOrCreate(['id' => 1], ['name' => ['en' => 'Pantry', 'ar' => 'المؤن'], 'description' => ['en' => 'Staples for the week', 'ar' => 'أساسيات الأسبوع'], 'is_active' => true, 'sort_order' => 1]);
         $drinks = Category::query()->updateOrCreate(['id' => 2], ['name' => ['en' => 'Drinks', 'ar' => 'مشروبات'], 'description' => ['en' => 'Coffee and tea', 'ar' => 'قهوة وشاي'], 'is_active' => true, 'sort_order' => 2]);
@@ -173,7 +170,6 @@ class DatabaseSeeder extends Seeder
         $this->seedDepartments();
         $this->seedReviews();
 
-        $cairo->id;
     }
 
     private function seedDepartments(): void

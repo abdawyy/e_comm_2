@@ -22,5 +22,6 @@ class CreateOrderPayload
         public string $locale = 'ar',
         public bool $subscriptionRenewal = false,
         public bool $includeInternal = false,
+        public ?int $areaId = null,
     ) {}
 }

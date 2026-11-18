@@ -9,6 +9,7 @@ class PaymentGatewayManager
 {
     public function __construct(
         private CashOnDeliveryGateway $cod,
+        private InstapayGateway $instapay,
         private PaymobCardGateway $paymob,
     ) {}
 
@@ -17,7 +18,7 @@ class PaymentGatewayManager
      */
     public function all(): array
     {
-        return [$this->cod, $this->paymob];
+        return [$this->cod, $this->instapay, $this->paymob];
     }
 
     /**

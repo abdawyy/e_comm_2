@@ -5,6 +5,7 @@ namespace App\Actions;
 use App\DTO\CartLineData;
 use App\DTO\CreateOrderPayload;
 use App\Exceptions\CartException;
+use App\Models\Area;
 use App\Models\City;
 use App\Models\Coupon;
 use App\Models\Order;
@@ -31,12 +32,25 @@ class CreateOrderAction
                 throw new CartException('store.checkout.city_invalid');
             }
 
+            $area = null;
+
+            if ($payload->areaId) {
+                $area = Area::query()->where('city_id', $city->id)->where('is_active', true)->lockForUpdate()->find($payload->areaId);
+
+                if (! $area) {
+                    throw new CartException('store.checkout.place_invalid');
+                }
+            } elseif (Area::query()->where('city_id', $city->id)->where('is_active', true)->exists()) {
+                throw new CartException('store.checkout.place_invalid');
+            }
+
             $quote = $this->pricing->quote(
                 $payload->lines,
                 $payload->couponCode,
                 $city->id,
                 $payload->orderPackagingId,
                 $payload->includeInternal,
+                $area?->id,
             );
 
             if ($quote->lines === []) {
@@ -91,6 +105,8 @@ class CreateOrderAction
                 'customer_phone' => Phone::normalize($payload->customerPhone),
                 'city_id' => $city->id,
                 'city_name' => (string) $city->name,
+                'area_id' => $area?->id,
+                'area_name' => $area ? (string) $area->name : null,
                 'address' => $payload->address,
                 'subtotal' => $quote->subtotal,
                 'discount' => $quote->discount,

@@ -159,13 +159,15 @@ class SessionCart
         session()->forget([self::LINES_KEY, self::COUPON_KEY]);
     }
 
-    public function quote(?int $cityId = null, ?int $orderPackagingId = null): CartQuote
+    public function quote(?int $cityId = null, ?int $orderPackagingId = null, ?int $areaId = null): CartQuote
     {
         $quote = $this->pricing->quote(
             array_values($this->rawLines()),
             $this->couponCode(),
             $cityId,
             $orderPackagingId,
+            false,
+            $areaId,
         );
 
         if ($quote->removed !== []) {

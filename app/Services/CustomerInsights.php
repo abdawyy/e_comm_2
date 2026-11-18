@@ -64,7 +64,7 @@ class CustomerInsights
             ->get();
 
         $locations = collect($visitors->map(fn (SiteVisitor $visitor) => $visitor->locationLabel())->all())
-            ->merge($orders->map(fn (Order $order) => $this->places->match($order->address, $order->city_name) ?: $order->city_name)->all())
+            ->merge($orders->map(fn (Order $order) => $this->places->orderLabel($order->city_name, $order->address))->all())
             ->filter()
             ->countBy()
             ->sortDesc()

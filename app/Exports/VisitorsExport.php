@@ -13,6 +13,7 @@ class VisitorsExport implements FromCollection, WithHeadings
         return SiteVisitor::query()->orderByDesc('last_seen_at')->get()->map(fn (SiteVisitor $visitor) => [
             'id' => $visitor->id,
             'device' => $visitor->device_type,
+            'location' => $visitor->locationLabel(),
             'country' => $visitor->country,
             'region' => $visitor->region,
             'city' => $visitor->city,
@@ -26,6 +27,6 @@ class VisitorsExport implements FromCollection, WithHeadings
 
     public function headings(): array
     {
-        return ['ID', 'Device', 'Country', 'Region', 'City', 'Area', 'Referrer', 'UTM source', 'First seen', 'Last seen'];
+        return ['ID', 'Device', 'Location', 'Country', 'Region', 'City', 'Area', 'Referrer', 'UTM source', 'First seen', 'Last seen'];
     }
 }

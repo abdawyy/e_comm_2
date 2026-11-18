@@ -13,6 +13,7 @@
     $gateway = (string) $order->payment_gateway;
     $payment = match ($gateway) {
         'cod' => __('store.payment.cod', [], $locale),
+        'instapay' => __('store.payment.instapay', [], $locale),
         'paymob', 'visa' => __('store.payment.visa', [], $locale),
         default => $gateway,
     };

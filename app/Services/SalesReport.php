@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\ProductView;
+use App\Support\Places;
 use Illuminate\Support\Collection;
 
 class SalesReport
@@ -15,6 +16,7 @@ class SalesReport
     public function __construct(
         private AnalyticsPeriod $period,
         private DecimalMath $math,
+        private Places $places,
     ) {}
 
     /**
@@ -149,7 +151,7 @@ class SalesReport
 
     /**
      * @param  Collection<int, Order>  $orders
-     * @return array<int, array{city: string, orders: int, revenue: string}>
+     * @return array<int, array{city: string, location: string, orders: int, revenue: string}>
      */
     private function cities(Collection $orders): array
     {
@@ -157,9 +159,11 @@ class SalesReport
 
         foreach ($orders as $order) {
             $city = $order->city_name ?: '—';
-            $rows[$city]['city'] = $city;
-            $rows[$city]['orders'] = ($rows[$city]['orders'] ?? 0) + 1;
-            $rows[$city]['revenue'] = $this->math->add($rows[$city]['revenue'] ?? '0', (string) $order->total);
+            $location = $this->places->orderLabel($order->city_name, $order->address) ?: $city;
+            $rows[$location]['city'] = $city;
+            $rows[$location]['location'] = $location;
+            $rows[$location]['orders'] = ($rows[$location]['orders'] ?? 0) + 1;
+            $rows[$location]['revenue'] = $this->math->add($rows[$location]['revenue'] ?? '0', (string) $order->total);
         }
 
         usort($rows, fn ($a, $b) => $this->math->comp($b['revenue'], $a['revenue']));

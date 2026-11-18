@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Order;
 use App\Models\SiteVisitor;
 use App\Models\User;
+use App\Support\CountryNames;
 use App\Support\Places;
 
 class CustomerDirectory
@@ -63,6 +64,9 @@ class CustomerDirectory
             ->get()
             ->map(fn (SiteVisitor $visitor) => [
                 'place' => $visitor->area ?: $visitor->city,
+                'country' => app(CountryNames::class)->name($visitor->country),
+                'city' => $visitor->city,
+                'area' => $visitor->area,
                 'location' => $visitor->locationLabel(),
                 'device' => $visitor->device_type,
                 'name' => $visitor->user?->name,
@@ -108,7 +112,7 @@ class CustomerDirectory
      */
     private function orderRow(Order $order): array
     {
-        $place = $this->places->match($order->address, $order->city_name) ?: $order->city_name;
+        $place = $this->places->orderLabel($order->city_name, $order->address) ?: $order->city_name;
 
         return [
             'id' => $order->id,
@@ -144,8 +148,8 @@ class CustomerDirectory
     {
         $rows = [];
 
-        foreach (SiteVisitor::query()->get(['area', 'city', 'region']) as $visitor) {
-            $name = $visitor->area ?: $visitor->city ?: $visitor->region;
+        foreach (SiteVisitor::query()->get() as $visitor) {
+            $name = $visitor->locationLabel();
 
             if (blank($name)) {
                 continue;

@@ -6,6 +6,7 @@ use App\Actions\CreateOrderAction;
 use App\DTO\CreateOrderPayload;
 use App\Events\OrderCreated;
 use App\Exceptions\CartException;
+use App\Models\Area;
 use App\Models\City;
 use App\Models\Order;
 use App\Models\PackagingType;
@@ -39,6 +40,7 @@ class CheckoutController extends Controller
         return view('store.checkout', [
             'quote' => $quote,
             'cities' => City::query()->where('is_active', true)->orderBy('sort_order')->get(),
+            'areas' => Area::query()->where('is_active', true)->orderBy('sort_order')->get(),
             'gateways' => $this->gateways->enabled(),
             'orderPackaging' => PackagingType::query()->where('scope', 'order')->where('is_active', true)->get(),
             'nonce' => session('checkout.nonce'),
@@ -75,6 +77,7 @@ class CheckoutController extends Controller
             'customer_email' => ['nullable', 'email', 'max:190'],
             'customer_phone' => ['required', 'string', 'max:32'],
             'city_id' => ['required', 'integer', 'exists:cities,id'],
+            'area_id' => ['nullable', 'integer'],
             'address' => ['required', 'string', 'max:500'],
             'payment_gateway' => ['required', 'string', 'in:'.implode(',', $enabled)],
             'order_packaging_id' => ['nullable', 'integer'],
@@ -84,7 +87,8 @@ class CheckoutController extends Controller
         session(['checkout.inflight' => true]);
 
         try {
-            $quote = $this->cart->quote((int) $data['city_id'], $data['order_packaging_id'] ?? null);
+            $areaId = filled($data['area_id'] ?? null) ? (int) $data['area_id'] : null;
+            $quote = $this->cart->quote((int) $data['city_id'], $data['order_packaging_id'] ?? null, $areaId);
             $lines = array_map(fn ($line) => $line->raw + ['key' => $line->key], $quote->lines);
 
             $order = $this->createOrder->execute(new CreateOrderPayload(
@@ -94,6 +98,7 @@ class CheckoutController extends Controller
                 customerPhone: Phone::normalize($data['customer_phone']),
                 cityId: (int) $data['city_id'],
                 address: $data['address'],
+                areaId: $areaId,
                 paymentGateway: $data['payment_gateway'],
                 lines: $lines,
                 couponCode: $this->cart->couponCode(),

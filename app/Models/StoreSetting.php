@@ -14,6 +14,7 @@ class StoreSetting extends Model
         return [
             'announcement_active' => 'boolean',
             'invoice_pdf' => 'array',
+            'instapay_active' => 'boolean',
         ];
     }
 
@@ -26,6 +27,8 @@ class StoreSetting extends Model
         'announcement_color',
         'announcement_opacity',
         'invoice_pdf',
+        'instapay_number',
+        'instapay_active',
     ];
 
     protected static function booted(): void
@@ -35,12 +38,14 @@ class StoreSetting extends Model
             Cache::forget('store.whatsapp_number');
             Cache::forget('store.announcement');
             Cache::forget('store.invoice_pdf');
+            Cache::forget('store.instapay');
         });
         static::deleted(function (): void {
             Cache::forget('store.order_email');
             Cache::forget('store.whatsapp_number');
             Cache::forget('store.announcement');
             Cache::forget('store.invoice_pdf');
+            Cache::forget('store.instapay');
         });
     }
 
@@ -238,6 +243,70 @@ class StoreSetting extends Model
             'ar' => (string) $row->announcement_ar,
             'color' => $hasColor ? (static::hexColor((string) $row->announcement_color) ?? '#eeddb0') : '#eeddb0',
             'opacity' => $hasColor ? max(0, min(100, (int) $row->announcement_opacity)) : 100,
+        ];
+    }
+
+    public static function instapayEnabled(): bool
+    {
+        $state = static::instapayState();
+
+        return $state['active'] && $state['number'] !== '';
+    }
+
+    public static function instapayNumber(): ?string
+    {
+        $number = static::instapayState()['number'];
+
+        return $number !== '' ? $number : null;
+    }
+
+    public static function instapayActive(): bool
+    {
+        return static::instapayState()['active'];
+    }
+
+    /**
+     * @return array{active: bool, number: string}
+     */
+    private static function instapayState(): array
+    {
+        $cached = Cache::get('store.instapay');
+
+        if (! is_array($cached)) {
+            $cached = static::storedInstapay();
+            Cache::forever('store.instapay', $cached);
+        }
+
+        return [
+            'active' => (bool) ($cached['active'] ?? false),
+            'number' => trim((string) ($cached['number'] ?? '')),
+        ];
+    }
+
+    /**
+     * @return array{active: bool, number: string}
+     */
+    private static function storedInstapay(): array
+    {
+        $empty = ['active' => false, 'number' => ''];
+
+        try {
+            if (! Schema::hasTable('store_settings') || ! Schema::hasColumn('store_settings', 'instapay_number')) {
+                return $empty;
+            }
+        } catch (Throwable) {
+            return $empty;
+        }
+
+        $row = static::query()->orderByDesc('id')->first();
+
+        if (! $row) {
+            return $empty;
+        }
+
+        return [
+            'active' => (bool) $row->instapay_active,
+            'number' => trim((string) $row->instapay_number),
         ];
     }
 

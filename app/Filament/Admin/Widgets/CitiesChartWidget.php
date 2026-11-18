@@ -35,7 +35,7 @@ class CitiesChartWidget extends ChartWidget
         }
 
         return [
-            'labels' => array_column($cities, 'city'),
+            'labels' => array_map(fn (array $row) => $row['location'] ?? $row['city'], $cities),
             'datasets' => [[
                 'label' => __('admin.stats.orders'),
                 'data' => array_column($cities, 'orders'),

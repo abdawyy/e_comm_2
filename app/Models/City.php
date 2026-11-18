@@ -5,6 +5,7 @@ namespace App\Models;
 use Database\Factories\CityFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Translatable\HasTranslations;
 
 class City extends Model
@@ -28,5 +29,10 @@ class City extends Model
             'is_active' => 'boolean',
             'sort_order' => 'integer',
         ];
+    }
+
+    public function areas(): HasMany
+    {
+        return $this->hasMany(Area::class);
     }
 }

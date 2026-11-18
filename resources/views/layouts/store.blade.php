@@ -63,6 +63,10 @@
         .store-departments { display: flex; flex-wrap: wrap; gap: 1.5rem 2rem; margin-top: 1.5rem; justify-content: center; }
         .store-department { display: grid; justify-items: center; gap: 0.75rem; width: 8.5rem; color: #131316; font-weight: 700; text-align: center; }
         .store-department-icon { display: grid; width: 8.5rem; height: 8.5rem; place-items: center; overflow: hidden; border-radius: 999px; background: #f3f3f3; }
+        @media (max-width: 899px) {
+            .store-department-icon { display: none; }
+            .store-department { width: auto; }
+        }
         .store-hero h1,
         .store-hero .store-lead,
         .store-hero .store-kicker,
@@ -87,7 +91,6 @@
 <body class="store-shell" x-data="storefront" :class="{ 'menu-open': drawer }">
     @include('store.partials.announcement')
     @include('store.partials.navbar')
-    @include('store.partials.department-rail')
 
     @if(session('status'))
         <div class="hidden" x-init="window.dispatchEvent(new CustomEvent('toast', { detail: { message: @js(session('status')) } }))"></div>

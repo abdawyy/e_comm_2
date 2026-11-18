@@ -5,6 +5,12 @@
     @if($order)
         <p class="mt-3">{{ __('store.thanks.reference', ['reference' => $order->reference]) }}</p>
         <p class="mt-2">{{ __('store.thanks.payment', ['status' => __('store.payment_states.'.$order->payment_status)]) }}</p>
+        @if($order->payment_gateway === 'instapay' && ($instapay = \App\Models\StoreSetting::instapayNumber()))
+            <div class="cart-pay-instapay thanks-instapay">
+                @include('store.partials.instapay-logo')
+                <p>{{ __('store.payment.instapay_send', ['number' => $instapay, 'total' => app(\App\Services\DecimalMath::class)->format((string) $order->total)]) }}</p>
+            </div>
+        @endif
         <a class="store-btn-primary mt-4" href="{{ route('orders.track', ['reference' => $order->reference]) }}">{{ __('store.track.title') }}</a>
         @auth
             <a class="store-btn-accent mt-4" href="{{ url('/my/orders') }}">{{ __('store.orders.plural') }}</a>

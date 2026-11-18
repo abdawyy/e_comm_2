@@ -98,7 +98,7 @@
                     <tbody>
                         @forelse($cities as $city)
                             <tr>
-                                <td>{{ $city['city'] }}</td>
+                                <td>{{ $city['location'] ?? $city['city'] }}</td>
                                 <td>{{ $city['orders'] }}</td>
                                 <td>{{ $math->format($city['revenue']) }}</td>
                             </tr>

@@ -56,6 +56,48 @@
 <section class="insight-card">
     <div class="insight-head">
         <div>
+            <h2>{{ __('admin.traffic.latest') }}</h2>
+            <p>{{ __('admin.traffic.latest_help') }}</p>
+        </div>
+    </div>
+    <div class="insight-table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>{{ __('admin.fields.last_seen') }}</th>
+                    <th>{{ __('admin.traffic.device') }}</th>
+                    <th>{{ __('admin.fields.country') }}</th>
+                    <th>{{ __('admin.fields.city') }}</th>
+                    <th>{{ __('admin.customers.place') }}</th>
+                    <th>{{ __('admin.traffic.location') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($report['latest'] as $visit)
+                    <tr>
+                        <td>{{ $visit['seen'] ?: '—' }}</td>
+                        <td>{{ match ($visit['device']) {
+                            'mobile' => __('admin.traffic.mobile_device'),
+                            'desktop' => __('admin.traffic.desktop'),
+                            'tablet' => __('admin.traffic.tablet'),
+                            default => $visit['device'] ?: '—',
+                        } }}</td>
+                        <td>{{ $visit['country'] ?: '—' }}</td>
+                        <td>{{ $visit['city'] ?: '—' }}</td>
+                        <td>{{ $visit['place'] ?: '—' }}</td>
+                        <td>{{ $visit['location'] ?: '—' }}</td>
+                    </tr>
+                @empty
+                    <tr><td colspan="6">{{ __('admin.traffic.empty') }}</td></tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<section class="insight-card">
+    <div class="insight-head">
+        <div>
             <h2>{{ __('admin.traffic.over_time') }}</h2>
             <p>{{ __('admin.traffic.over_time_help') }}</p>
         </div>
@@ -84,6 +126,8 @@
 </section>
 
 <section class="insight-lists">
+    @include('filament.admin.partials.traffic-list', ['title' => __('admin.traffic.countries'), 'help' => __('admin.traffic.countries_help'), 'rows' => $report['countries']])
+    @include('filament.admin.partials.traffic-list', ['title' => __('admin.traffic.cities'), 'help' => __('admin.traffic.cities_help'), 'rows' => $report['cities']])
     @include('filament.admin.partials.traffic-list', ['title' => __('admin.traffic.places'), 'help' => __('admin.traffic.places_help'), 'rows' => $report['places']])
     @include('filament.admin.partials.traffic-list', ['title' => __('admin.traffic.devices'), 'help' => __('admin.traffic.devices_help'), 'rows' => $report['devices']])
     @include('filament.admin.partials.traffic-list', ['title' => __('admin.traffic.referrers'), 'help' => __('admin.traffic.referrers_help'), 'rows' => $report['referrers']])

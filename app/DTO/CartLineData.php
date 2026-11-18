@@ -27,6 +27,8 @@ class CartLineData
         public ?array $packaging,
         public array $raw,
         public ?string $imageUrl = null,
+        public ?string $sku = null,
+        public ?string $url = null,
     ) {}
 
     /**
@@ -48,6 +50,8 @@ class CartLineData
             'bundle_id' => $this->bundleId,
             'unit' => $this->unit,
             'image_url' => $this->imageUrl,
+            'sku' => $this->sku,
+            'url' => $this->url,
         ];
     }
 }

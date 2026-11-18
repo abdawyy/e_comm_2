@@ -72,6 +72,11 @@ return [
         'apply' => 'Apply',
         'remove' => 'Remove',
         'checkout' => 'Checkout',
+        'product' => 'Product',
+        'price' => 'Price',
+        'item_no' => 'Item no',
+        'qty' => 'Qty',
+        'edit' => 'Edit',
     ],
     'checkout' => [
         'title' => 'Checkout',
@@ -90,12 +95,16 @@ return [
         'expired' => 'That checkout page expired. Please place the order again.',
         'failed' => 'The order could not be saved. Please try again.',
         'city_invalid' => 'Choose a delivery city.',
+        'place' => 'Place',
+        'place_invalid' => 'Choose a place in that city.',
         'packaging' => 'That packaging option is not available.',
         'gateway' => 'Choose a valid payment method.',
         'order_packaging' => 'Order packaging',
     ],
     'payment' => [
         'cod' => 'Cash on delivery',
+        'instapay' => 'InstaPay',
+        'instapay_send' => 'Send :total by InstaPay to :number. Put the order number in the transfer note.',
         'visa' => 'Visa / Mastercard',
         'retry' => 'Try card payment again',
         'gateway_failed' => 'The card checkout could not start. Your order is saved.',
@@ -125,7 +134,7 @@ return [
     ],
     'trust' => [
         'shipping' => 'Delivery across Egyptian cities',
-        'payment' => 'Cash on delivery or Visa',
+        'payment' => 'Cash on delivery or InstaPay',
         'support' => 'Arabic and English support',
     ],
     'footer' => [

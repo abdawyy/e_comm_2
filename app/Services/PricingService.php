@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\DTO\CartLineData;
 use App\DTO\CartQuote;
+use App\Models\Area;
 use App\Models\Bundle;
 use App\Models\City;
 use App\Models\Coupon;
@@ -19,7 +20,7 @@ class PricingService
     /**
      * @param  array<int, array<string, mixed>>  $lines
      */
-    public function quote(array $lines, ?string $couponCode = null, ?int $cityId = null, ?int $orderPackagingId = null, bool $includeInternal = false): CartQuote
+    public function quote(array $lines, ?string $couponCode = null, ?int $cityId = null, ?int $orderPackagingId = null, bool $includeInternal = false, ?int $areaId = null): CartQuote
     {
         $resolved = [];
         $removed = [];
@@ -49,7 +50,7 @@ class PricingService
         $coupon = $this->validCoupon($couponCode, $subtotal);
         $discount = $coupon ? $this->discountFor($coupon, $subtotal) : $this->math->zero();
         $packagingFee = $this->orderPackagingFee($orderPackagingId, $subtotal);
-        $shipping = $this->shippingFee($cityId);
+        $shipping = $this->shippingFee($cityId, $areaId);
         $total = $this->math->maxZero($this->math->sub($subtotal, $discount));
         $total = $this->math->add($total, $packagingFee);
         $total = $this->math->add($total, $shipping);
@@ -170,6 +171,8 @@ class PricingService
             packaging: $packagingSnapshot,
             raw: $line,
             imageUrl: $product->coverUrl(),
+            sku: $product->sku,
+            url: route('products.show', $product),
         );
     }
 
@@ -227,6 +230,8 @@ class PricingService
             packaging: null,
             raw: $line,
             imageUrl: $bundle->coverUrl(),
+            sku: null,
+            url: route('bundles.show', $bundle),
         );
     }
 
@@ -273,8 +278,16 @@ class PricingService
         return $this->math->surcharge($subtotal, $packaging->surcharge_type, (string) $packaging->surcharge_value);
     }
 
-    public function shippingFee(?int $cityId): string
+    public function shippingFee(?int $cityId, ?int $areaId = null): string
     {
+        if ($cityId && $areaId) {
+            $area = Area::query()->where('is_active', true)->where('city_id', $cityId)->find($areaId);
+
+            if ($area) {
+                return $this->math->normalize((string) $area->shipping_fee);
+            }
+        }
+
         if (! $cityId) {
             return $this->math->zero();
         }

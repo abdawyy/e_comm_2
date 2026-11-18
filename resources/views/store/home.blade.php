@@ -49,7 +49,7 @@
                 @if($banner->badge)<span class="store-badge">{{ $banner->badge }}</span>@endif
                 <h2 class="mt-3 text-2xl font-bold">{{ $banner->title }}</h2>
                 <p class="mt-2">{{ $banner->subtitle }}</p>
-                @if($banner->imageUrl())<img class="mt-4 rounded-xl" src="{{ $banner->imageUrl() }}" alt="">@endif
+                @if($banner->imageUrl())<img class="store-banner-image" src="{{ $banner->imageUrl() }}" alt="">@endif
                 <div class="mt-4 flex flex-wrap gap-2">
                     @foreach($banner->localizedButtons() as $button)
                         <a class="store-btn-ghost" href="{{ $button['url'] }}">{{ $button['label'] }}</a>

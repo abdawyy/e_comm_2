@@ -325,6 +325,13 @@ html.dark .store-shell {
     overflow: hidden;
 }
 
+.store-banner-image {
+    display: block;
+    width: 100%;
+    margin-top: 1.75rem;
+    border-radius: 0.9rem;
+}
+
 .store-badge {
     display: inline-flex;
     align-items: center;

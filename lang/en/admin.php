@@ -58,6 +58,7 @@ return [
         'social' => ['label' => 'Social link', 'plural' => 'Social links'],
         'carriers' => ['label' => 'Carrier', 'plural' => 'Carriers'],
         'reviews' => ['label' => 'Review', 'plural' => 'Reviews'],
+        'inquiries' => ['label' => 'Special order', 'plural' => 'Special orders'],
     ],
     'help' => [
         'category_image' => 'Optional cover, 800×800, jpg/png/webp, max 4 MB.',

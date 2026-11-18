@@ -26,12 +26,14 @@ class Category extends Model
         'link_url',
         'sort_order',
         'is_active',
+        'is_inquiry',
     ];
 
     protected function casts(): array
     {
         return [
             'is_active' => 'boolean',
+            'is_inquiry' => 'boolean',
             'sort_order' => 'integer',
         ];
     }
@@ -85,5 +87,10 @@ class Category extends Model
         }
 
         return route('categories.show', $this);
+    }
+
+    public function acceptsInquiry(): bool
+    {
+        return (bool) $this->is_inquiry;
     }
 }

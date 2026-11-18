@@ -54,6 +54,10 @@ class SessionCart
                 throw new CartException('store.cart.unavailable');
             }
 
+            if ($product->acceptsInquiry()) {
+                throw new CartException('store.cart.inquiry');
+            }
+
             $unit = (string) ($input['unit'] ?? $product->unit);
 
             if ($product->priceForUnit($unit) === null) {

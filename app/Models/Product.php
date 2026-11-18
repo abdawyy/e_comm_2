@@ -126,4 +126,11 @@ class Product extends Model
 
         return $image?->url();
     }
+
+    public function acceptsInquiry(): bool
+    {
+        $category = $this->relationLoaded('category') ? $this->category : $this->category()->first();
+
+        return (bool) $category?->is_inquiry;
+    }
 }

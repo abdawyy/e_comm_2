@@ -11,6 +11,11 @@
             <p class="mt-2 font-bold">{{ app(\App\Services\DecimalMath::class)->format((string) $product->price_per_unit) }}</p>
         </div>
     </a>
+    @if($product->acceptsInquiry())
+        <div class="mt-auto p-4 pt-2">
+            <a class="store-btn-primary w-full" href="{{ route('products.show', $product) }}">{{ __('store.inquiry.request') }}</a>
+        </div>
+    @else
     <form class="mt-auto p-4 pt-2" method="post" action="{{ route('cart.items.store') }}" @submit.prevent="add($el)">
         @csrf
         <input type="hidden" name="product_id" value="{{ $product->id }}">
@@ -20,4 +25,5 @@
             {{ $product->track_stock && (float) $product->stock_quantity <= 0 ? __('store.product.out_of_stock') : __('store.product.add') }}
         </button>
     </form>
+    @endif
 </article>

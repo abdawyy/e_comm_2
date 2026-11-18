@@ -58,6 +58,7 @@ return [
         'social' => ['label' => 'رابط تواصل', 'plural' => 'روابط التواصل'],
         'carriers' => ['label' => 'شركة شحن', 'plural' => 'شركات الشحن'],
         'reviews' => ['label' => 'تقييم', 'plural' => 'التقييمات'],
+        'inquiries' => ['label' => 'طلب خاص', 'plural' => 'الطلبات الخاصة'],
     ],
     'help' => [
         'category_image' => 'غلاف اختياري 800×800، بحد 4 ميغابايت.',

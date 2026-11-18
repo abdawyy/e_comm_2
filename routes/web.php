@@ -25,6 +25,7 @@ Route::get('/shop', [CatalogController::class, 'shop'])->name('shop');
 Route::get('/categories/{category}', [CatalogController::class, 'category'])->name('categories.show');
 Route::get('/products/{product}', [CatalogController::class, 'product'])->name('products.show');
 Route::post('/products/{product}/reviews', [ProductReviewController::class, 'store'])->middleware('throttle:8,1')->name('products.reviews.store');
+Route::post('/products/{product}/inquiries', [\App\Http\Controllers\ProductInquiryController::class, 'store'])->middleware('throttle:8,1')->name('products.inquiries.store');
 Route::get('/track', TrackOrderController::class)->name('orders.track');
 Route::get('/bundles', [CatalogController::class, 'bundles'])->name('bundles.index');
 Route::get('/bundles/{bundle}', [CatalogController::class, 'bundle'])->name('bundles.show');

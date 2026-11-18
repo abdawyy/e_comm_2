@@ -65,6 +65,7 @@ class CategoryResource extends Resource
             Section::make(__('admin.forms.publish'))->icon(Heroicon::OutlinedEye)->schema([
                 TextInput::make('sort_order')->numeric()->default(0)->label(__('admin.fields.sort')),
                 Toggle::make('is_active')->onColor('success')->offColor('gray')->default(true)->label(__('admin.fields.active'))->inline(false),
+                Toggle::make('is_inquiry')->onColor('warning')->offColor('gray')->default(false)->label(__('store.inquiry.request'))->inline(false),
             ])->columns(2),
         ]);
     }

@@ -59,7 +59,11 @@
                 <span class="product-chip">{{ $product->unit }}</span>
                 <span class="product-chip {{ $inStock ? 'is-ok' : 'is-bad' }}">{{ $inStock ? __('store.product.in_stock') : __('store.product.out_of_stock') }}</span>
             </div>
-            <livewire:storefront.product-configurator :product="$product" />
+    @if($product->acceptsInquiry())
+        @include('store.partials.inquiry-form', ['product' => $product])
+    @else
+        <livewire:storefront.product-configurator :product="$product" />
+    @endif
         </div>
     </div>
 </section>

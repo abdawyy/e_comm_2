@@ -175,19 +175,21 @@ class DatabaseSeeder extends Seeder
     private function seedDepartments(): void
     {
         $rows = [
-            [10, 'Turkish coffee', 'القهوة التركي', 'categories/icons/turkish.jpg'],
-            [11, 'Espresso', 'الإسبريسو', 'categories/icons/espresso.jpg'],
-            [12, 'Coffee sachets', 'أظرف القهوة', 'categories/icons/sachets.jpg'],
-            [13, 'Coffee beans', 'حبوب القهوة', 'categories/icons/beans.jpg'],
-            [14, 'Specialty coffee', 'القهوة المختصة', 'categories/icons/specialty.jpg'],
-            [15, 'Coffee tools', 'أدوات القهوة', 'categories/icons/tools.jpg'],
+            [10, 'Turkish coffee', 'القهوة التركي', 'categories/icons/turkish.jpg', false],
+            [11, 'Espresso', 'الإسبريسو', 'categories/icons/espresso.jpg', false],
+            [12, 'Coffee sachets', 'أظرف القهوة', 'categories/icons/sachets.jpg', false],
+            [13, 'Coffee beans', 'حبوب القهوة', 'categories/icons/beans.jpg', false],
+            [14, 'Specialty coffee', 'القهوة المختصة', 'categories/icons/specialty.jpg', false],
+            [15, 'Coffee tools', 'أدوات القهوة', 'categories/icons/tools.jpg', true],
+            [16, 'Healthy corners', 'زوايا صحية', 'categories/icons/healthy.jpg', false],
         ];
 
-        foreach ($rows as [$sort, $en, $ar, $icon]) {
+        foreach ($rows as [$sort, $en, $ar, $icon, $inquiry]) {
             $category = Category::query()->get()->first(fn (Category $item): bool => $item->getTranslation('name', 'en') === $en) ?? new Category;
             $category->name = ['en' => $en, 'ar' => $ar];
             $category->description = ['en' => $en, 'ar' => $ar];
             $category->is_active = true;
+            $category->is_inquiry = $inquiry;
             $category->sort_order = $sort;
             if (blank($category->icon_path) || str_ends_with((string) $category->icon_path, '.svg') || str_starts_with((string) $category->icon_path, 'http')) {
                 $category->icon_path = $icon;

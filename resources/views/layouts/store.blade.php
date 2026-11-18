@@ -60,12 +60,35 @@
         html.dark .store-hero-visual div {
             background: linear-gradient(transparent, rgb(20 24 22 / 88%));
         }
-        .store-departments { display: flex; flex-wrap: wrap; gap: 1.5rem 2rem; margin-top: 1.5rem; justify-content: center; }
-        .store-department { display: grid; justify-items: center; gap: 0.75rem; width: 8.5rem; color: #131316; font-weight: 700; text-align: center; }
-        .store-department-icon { display: grid; width: 8.5rem; height: 8.5rem; place-items: center; overflow: hidden; border-radius: 999px; background: #f3f3f3; }
-        @media (max-width: 899px) {
-            .store-department-icon { display: none; }
-            .store-department { width: auto; }
+        .store-departments {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1.25rem 0.75rem;
+            align-items: start;
+            justify-items: center;
+            margin-top: 1.5rem;
+        }
+        .store-department {
+            display: grid;
+            justify-items: center;
+            gap: 0.65rem;
+            width: 100%;
+            max-width: 9.5rem;
+            color: #131316;
+            font-weight: 700;
+            text-align: center;
+        }
+        .store-department-icon {
+            display: grid;
+            width: min(100%, 8.5rem);
+            aspect-ratio: 1;
+            place-items: center;
+            overflow: hidden;
+            border-radius: 999px;
+            background: #f3f3f3;
+        }
+        @media (min-width: 900px) {
+            .store-departments { grid-template-columns: repeat(6, minmax(0, 1fr)); }
         }
         .store-hero h1,
         .store-hero .store-lead,

@@ -329,12 +329,20 @@ html.dark .store-shell {
     display: inline-flex;
     align-items: center;
     border-radius: 999px;
-    background: color-mix(in srgb, var(--color-accent) 16%, white);
-    color: color-mix(in srgb, var(--color-accent) 75%, black);
+    background: #c6a15a;
+    color: #1c1408;
     padding: 0.2rem 0.65rem;
     font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.store-unit {
+    color: #7a5410;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
 }
 
@@ -977,9 +985,13 @@ html.dark .store-drawer {
     box-shadow: 0 16px 36px rgb(0 0 0 / 28%);
 }
 
-html.dark .store-badge {
-    background: color-mix(in srgb, var(--color-accent) 24%, var(--color-surface));
-    color: color-mix(in srgb, var(--color-accent-light) 70%, white);
+html.dark .store-shell span.store-badge {
+    background: #eeddb0;
+    color: #1c1408;
+}
+
+html.dark .store-shell .store-unit {
+    color: #eeddb0;
 }
 
 html.dark .product-chip.is-ok {
@@ -1847,16 +1859,44 @@ html.dark .store-shell.has-wallpaper {
 }
 
 .store-departments-title { text-align: center; }
-.store-departments { display: flex; flex-wrap: wrap; gap: 1.75rem 2rem; margin-top: 1.5rem; justify-content: center; }
-.store-department { display: grid; justify-items: center; gap: 0.75rem; width: 8.5rem; color: #131316; font-weight: 700; text-align: center; font-size: 1.05rem; }
-.store-department-icon { display: grid; width: 8.5rem; height: 8.5rem; place-items: center; overflow: hidden; border-radius: 999px; background: #f3f3f3; cursor: pointer; }
-@media (max-width: 899px) {
-    .store-department-icon { display: none; }
-    .store-department { width: auto; }
+.store-departments {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem 0.75rem;
+    align-items: start;
+    justify-items: center;
+    margin-top: 1.5rem;
+}
+.store-department {
+    display: grid;
+    justify-items: center;
+    gap: 0.65rem;
+    width: 100%;
+    max-width: 9.5rem;
+    color: #131316;
+    font-weight: 700;
+    text-align: center;
+    font-size: 1rem;
+}
+.store-department-icon {
+    display: grid;
+    width: min(100%, 8.5rem);
+    aspect-ratio: 1;
+    height: auto;
+    place-items: center;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #f3f3f3;
+    cursor: pointer;
 }
 @media (min-width: 900px) {
-    .store-department, .store-department-icon { width: 11.5rem; height: auto; }
-    .store-department-icon { height: 11.5rem; }
+    .store-departments {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 1rem 0.75rem;
+    }
+    .store-department-icon {
+        width: min(100%, 9.5rem);
+    }
 }
 .store-department-icon img { width: 100%; height: 100%; object-fit: cover; }
 .store-department:hover .store-department-icon { border-color: #eeddb0; box-shadow: 0 0 0 4px #eeddb0; }

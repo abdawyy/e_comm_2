@@ -6,7 +6,7 @@
             <div class="h-44" style="background: linear-gradient(160deg, var(--color-brand), var(--color-accent-light))"></div>
         @endif
         <div class="p-4 pb-2">
-            <p class="text-xs uppercase tracking-wide" style="color: var(--color-accent)">{{ $product->unit }}</p>
+            <p class="store-unit">{{ $product->unit }}</p>
             <h3 class="mt-1 font-semibold">{{ $product->name }}</h3>
             <p class="mt-2 font-bold">{{ app(\App\Services\DecimalMath::class)->format((string) $product->price_per_unit) }}</p>
         </div>

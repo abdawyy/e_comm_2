@@ -1,7 +1,8 @@
 @extends('layouts.store')
 @section('content')
 <style>
-    .store-photo-band { position: relative; isolation: isolate; background: #1c140f center / cover no-repeat; color: #f7f4ee; }
+    .store-photo-band { position: relative; isolation: isolate; background: #1c140f center / cover no-repeat; color: #f7f4ee; padding-bottom: 2.75rem; }
+    .store-photo-band .store-section { padding-bottom: 0.5rem; }
     .store-photo-band::before { content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none; background: rgb(20 14 10 / 40%); }
     .store-photo-band > * { position: relative; z-index: 1; }
     .store-photo-band .store-hero { background: transparent; min-height: 28rem; }
@@ -42,7 +43,7 @@
 </div>
 
 @if($banners->isNotEmpty())
-<section class="mx-auto max-w-6xl px-4 pb-8">
+<section class="store-home-banners mx-auto max-w-6xl px-4 pb-8">
     <div class="grid gap-4 md:grid-cols-2">
         @foreach($banners as $banner)
             <article class="store-card p-6">

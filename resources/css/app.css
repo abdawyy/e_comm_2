@@ -332,6 +332,10 @@ html.dark .store-shell {
     border-radius: 0.9rem;
 }
 
+.store-home-banners {
+    margin-top: 1.5rem;
+}
+
 .store-badge {
     display: inline-flex;
     align-items: center;

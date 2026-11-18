@@ -23,5 +23,10 @@ class CreateOrderPayload
         public bool $subscriptionRenewal = false,
         public bool $includeInternal = false,
         public ?int $areaId = null,
+        public ?string $buildingNumber = null,
+        public ?string $floor = null,
+        public ?string $landmark = null,
+        public ?string $latitude = null,
+        public ?string $longitude = null,
     ) {}
 }

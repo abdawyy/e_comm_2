@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Pages;
 
+use App\Filament\Admin\Concerns\HasAnalyticsExports;
 use App\Services\AnalyticsPeriod;
 use App\Services\DecimalMath;
 use App\Services\SalesReport;
@@ -12,6 +13,7 @@ use Filament\Support\Icons\Heroicon;
 
 class SalesAnalytics extends Page
 {
+    use HasAnalyticsExports;
     protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedBanknotes;
 
     protected static ?string $slug = 'sales';
@@ -41,6 +43,11 @@ class SalesAnalytics extends Page
     public function setPeriod(string $period): void
     {
         app(AnalyticsPeriod::class)->set($period);
+    }
+
+    protected function getHeaderActions(): array
+    {
+        return $this->analyticsExportActions('sales');
     }
 
     public function content(Schema $schema): Schema

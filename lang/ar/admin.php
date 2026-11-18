@@ -93,7 +93,7 @@ return [
         'account' => 'الحساب',
         'access' => 'الصلاحية',
     ],
-    'actions' => ['save' => 'حفظ', 'export' => 'تصدير المنتجات', 'export_visitors' => 'تصدير الزوار', 'export_views' => 'تصدير المشاهدات', 'open' => 'فتح'],
+    'actions' => ['save' => 'حفظ', 'export' => 'تصدير المنتجات', 'export_visitors' => 'تصدير الزوار', 'export_views' => 'تصدير المشاهدات', 'open' => 'فتح', 'export_excel' => 'تصدير إكسل', 'export_pdf' => 'تصدير PDF', 'export_all_excel' => 'كل التحليلات إكسل', 'export_all_pdf' => 'كل التحليلات PDF'],
     'instapay' => ['saved' => 'تم حفظ إنستاباي'],
     'status' => ['pending' => 'قيد الانتظار', 'confirmed' => 'مؤكد', 'processing' => 'قيد التجهيز', 'shipped' => 'تم الشحن', 'delivered' => 'تم التسليم', 'cancelled' => 'ملغى'],
     'payment' => ['unpaid' => 'غير مدفوع', 'pending' => 'معلّق', 'paid' => 'مدفوع', 'failed' => 'فشل', 'refunded' => 'مُسترد'],

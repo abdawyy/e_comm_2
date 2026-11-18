@@ -74,6 +74,11 @@ class StoreApiController extends Controller
             'city_id' => ['required', 'integer'],
             'area_id' => ['nullable', 'integer'],
             'address' => ['required', 'string'],
+            'building_number' => ['nullable', 'string', 'max:32'],
+            'floor' => ['nullable', 'string', 'max:16'],
+            'landmark' => ['nullable', 'string', 'max:190'],
+            'latitude' => ['nullable', 'numeric', 'between:-90,90', 'required_with:longitude'],
+            'longitude' => ['nullable', 'numeric', 'between:-180,180', 'required_with:latitude'],
             'payment_gateway' => ['required', 'in:'.implode(',', $enabled)],
             'coupon_code' => ['nullable', 'string'],
             'order_packaging_id' => ['nullable', 'integer'],
@@ -93,6 +98,11 @@ class StoreApiController extends Controller
                 couponCode: $data['coupon_code'] ?? null,
                 orderPackagingId: $data['order_packaging_id'] ?? null,
                 locale: app()->getLocale(),
+                buildingNumber: $data['building_number'] ?? null,
+                floor: $data['floor'] ?? null,
+                landmark: $data['landmark'] ?? null,
+                latitude: isset($data['latitude']) ? (string) $data['latitude'] : null,
+                longitude: isset($data['longitude']) ? (string) $data['longitude'] : null,
             ));
         } catch (CartException $exception) {
             return response()->json(['message' => __($exception->errorKey)], 422);

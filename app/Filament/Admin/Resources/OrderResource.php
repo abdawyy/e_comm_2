@@ -51,6 +51,11 @@ class OrderResource extends Resource
                 TextInput::make('customer_email')->label(__('admin.fields.email'))->email()->maxLength(190),
                 TextInput::make('city_name')->label(__('admin.fields.city'))->maxLength(120),
                 Textarea::make('address')->label(__('admin.fields.address'))->rows(2)->columnSpanFull(),
+                TextInput::make('building_number')->label(__('store.checkout.building_number'))->maxLength(32),
+                TextInput::make('floor')->label(__('store.checkout.floor'))->maxLength(16),
+                TextInput::make('landmark')->label(__('store.checkout.landmark'))->maxLength(190)->columnSpanFull(),
+                TextInput::make('latitude')->label('Latitude')->numeric(),
+                TextInput::make('longitude')->label('Longitude')->numeric(),
             ])->columns(2),
             Section::make(__('store.checkout.shipping'))->icon(Heroicon::OutlinedTruck)->schema([
                 Select::make('shipping_carrier_id')->label(__('store.delivery.carrier'))->options(fn (): array => ShippingCarrier::query()->where('is_active', true)->orderBy('sort_order')->get()->mapWithKeys(fn (ShippingCarrier $carrier): array => [$carrier->id => (string) $carrier->name])->all())->searchable()->native(false)->nullable()->helperText(__('store.delivery.note')),
@@ -86,7 +91,23 @@ class OrderResource extends Resource
                 TextEntry::make('customer_phone')->label(__('admin.fields.phone')),
                 TextEntry::make('city_name')->label(__('admin.fields.city')),
                 TextEntry::make('area_name')->label(__('admin.customers.place')),
-                TextEntry::make('address')->label(__('admin.fields.address')),
+                TextEntry::make('address')->label(__('admin.fields.address'))->columnSpanFull(),
+                TextEntry::make('building_number')->label(__('store.checkout.building_number'))->placeholder('—'),
+                TextEntry::make('floor')->label(__('store.checkout.floor'))->placeholder('—'),
+                TextEntry::make('landmark')->label(__('store.checkout.landmark'))->placeholder('—'),
+                TextEntry::make('map_link')->label(__('store.checkout.map'))->placeholder('—')->state(function (Order $record): ?string {
+                    if ($record->latitude === null || $record->longitude === null) {
+                        return null;
+                    }
+
+                    return $record->latitude.', '.$record->longitude;
+                })->url(function (Order $record): ?string {
+                    if ($record->latitude === null || $record->longitude === null) {
+                        return null;
+                    }
+
+                    return 'https://www.google.com/maps?q='.$record->latitude.','.$record->longitude;
+                })->openUrlInNewTab(),
                 TextEntry::make('coupon_code')->label(__('admin.fields.code')),
                 TextEntry::make('subtotal')->label(__('store.checkout.subtotal'))->formatStateUsing(fn ($state) => app(DecimalMath::class)->format((string) $state)),
                 TextEntry::make('discount')->label(__('store.checkout.discount'))->formatStateUsing(fn ($state) => app(DecimalMath::class)->format((string) $state)),

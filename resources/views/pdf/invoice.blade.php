@@ -104,6 +104,10 @@
                         <div><strong>{{ __('store.invoice.customer', [], $locale) }}:</strong> {{ $order->customer_name }}</div>
                         <div><strong>{{ __('store.invoice.phone', [], $locale) }}:</strong> {{ $order->customer_phone }}</div>
                         <div><strong>{{ __('store.invoice.address', [], $locale) }}:</strong> {{ $order->city_name }} — {{ $order->address }}</div>
+                        @if(filled($order->building_number))<div><strong>{{ __('store.checkout.building_number', [], $locale) }}:</strong> {{ $order->building_number }}</div>@endif
+                        @if(filled($order->floor))<div><strong>{{ __('store.checkout.floor', [], $locale) }}:</strong> {{ $order->floor }}</div>@endif
+                        @if(filled($order->landmark))<div><strong>{{ __('store.checkout.landmark', [], $locale) }}:</strong> {{ $order->landmark }}</div>@endif
+                        @if($order->latitude !== null && $order->longitude !== null)<div><strong>{{ __('store.checkout.map', [], $locale) }}:</strong> {{ $order->latitude }}, {{ $order->longitude }}</div>@endif
                     </td>
                     <td width="4%"></td>
                     <td class="card" width="48%" style="padding: 10px;">

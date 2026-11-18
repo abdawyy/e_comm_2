@@ -64,6 +64,7 @@ Route::middleware('guest')->group(function () {
 
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
 Route::get('/staff-guide.pdf', AdminGuideController::class)->middleware('auth')->name('admin.guide.pdf');
+Route::get('/admin/analytics/{report}/{format}', \App\Http\Controllers\AnalyticsExportController::class)->middleware('auth')->name('admin.analytics.export');
 Route::get('/delivery-labels/{order}', ShippingLabelController::class)->middleware('auth')->name('delivery.label');
 Route::post('/bundles/{bundle}/subscribe', [SubscriptionController::class, 'store'])->middleware('auth')->name('bundles.subscribe');
 Route::redirect('/account', '/my')->name('account.home');

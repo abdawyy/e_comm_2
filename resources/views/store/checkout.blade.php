@@ -28,6 +28,19 @@
         </label>
         <p class="checkout-note">{{ __('store.checkout.shipping') }}: <strong data-shipping>{{ $math->format('0') }}</strong></p>
         <label class="block"><span>{{ __('store.checkout.address') }}</span><textarea class="store-input" name="address" rows="3" required>{{ old('address', auth()->user()->address ?? '') }}</textarea></label>
+        <div class="checkout-split">
+            <label class="block"><span>{{ __('store.checkout.building_number') }} <small>{{ __('store.checkout.optional') }}</small></span><input class="store-input" name="building_number" value="{{ old('building_number') }}" maxlength="32"></label>
+            <label class="block"><span>{{ __('store.checkout.floor') }} <small>{{ __('store.checkout.optional') }}</small></span><input class="store-input" name="floor" value="{{ old('floor') }}" maxlength="16"></label>
+        </div>
+        <label class="block"><span>{{ __('store.checkout.landmark') }} <small>{{ __('store.checkout.optional') }}</small></span><input class="store-input" name="landmark" value="{{ old('landmark') }}" maxlength="190"></label>
+        <div class="checkout-map-block">
+            <span>{{ __('store.checkout.map') }} <small>{{ __('store.checkout.optional') }}</small></span>
+            <p class="checkout-note">{{ __('store.checkout.map_help') }}</p>
+            <div id="checkout-map" class="checkout-map"></div>
+            <button class="store-btn-ghost" type="button" data-locate>{{ __('store.checkout.locate') }}</button>
+            <input type="hidden" name="latitude" value="{{ old('latitude') }}">
+            <input type="hidden" name="longitude" value="{{ old('longitude') }}">
+        </div>
         @if($orderPackaging->isNotEmpty())
             <label class="block"><span>{{ __('store.checkout.order_packaging') }}</span>
                 <select class="store-input" name="order_packaging_id">
@@ -160,6 +173,47 @@
             if (event.target.name === 'city_id' || event.target.name === 'area_id' || event.target.name === 'order_packaging_id') paint();
         });
         paint();
+    })();
+</script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+    (() => {
+        const mapEl = document.getElementById('checkout-map');
+        if (!mapEl || !window.L) return;
+
+        const latInput = document.querySelector('[name="latitude"]');
+        const lngInput = document.querySelector('[name="longitude"]');
+        const hasPin = latInput?.value && lngInput?.value;
+        const startLat = hasPin ? Number(latInput.value) : 30.0444;
+        const startLng = hasPin ? Number(lngInput.value) : 31.2357;
+        const map = L.map(mapEl, { scrollWheelZoom: false }).setView([startLat, startLng], hasPin ? 16 : 11);
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; OpenStreetMap',
+        }).addTo(map);
+
+        let marker = null;
+        const pin = (lat, lng) => {
+            if (marker) {
+                marker.setLatLng([lat, lng]);
+            } else {
+                marker = L.marker([lat, lng]).addTo(map);
+            }
+            latInput.value = Number(lat).toFixed(6);
+            lngInput.value = Number(lng).toFixed(6);
+        };
+
+        if (hasPin) pin(startLat, startLng);
+        map.on('click', (event) => pin(event.latlng.lat, event.latlng.lng));
+        document.querySelector('[data-locate]')?.addEventListener('click', () => {
+            if (!navigator.geolocation) return;
+            navigator.geolocation.getCurrentPosition((position) => {
+                pin(position.coords.latitude, position.coords.longitude);
+                map.setView([position.coords.latitude, position.coords.longitude], 16);
+            });
+        });
+        setTimeout(() => map.invalidateSize(), 200);
     })();
 </script>
 @endsection

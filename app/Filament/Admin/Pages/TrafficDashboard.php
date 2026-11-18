@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Pages;
 
+use App\Filament\Admin\Concerns\HasAnalyticsExports;
 use App\Filament\Admin\Concerns\HasTrafficFilters;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\View;
@@ -10,6 +11,7 @@ use Filament\Support\Icons\Heroicon;
 
 class TrafficDashboard extends Page
 {
+    use HasAnalyticsExports;
     use HasTrafficFilters;
 
     protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedChartBar;
@@ -36,6 +38,11 @@ class TrafficDashboard extends Page
     public static function canAccess(): bool
     {
         return (bool) auth()->user()?->can('View:TrafficDashboard');
+    }
+
+    protected function getHeaderActions(): array
+    {
+        return $this->analyticsExportActions('traffic');
     }
 
     public function content(Schema $schema): Schema

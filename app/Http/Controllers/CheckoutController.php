@@ -79,6 +79,11 @@ class CheckoutController extends Controller
             'city_id' => ['required', 'integer', 'exists:cities,id'],
             'area_id' => ['nullable', 'integer'],
             'address' => ['required', 'string', 'max:500'],
+            'building_number' => ['nullable', 'string', 'max:32'],
+            'floor' => ['nullable', 'string', 'max:16'],
+            'landmark' => ['nullable', 'string', 'max:190'],
+            'latitude' => ['nullable', 'numeric', 'between:-90,90', 'required_with:longitude'],
+            'longitude' => ['nullable', 'numeric', 'between:-180,180', 'required_with:latitude'],
             'payment_gateway' => ['required', 'string', 'in:'.implode(',', $enabled)],
             'order_packaging_id' => ['nullable', 'integer'],
             'notes' => ['nullable', 'string', 'max:500'],
@@ -105,6 +110,11 @@ class CheckoutController extends Controller
                 orderPackagingId: $data['order_packaging_id'] ?? null,
                 notes: $data['notes'] ?? null,
                 locale: app()->getLocale(),
+                buildingNumber: $data['building_number'] ?? null,
+                floor: $data['floor'] ?? null,
+                landmark: $data['landmark'] ?? null,
+                latitude: isset($data['latitude']) ? (string) $data['latitude'] : null,
+                longitude: isset($data['longitude']) ? (string) $data['longitude'] : null,
             ));
         } catch (CartException $exception) {
             $this->releaseCheckout();

@@ -32,6 +32,11 @@ class Order extends Model
         'area_name',
         'shipping_carrier_id',
         'address',
+        'building_number',
+        'floor',
+        'landmark',
+        'latitude',
+        'longitude',
         'subtotal',
         'discount',
         'coupon_code',
@@ -99,6 +104,8 @@ class Order extends Model
             'paid_at' => 'datetime',
             'confirmation_sent_at' => 'datetime',
             'amount_cents' => 'integer',
+            'latitude' => 'decimal:7',
+            'longitude' => 'decimal:7',
         ];
     }
 

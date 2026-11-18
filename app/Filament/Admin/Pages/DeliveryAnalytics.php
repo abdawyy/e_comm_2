@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Pages;
 
+use App\Filament\Admin\Concerns\HasAnalyticsExports;
 use App\Models\Order;
 use App\Models\ShippingCarrier;
 use App\Services\DecimalMath;
@@ -19,6 +20,7 @@ use Filament\Support\Icons\Heroicon;
 
 class DeliveryAnalytics extends Page
 {
+    use HasAnalyticsExports;
     protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedTruck;
 
     protected static ?string $slug = 'delivery';
@@ -45,6 +47,11 @@ class DeliveryAnalytics extends Page
     public static function canAccess(): bool
     {
         return (bool) auth()->user()?->can('viewAny', Order::class);
+    }
+
+    protected function getHeaderActions(): array
+    {
+        return $this->analyticsExportActions('delivery');
     }
 
     public function mount(): void

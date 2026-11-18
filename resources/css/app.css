@@ -1092,6 +1092,35 @@ html.dark .store-search-icon {
     gap: 0.85rem;
 }
 
+.checkout-split {
+    display: grid;
+    gap: 0.85rem;
+}
+
+.checkout-map-block {
+    display: grid;
+    gap: 0.45rem;
+}
+
+.checkout-map {
+    height: 16rem;
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    border-radius: 0.9rem;
+    background: #e8e4dc;
+}
+
+.checkout-map-block .store-btn-ghost {
+    width: auto;
+    justify-self: start;
+}
+
+@media (min-width: 640px) {
+    .checkout-split {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
 .checkout-form h1,
 .checkout-summary h2 {
     font-size: 1.45rem;

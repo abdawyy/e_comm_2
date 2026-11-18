@@ -2,6 +2,7 @@
 
 namespace App\Filament\Admin\Pages;
 
+use App\Filament\Admin\Concerns\HasAnalyticsExports;
 use App\Filament\Admin\Concerns\HasTrafficFilters;
 use App\Services\CustomerDirectory;
 use Filament\Pages\Page;
@@ -11,6 +12,7 @@ use Filament\Support\Icons\Heroicon;
 
 class CustomerAnalysis extends Page
 {
+    use HasAnalyticsExports;
     use HasTrafficFilters;
 
     protected static string|\BackedEnum|null $navigationIcon = Heroicon::OutlinedUserGroup;
@@ -37,6 +39,11 @@ class CustomerAnalysis extends Page
     public static function canAccess(): bool
     {
         return (bool) auth()->user()?->can('ViewAny:User');
+    }
+
+    protected function getHeaderActions(): array
+    {
+        return $this->analyticsExportActions('customers');
     }
 
     public function content(Schema $schema): Schema

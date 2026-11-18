@@ -93,7 +93,7 @@ return [
         'account' => 'Account',
         'access' => 'Access',
     ],
-    'actions' => ['save' => 'Save', 'export' => 'Export products', 'export_visitors' => 'Export visitors', 'export_views' => 'Export page views', 'open' => 'Open'],
+    'actions' => ['save' => 'Save', 'export' => 'Export products', 'export_visitors' => 'Export visitors', 'export_views' => 'Export page views', 'open' => 'Open', 'export_excel' => 'Export Excel', 'export_pdf' => 'Export PDF', 'export_all_excel' => 'All analytics Excel', 'export_all_pdf' => 'All analytics PDF'],
     'instapay' => ['saved' => 'InstaPay saved'],
     'status' => ['pending' => 'Pending', 'confirmed' => 'Confirmed', 'processing' => 'Processing', 'shipped' => 'Shipped', 'delivered' => 'Delivered', 'cancelled' => 'Cancelled'],
     'payment' => ['unpaid' => 'Unpaid', 'pending' => 'Pending', 'paid' => 'Paid', 'failed' => 'Failed', 'refunded' => 'Refunded'],

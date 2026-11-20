@@ -27,6 +27,17 @@
     <link rel="alternate" hreflang="x-default" href="{{ request()->fullUrlWithQuery(['locale' => 'ar']) }}">
     <meta property="og:title" content="{{ $theme->brand_name }}">
     <meta property="og:image" content="{{ $seo?->ogUrl() ?: \App\Models\DesignAsset::urlFor('og_default') }}">
+    <script type="application/ld+json">
+        {!! json_encode([
+            '@context' => 'https://schema.org',
+            '@type' => 'GroceryStore',
+            'name' => $theme->brand_name,
+            'url' => url('/'),
+            'areaServed' => ['@type' => 'Country', 'name' => 'Egypt'],
+            'currenciesAccepted' => config('store.currency', 'EGP'),
+            'inLanguage' => ['ar-EG', 'en'],
+        ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
+    </script>
     @if($icon = \App\Models\DesignAsset::urlFor('favicon'))
         <link rel="icon" href="{{ $icon }}">
     @endif

@@ -18,6 +18,8 @@ use App\Http\Controllers\TrackOrderController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');
+Route::get('/sitemap.xml', \App\Http\Controllers\SitemapController::class)->name('sitemap');
+Route::get('/robots.txt', [\App\Http\Controllers\SitemapController::class, 'robots'])->name('robots');
 Route::post('/signup-offer', [SignupOfferController::class, 'store'])->middleware('throttle:8,1')->name('signup-offer.store');
 Route::get('/locale/{locale}', LocaleController::class)->name('locale.switch');
 

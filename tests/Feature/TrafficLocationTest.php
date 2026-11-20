@@ -90,4 +90,51 @@ class TrafficLocationTest extends TestCase
             ->assertSeeInOrder(['Sheraton', 'Dokki'])
             ->assertSee('Egypt, Cairo, Sheraton');
     }
+
+    #[Test]
+    public function a_private_address_is_not_recorded_as_the_server_country(): void
+    {
+        Http::fake([
+            'ip-api.com/*' => Http::response([
+                'status' => 'success',
+                'country' => 'United States',
+                'countryCode' => 'US',
+                'regionName' => 'California',
+                'city' => 'San Jose',
+            ]),
+        ]);
+
+        $this->assertNull(app(VisitorLocator::class)->locate('127.0.0.1'));
+        Http::assertNothingSent();
+    }
+
+    #[Test]
+    public function cloudflare_egypt_wins_over_a_united_states_proxy_address(): void
+    {
+        Http::fake([
+            'ip-api.com/*' => Http::response([
+                'status' => 'success',
+                'country' => 'United States',
+                'countryCode' => 'US',
+                'regionName' => 'California',
+                'city' => 'San Jose',
+                'lat' => 37.3,
+                'lon' => -121.9,
+            ]),
+            'nominatim.openstreetmap.org/*' => Http::response([], 404),
+            'api.bigdatacloud.net/*' => Http::response([], 404),
+        ]);
+
+        $this->get('/', [
+            'CF-Connecting-IP' => '197.44.10.10',
+            'CF-IPCountry' => 'EG',
+            'CF-IPCity' => 'Cairo',
+            'User-Agent' => 'Mozilla/5.0',
+        ])->assertOk();
+
+        $this->assertDatabaseHas('site_visitors', [
+            'country_code' => 'EG',
+            'city' => 'Cairo',
+        ]);
+    }
 }

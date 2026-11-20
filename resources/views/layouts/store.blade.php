@@ -18,6 +18,13 @@
     <title>{{ $theme->brand_name }} — {{ $title ?? \App\Support\Cms::text('home.hero_title', __('store.nav.home')) }}</title>
     <meta name="description" content="{{ $seo?->meta_description ?? \App\Support\Cms::text('home.hero_subtitle', $theme->brand_name) }}">
     <meta name="theme-color" content="{{ $theme->css('theme_color') }}">
+    <meta name="geo.region" content="EG">
+    <meta name="geo.placename" content="Egypt">
+    <meta property="og:locale" content="{{ app()->getLocale() === 'ar' ? 'ar_EG' : 'en_US' }}">
+    <meta property="og:locale:alternate" content="{{ app()->getLocale() === 'ar' ? 'en_US' : 'ar_EG' }}">
+    <link rel="alternate" hreflang="ar-EG" href="{{ request()->fullUrlWithQuery(['locale' => 'ar']) }}">
+    <link rel="alternate" hreflang="en" href="{{ request()->fullUrlWithQuery(['locale' => 'en']) }}">
+    <link rel="alternate" hreflang="x-default" href="{{ request()->fullUrlWithQuery(['locale' => 'ar']) }}">
     <meta property="og:title" content="{{ $theme->brand_name }}">
     <meta property="og:image" content="{{ $seo?->ogUrl() ?: \App\Models\DesignAsset::urlFor('og_default') }}">
     @if($icon = \App\Models\DesignAsset::urlFor('favicon'))

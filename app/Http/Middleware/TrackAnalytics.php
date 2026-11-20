@@ -95,7 +95,16 @@ class TrackAnalytics
             }
         }
 
-        return ! preg_match('/\.(css|js|map|png|jpe?g|webp|svg|ico|woff2?)$/i', $path);
+        if (! preg_match('/\.(css|js|map|png|jpe?g|webp|svg|ico|woff2?)$/i', $path)) {
+            return ! $this->isBot((string) $request->userAgent());
+        }
+
+        return false;
+    }
+
+    private function isBot(string $userAgent): bool
+    {
+        return (bool) preg_match('/bot|crawl|spider|slurp|preview|facebookexternalhit|whatsapp|telegrambot|pingdom|uptimerobot|lighthouse|headless/i', $userAgent);
     }
 
     private function hash(string $value): string
@@ -144,9 +153,12 @@ class TrackAnalytics
 
     private function applyGeo(SiteVisitor $visitor, Request $request): void
     {
-        $place = app(VisitorLocator::class)->locate($request->ip());
+        $ip = $this->clientIp($request);
+        $place = $ip ? app(VisitorLocator::class)->locate($ip) : null;
+        $headerCountry = strtoupper((string) $request->headers->get('CF-IPCountry'));
+        $headerCountry = in_array($headerCountry, ['', 'XX', 'T1'], true) ? null : $headerCountry;
 
-        if (is_array($place)) {
+        if (is_array($place) && ($headerCountry === null || strtoupper((string) $place['country_code']) === $headerCountry)) {
             $visitor->country_code = $place['country_code'];
             $visitor->country = $place['country'];
             $visitor->region = $place['region'];
@@ -157,20 +169,50 @@ class TrackAnalytics
             return;
         }
 
-        $country = strtoupper((string) $request->headers->get('CF-IPCountry'));
-        $city = $this->headerText($request->headers->get('CF-IPCity'));
-        $region = $this->headerText($request->headers->get('CF-Region') ?: $request->headers->get('CF-IPRegion'));
-
-        if ($country === '' || in_array($country, ['XX', 'T1'], true)) {
+        if ($headerCountry === null) {
             return;
         }
 
-        $visitor->country_code = $country;
-        $visitor->country = app(CountryNames::class)->name($country);
+        $city = $this->headerText($request->headers->get('CF-IPCity'));
+        $region = $this->headerText($request->headers->get('CF-Region') ?: $request->headers->get('CF-IPRegion'));
+        $visitor->country_code = $headerCountry;
+        $visitor->country = app(CountryNames::class)->name($headerCountry);
         $visitor->region = $region;
         $visitor->city = $city;
         $visitor->area = app(Places::class)->match($city, $region);
         $visitor->geo_resolved_at = now();
+    }
+
+    private function clientIp(Request $request): ?string
+    {
+        foreach (['CF-Connecting-IP', 'True-Client-IP'] as $header) {
+            $ip = $this->publicIp($request->headers->get($header));
+
+            if ($ip !== null) {
+                return $ip;
+            }
+        }
+
+        foreach (explode(',', (string) $request->headers->get('X-Forwarded-For')) as $part) {
+            $ip = $this->publicIp($part);
+
+            if ($ip !== null) {
+                return $ip;
+            }
+        }
+
+        return $this->publicIp($request->ip());
+    }
+
+    private function publicIp(mixed $value): ?string
+    {
+        $ip = trim((string) $value);
+
+        if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) === false) {
+            return null;
+        }
+
+        return $ip;
     }
 
     private function headerText(?string $value): ?string

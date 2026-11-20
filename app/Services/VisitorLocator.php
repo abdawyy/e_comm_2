@@ -20,8 +20,11 @@ class VisitorLocator
      */
     public function locate(?string $ip): ?array
     {
-        $private = $this->isPrivate($ip);
-        $cacheKey = 'geo.place.v2.'.hash('sha256', $private ? 'egress' : (string) $ip);
+        if ($this->isPrivate($ip)) {
+            return null;
+        }
+
+        $cacheKey = 'geo.place.v3.'.hash('sha256', (string) $ip);
 
         $cached = Cache::get($cacheKey);
 
@@ -33,7 +36,7 @@ class VisitorLocator
             return $cached;
         }
 
-        $lookup = $this->lookup($private ? null : $ip);
+        $lookup = $this->lookup($ip);
 
         if ($lookup === null) {
             Cache::put($cacheKey, false, now()->addMinutes(10));
@@ -60,7 +63,7 @@ class VisitorLocator
     /**
      * @return array{country_code: ?string, country: ?string, region: ?string, city: ?string, neighbourhood: ?string}|null
      */
-    private function lookup(?string $ip): ?array
+    private function lookup(string $ip): ?array
     {
         $template = (string) config('store.geoip_url');
 
@@ -68,9 +71,7 @@ class VisitorLocator
             return null;
         }
 
-        $url = $ip === null
-            ? str_replace('{ip}', '', $template)
-            : str_replace('{ip}', urlencode($ip), $template);
+        $url = str_replace('{ip}', urlencode($ip), $template);
         $url = preg_replace('#(?<!:)/{2,}#', '/', $url) ?? $url;
 
         try {

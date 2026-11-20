@@ -17,6 +17,7 @@ use App\Services\Payments\CashOnDeliveryGateway;
 use App\Services\Payments\PaymobCardGateway;
 use App\Services\Sms\HttpSmsSender;
 use App\Services\Sms\LogSmsSender;
+use Filament\Forms\Components\Toggle;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 
@@ -45,6 +46,10 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        Toggle::configureUsing(function (Toggle $toggle): void {
+            $toggle->onColor('success')->offColor('gray');
+        });
+
         Event::listen(OrderCreated::class, HandleOrderCreated::class);
         Event::listen(OrderPaid::class, HandleOrderPaid::class);
         Event::listen(OrderStatusChanged::class, HandleOrderStatusChanged::class);

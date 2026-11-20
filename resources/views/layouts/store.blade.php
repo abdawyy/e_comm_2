@@ -88,7 +88,7 @@
             background: #f3f3f3;
         }
         @media (min-width: 900px) {
-            .store-departments { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+            .store-departments { grid-template-columns: repeat(8, minmax(0, 1fr)); }
         }
         .store-hero h1,
         .store-hero .store-lead,

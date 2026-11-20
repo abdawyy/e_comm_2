@@ -147,5 +147,52 @@
     .fi-main a:not(.fi-btn):not(.fi-badge) {
         color: #131316;
     }
+
+    .account-home h2 {
+        font-size: 1.6rem;
+        font-weight: 750;
+    }
+
+    .account-home p {
+        max-width: 40rem;
+        margin-top: 0.4rem;
+        color: #3a3a40;
+    }
+
+    .account-home-grid {
+        display: grid;
+        gap: 0.85rem;
+        margin-top: 1.1rem;
+    }
+
+    @media (min-width: 800px) {
+        .account-home-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+
+    .account-home-grid a {
+        display: grid;
+        gap: 0.35rem;
+        min-height: 8rem;
+        padding: 1rem;
+        border: 1px solid #e6e6e6;
+        border-radius: 18px;
+        background: #fff;
+        color: #131316;
+        text-decoration: none;
+    }
+
+    .account-home-grid a:hover {
+        border-color: #c6a15a;
+    }
+
+    .account-home-grid strong {
+        font-size: 1.05rem;
+    }
+
+    .account-home-grid span {
+        color: #4b4b52;
+        font-size: 0.92rem;
+        line-height: 1.45;
+    }
 </style>
 @include('store.partials.whatsapp')

@@ -3,6 +3,7 @@
 namespace App\Actions;
 
 use App\Models\Order;
+use App\Models\ProductInquiry;
 use App\Models\User;
 use App\Support\Phone;
 
@@ -25,6 +26,15 @@ class LinkGuestOrders
                     $query->{$method}('customer_phone', $phone);
                 }
             })
+            ->update(['user_id' => $user->id]);
+
+        if ($email === '') {
+            return;
+        }
+
+        ProductInquiry::query()
+            ->whereNull('user_id')
+            ->whereRaw('lower(customer_email) = ?', [$email])
             ->update(['user_id' => $user->id]);
     }
 }

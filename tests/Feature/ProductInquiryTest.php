@@ -20,11 +20,11 @@ class ProductInquiryTest extends TestCase
         Mail::fake();
         $category = Category::factory()->create([
             'name' => ['en' => 'Coffee tools', 'ar' => 'أدوات القهوة'],
-            'is_inquiry' => true,
         ]);
         $product = Product::factory()->create([
             'category_id' => $category->id,
             'name' => ['en' => 'Hand grinder', 'ar' => 'مطحنة يدوية'],
+            'is_inquiry' => true,
         ]);
 
         $this->postJson('/cart/items', [

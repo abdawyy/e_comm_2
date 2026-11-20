@@ -27,9 +27,10 @@ class ProductInquiryController extends Controller
 
         $inquiry = ProductInquiry::query()->create([
             'product_id' => $product->id,
+            'user_id' => $request->user()?->id,
             'customer_name' => $data['customer_name'],
             'customer_phone' => $data['customer_phone'],
-            'customer_email' => $data['customer_email'] ?? null,
+            'customer_email' => $data['customer_email'] ?? $request->user()?->email,
             'message' => $data['message'] ?? null,
             'status' => 'new',
         ]);
@@ -40,6 +41,10 @@ class ProductInquiryController extends Controller
 
         if (filled($inbox)) {
             Mail::to($inbox)->send(new InquiryReceivedMail($inquiry));
+        }
+
+        if (filled($inquiry->customer_email)) {
+            Mail::to($inquiry->customer_email)->send(new InquiryReceivedMail($inquiry));
         }
 
         if ($admins->isNotEmpty()) {

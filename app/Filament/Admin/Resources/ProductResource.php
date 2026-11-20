@@ -78,8 +78,9 @@ class ProductResource extends Resource
                     ])->columns(2),
                     Section::make(__('admin.forms.publish'))->icon(Heroicon::OutlinedEye)->schema([
                         Toggle::make('is_featured')->label(__('admin.fields.featured'))->inline(false),
-                        Toggle::make('is_active')->onColor('success')->offColor('gray')->label(__('admin.fields.active'))->default(true)->inline(false),
+                        Toggle::make('is_active')->label(__('admin.fields.active'))->default(true)->inline(false),
                         Toggle::make('is_internal')->label(__('admin.fields.internal'))->helperText(__('admin.help.internal'))->default(false)->inline(false),
+                        Toggle::make('is_inquiry')->label(__('store.inquiry.request'))->helperText(__('store.inquiry.switch_help'))->default(false)->inline(false),
                     ])->columns(2),
                 ]),
                 Tab::make(__('admin.forms.media'))->icon(Heroicon::OutlinedPhoto)->schema([

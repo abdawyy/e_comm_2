@@ -38,6 +38,7 @@ class Product extends Model
         'is_featured',
         'is_active',
         'is_internal',
+        'is_inquiry',
     ];
 
     protected function casts(): array
@@ -50,6 +51,7 @@ class Product extends Model
             'is_featured' => 'boolean',
             'is_active' => 'boolean',
             'is_internal' => 'boolean',
+            'is_inquiry' => 'boolean',
         ];
     }
 
@@ -129,8 +131,6 @@ class Product extends Model
 
     public function acceptsInquiry(): bool
     {
-        $category = $this->relationLoaded('category') ? $this->category : $this->category()->first();
-
-        return (bool) $category?->is_inquiry;
+        return (bool) $this->is_inquiry;
     }
 }

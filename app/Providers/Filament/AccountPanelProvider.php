@@ -53,6 +53,7 @@ class AccountPanelProvider extends PanelProvider
             ->discoverPages(in: app_path('Filament/Account/Pages'), for: 'App\\Filament\\Account\\Pages')
             ->discoverWidgets(in: app_path('Filament/Account/Widgets'), for: 'App\\Filament\\Account\\Widgets')
             ->renderHook(PanelsRenderHook::HEAD_END, fn () => view('filament.hooks.direction'))
+            ->renderHook(PanelsRenderHook::TOPBAR_END, fn () => view('filament.hooks.locale-switcher'))
             ->renderHook(PanelsRenderHook::HEAD_END, fn () => view('filament.account.theme'))
             ->middleware([
                 EncryptCookies::class,

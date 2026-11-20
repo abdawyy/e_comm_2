@@ -56,6 +56,7 @@ class AdminPanelProvider extends PanelProvider
                 FilamentShieldPlugin::make(),
             ])
             ->renderHook(PanelsRenderHook::HEAD_END, fn () => view('filament.hooks.direction'))
+            ->renderHook(PanelsRenderHook::TOPBAR_END, fn () => view('filament.hooks.locale-switcher'))
             ->renderHook(PanelsRenderHook::TOPBAR_END, fn () => view('filament.hooks.theme-switcher'))
             ->renderHook(PanelsRenderHook::SIMPLE_LAYOUT_START, fn () => view('filament.hooks.theme-switcher', ['fixed' => true]))
             ->middleware([
